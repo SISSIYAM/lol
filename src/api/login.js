@@ -1,8 +1,8 @@
 import request from '@/utils/request';
 
-export function loginByUserInfo(username, password) {
+export function loginByUserAccount(mobile, password) {
   const data = {
-    username,
+    mobile,
     password,
   };
 
@@ -13,12 +13,23 @@ export function loginByUserInfo(username, password) {
   });
 }
 
-export function loginByMobileAuthCode(username, authCode) {
+export function loginByMobileVerifCode(mobile, verif) {
   const data = {
-    username,
-    authCode,
+    mobile,
+    verif,
   };
 
+  return request({
+    url: '/userLogin/loginVerif',
+    method: 'post',
+    data,
+  });
+}
+
+export function getMobileVerifCode(mobile) {
+  const data = {
+    mobile,
+  };
   return request({
     url: '/userLogin/getVerif',
     method: 'post',
@@ -32,15 +43,40 @@ export function getUserInfo(userID) {
   };
 
   return request({
-    url: '',
+    url: '/userLogin/getInfo',
     method: 'get',
+    data,
+  });
+}
+
+export function afterUserSignupfillInfo(name, password) {
+  const data = {
+    name,
+    password,
+  };
+  return request({
+    url: '/userLogin/finishInfo',
+    method: 'post',
+    data,
+  });
+}
+
+export function retrieveVerifCode(mobile, password, verif) {
+  const data = {
+    mobile,
+    password,
+    verif,
+  };
+  return request({
+    url: '/userLogin/findPassword',
+    method: 'post',
     data,
   });
 }
 
 export function logout() {
   return request({
-    url: '',
+    url: '/userLogin/logout',
     method: 'post',
   });
 }

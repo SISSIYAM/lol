@@ -75,7 +75,7 @@ export default {
 
   mounted() {
     //  初始化样式
-    this.getMarignTop();
+    this.getMarginTop();
   },
 
 
@@ -97,8 +97,8 @@ export default {
       }
     },
 
-    getMarignTop() {
-      //  初始化样式
+    // 登录样式初始，原代码复制
+    getMarginTop() {
       const Ptitle = this.$refs.title;
       const CtitleImg = this.$refs.titleImg;
       const titleTextMid = this.$refs.titleTextMid;

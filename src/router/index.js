@@ -1,15 +1,24 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import index from '@/view/login/index';
+
+/*
+用户初次使用
+ */
+
+import initLayout from '@/view/init-layout/initLayout';
 
 Vue.use(Router);
 
+
+export const constantRouterMap = [
+  {},
+];
 export default new Router({
   routes: [
     {
       path: '/',
-      name: 'index',
-      component: index,
+      name: 'initLayout',
+      component: initLayout,
     },
   ],
 });

@@ -1,4 +1,4 @@
-# YouTe 
+# YouTe
 
 城市共享停车桩，完善支持自行车和汽车。基于vue 2.0 + 混合开发的移动端App。
 
@@ -26,9 +26,7 @@
 
 - 前端UI库
 
-  framework7@3.0.0-beta.11
 
-  framework7-vue@3.0.0-beta.11
 
 ### 项目结构
 
@@ -38,18 +36,42 @@
 │  main.js
 │
 ├─api
+│      login.js
+│      payAndTrade.js
+│      shareStation.js
+│      userDetails.js
+│
 ├─assets
 │      logo.png
 │
 ├─components
-│      HelloWorld.vue
+│  └─ErrorLog
+│          index.vue
 │
 ├─router
 │      index.js
 │
 ├─store
 ├─utils
-└─views
+│      request.js
+│
+└─view
+    ├─init-layout
+    │  │  initLayout.vue
+    │  │
+    │  └─components
+    │          index.js
+    │          littleUtils.vue
+    │          navbar.vue
+    │          routingXiuxiu.vue
+    │          sidebar.vue
+    │
+    ├─login
+    │      authRedirect.vue
+    │      index.vue
+    │
+    └─svg-icons
+
 
 ### 项目截图
 

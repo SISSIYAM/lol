@@ -1,20 +1,18 @@
 <template>
   <div class="app-wrapper" :class="classObj" >
-    <div v-if="sidebar.opened" class="" @click="handleClickOutside"></div>
-    <sidebar class="sidebar-container"></sidebar>
+    <drawer-bar></drawer-bar>
     <navbar></navbar>
     <little-utils></little-utils>
     <routing-xiuxiu></routing-xiuxiu>
   </div>
 </template>
-
 <script>
-import { sidebar, navbar, littleUtils, routingXiuxiu } from './components';
+import { drawerBar, navbar, littleUtils, routingXiuxiu } from './components';
 
 export default {
   name: 'initLayout',
   components: {
-    sidebar,
+    drawerBar,
     navbar,
     littleUtils,
     routingXiuxiu,
@@ -22,8 +20,6 @@ export default {
   computed: {
     classObj() {
       return {
-        hideSidebar: !this.sidebar.opened,
-
       };
     },
   },
@@ -32,4 +28,5 @@ export default {
 
 <style lang="scss" scoped >
   @import "src/styles/mixin.scss";
+
 </style>

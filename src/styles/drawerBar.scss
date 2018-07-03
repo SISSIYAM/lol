@@ -1,0 +1,21 @@
+#app {
+  .main-container {
+    margin-left:0px;
+  }
+  .drawer-container {
+    transition: transform .28s;
+    width: 180px !important;
+  }
+  &.hideDrawer {
+    .drawer-container {
+      transition-duration: 0.3s;
+      transform:translate3d(-180px,0,0);
+    }
+  }
+  .withoutAnimation {
+    .main-container,
+    .drawer-container {
+      transition: none;
+    }
+  }
+}

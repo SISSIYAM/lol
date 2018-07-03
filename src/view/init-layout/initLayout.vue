@@ -1,9 +1,12 @@
 <template>
   <div class="app-wrapper" :class="classObj" >
-    <drawer-bar></drawer-bar>
-    <navbar></navbar>
-    <little-utils></little-utils>
-    <routing-xiuxiu></routing-xiuxiu>
+    <div v-if="drawerBar.opened" class="drawer-bg" @click="handleClickOutside"></div>
+    <drawer-bar class="drawer-container"></drawer-bar>
+    <div class="main-container">
+      <navbar></navbar>
+      <little-utils></little-utils>
+      <routing-xiuxiu></routing-xiuxiu>
+    </div>
   </div>
 </template>
 <script>
@@ -20,14 +23,32 @@ export default {
   computed: {
     classObj() {
       return {
+        hideDrawer: !this.drawerBar.opened,
+        withoutAnimation: this.drawerBar.withoutAnimation,
       };
     },
+  },
+  methods: {
+    handleClickOutside() {},
   },
 };
 </script>
 
 <style lang="scss" scoped >
-  @import 'src/styles/mixin.scss';
-  #app-wrapper
-
+  @import '../../styles/mixin';
+  #app-wrapper {
+    @include clearfix;
+    postion:relative;
+    height:100%;
+    width:100%;
+  }
+  .drawer-bg {
+    background: #000;
+    opacity: 0.3;
+    width: 100%;
+    top: 0;
+    height: 100%;
+    position: absolute;
+    z-index: 999;
+  }
 </style>

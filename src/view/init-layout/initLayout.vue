@@ -21,6 +21,9 @@ export default {
     routingXiuxiu,
   },
   computed: {
+    drawerBar() {
+      return this.$store.state.app.drawerBar;
+    },
     classObj() {
       return {
         hideDrawer: !this.drawerBar.opened,
@@ -29,7 +32,9 @@ export default {
     },
   },
   methods: {
-    handleClickOutside() {},
+    handleClickOutside() {
+      this.$store.dispatch('closeDrawerBar', { withoutAnimation: false });
+    },
   },
 };
 </script>

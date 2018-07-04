@@ -1,0 +1,54 @@
+卷 新加卷 的文件夹 PATH 列表
+卷序列号为 3AC2-1832
+D:.
+│  App.vue
+│  main.js
+│  tree.txt
+│  
+├─api
+│      login.js
+│      payAndTrade.js
+│      shareStation.js
+│      userDetails.js
+│      
+├─assets
+│      logo.png
+│      
+├─components
+│  └─ErrorLog
+│          index.vue
+│          
+├─icons
+│  └─png
+│          icon_male.png
+│          
+├─router
+│      index.js
+│      
+├─store
+├─styles
+│      drawerBar.scss
+│      index.scss
+│      mixin.scss
+│      
+├─utils
+│      request.js
+│      
+└─view
+    ├─init-layout
+    │  │  initLayout.vue
+    │  │  
+    │  └─components
+    │      │  index.js
+    │      │  littleUtils.vue
+    │      │  navbar.vue
+    │      │  routingXiuxiu.vue
+    │      │  
+    │      └─drawer
+    │              drawerBar.vue
+    │              drawerbarItem.vue
+    │              
+    └─login
+            authRedirect.vue
+            index.vue
+            

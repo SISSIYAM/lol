@@ -35,6 +35,7 @@
 
 │  App.vue
 │  main.js
+│  tree.txt
 │
 ├─api
 │      login.js
@@ -49,10 +50,19 @@
 │  └─ErrorLog
 │          index.vue
 │
+├─icons
+│  └─png
+│          icon_male.png
+│
 ├─router
 │      index.js
 │
 ├─store
+├─styles
+│      drawerBar.scss
+│      index.scss
+│      mixin.scss
+│
 ├─utils
 │      request.js
 │
@@ -61,18 +71,18 @@
     │  │  initLayout.vue
     │  │
     │  └─components
-    │          index.js
-    │          littleUtils.vue
-    │          navbar.vue
-    │          routingXiuxiu.vue
-    │          sidebar.vue
+    │      │  index.js
+    │      │  littleUtils.vue
+    │      │  navbar.vue
+    │      │  routingXiuxiu.vue
+    │      │
+    │      └─drawer
+    │              drawerBar.vue
+    │              drawerbarItem.vue
     │
-    ├─login
-    │      authRedirect.vue
-    │      index.vue
-    │
-    └─svg-icons
-
+    └─login
+            authRedirect.vue
+            index.vue
 
 ### 项目截图
 

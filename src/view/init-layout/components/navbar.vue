@@ -1,19 +1,21 @@
 <template>
   <el-menu class="navbar-container">
-    <div class="drawer-container" @click="showDrawer">
-      <img class="user-icon" src="../../../../src/icons/png/icon_male.png">
+    <div class="drawer-container" @click="toggleDrawerBar" :class="drawerBar.opened">
+      <svg-icon icon-class="icon_male" class="user-icon"></svg-icon>
     </div>
     <div class="bike-car-container">
-      <div class="tabs" v-bind:class="{selected: isBike}" @click="selectedBike">
+      <div class="tabs" v-bind:class="{selected: isBike}">
         <p>单车</p>
       </div>
-      <div class="tabs" v-bind:class="{selected: !isBike}" @click="selectedCar">
+      <div class="tabs" v-bind:class="{selected: !isBike}">
         <p>汽车</p>
       </div>
     </div>
   </el-menu>
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'navbar',
   data() {
@@ -21,7 +23,15 @@ export default {
       isBike: true,
     };
   },
+  computed: {
+    ...mapGetters([
+      'drawerBar',
+    ]),
+  },
   methods: {
+    toggleDrawerBar() {
+      this.$store.dispatch('toggleDrawerBar');
+    },
   },
 };
 </script>

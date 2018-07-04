@@ -8,17 +8,20 @@
     text-color="#bfcbd9"
     active-text-color="#409EFF"
   >
-    <p>这里是侧边抽屉</p>
-    <drawer-bar-item :routes="permission_routers"></drawer-bar-item>
+    <!--<drawer-bar-item :routes="permission_routers"></drawer-bar-item>-->
   </el-menu>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import drawerBarItem from './drawerbarItem';
 
 export default {
-  name: 'drawerBar',
+  name: '',
   components: { drawerBarItem },
+  computed: {
+    ...mapGetters(['drawerBar']),
+  },
   methods: {
     isCollapse() {
       return !this.drawerBar.opened;
@@ -28,6 +31,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.drawer-container {
-}
+
 </style>

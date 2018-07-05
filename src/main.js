@@ -10,6 +10,8 @@ import App from './App';
 import router from './router';
 import store from './store';
 
+import './icons';
+
 Vue.use(Element, {
   size: 'small',
 });
@@ -22,6 +24,5 @@ new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
-  template: '<App/>',
+  render: h => h(App),
 });

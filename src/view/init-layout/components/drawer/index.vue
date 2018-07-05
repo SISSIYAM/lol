@@ -8,7 +8,7 @@
     text-color="#bfcbd9"
     active-text-color="#409EFF"
   >
-    <!--<drawer-bar-item :routes="permission_routers"></drawer-bar-item>-->
+    <drawer-bar-item :routes="permission_routers"></drawer-bar-item>
   </el-menu>
 </template>
 
@@ -17,12 +17,9 @@ import { mapGetters } from 'vuex';
 import drawerBarItem from './drawerbarItem';
 
 export default {
-  name: '',
   components: { drawerBarItem },
   computed: {
-    ...mapGetters(['drawerBar']),
-  },
-  methods: {
+    ...mapGetters(['drawerBar', 'permission_routers']),
     isCollapse() {
       return !this.drawerBar.opened;
     },

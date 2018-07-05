@@ -19,6 +19,7 @@
     "node-sass": "^4.9.0",
     "qs": "^6.5.2",
     "sass-loader": "^7.0.3",
+    "svg-sprite-loader": "^3.8.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"

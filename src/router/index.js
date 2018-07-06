@@ -28,47 +28,84 @@ export const constantRouterMap = [
     path: '/',
     component: initLayout,
     hidden: true,
+    name: 'initLayout',
   },
   {
     path: '/login',
     component: () => import('@/view/login/index'),
     hidden: true,
+    name: 'login',
   },
+  {
+    path: '/stationSearch',
+    component: () => import('@/view/station-search/index'),
+    hidden: true,
+    name: 'stationSearch',
+  },
+  {
+    path: '/bikeStations',
+    component: () => import('@/view/bike-stations/index'),
+    hidden: true,
+    name: 'bikeStations',
+  },
+  {
+    path: '/carStations',
+    component: () => import('@/view/car-stations/index'),
+    hidden: true,
+    name: 'carStations',
+  },
+];
+
+export const asyncRouterMap = [
   {
     path: '/personalInfo',
     component: () => import('@/view/personal-info/index'),
     name: 'personalInfo',
-    meta: { title: '个人信息', icon: 'icon_male' },
+    meta: { title: '个人信息', icon: 'icon_male', auth: true },
   },
   {
     path: '/myWallet',
     component: () => import('@/view/my-wallet/index'),
     name: 'myWallet',
-    meta: { title: '我的钱包', icon: '' },
+    meta: { title: '我的钱包', icon: '', auth: true },
   },
   {
     path: '/stationOrder',
     component: () => import('@/view/station-order/index'),
     name: 'stationOrder',
-    meta: { title: '车位订单', icon: '' },
+    meta: { title: '车位订单', icon: '', auth: true },
   },
   {
     path: '/stationBooking',
     component: () => import('@/view/station-booking/index'),
     name: 'stationBooking',
-    meta: { title: '车位预定', icon: '' },
+    meta: { title: '车位预定', icon: '', auth: true },
   },
   {
     path: '/customerService',
     component: () => import('@/view/customer-service/index'),
     name: 'customerService',
-    meta: { title: '客服中心', icon: '' },
+    meta: { title: '客服中心', icon: '', auth: true },
   },
   {
     path: '/setting',
     component: () => import('@/view/setting/index'),
     name: 'setting',
-    meta: { title: '设置', icon: '' },
+    meta: { title: '设置', icon: '', auth: true },
+  },
+  {
+    path: '/routePlanning',
+    component: () => import('@/view/route-planning/index'),
+    name: 'routePlanning',
+    hidden: true,
+    meta: { title: '出行', icon: '', auth: true },
+  },
+  {
+    path: '/xiuxiuUnlocking',
+    component: () => import('@/view/xiuxiu-unlocking/index'),
+    name: 'xiuxiuUnlocking',
+    hidden: true,
+    meta: { title: '咻咻开锁', icon: '', auth: true },
   },
 ];
 

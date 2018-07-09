@@ -1,13 +1,10 @@
 import request from '@/utils/request';
 
 export function updateUsername(name) {
-  const data = {
-    name,
-  };
   return request({
     url: '/userLogin/updateName',
     method: 'post',
-    data,
+    params: { name },
   });
 }
 

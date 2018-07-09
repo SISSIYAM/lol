@@ -29,7 +29,9 @@ const user = {
      * 验证用户登录状态
      */
     authUser({commit},token){
-      return
+      return new Promise(resolve, reject) => {
+        hasAuth()
+      }
     }
   }
 };

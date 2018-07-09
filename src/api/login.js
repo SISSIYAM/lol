@@ -27,25 +27,18 @@ export function loginByMobileVerifCode(mobile, verif) {
 }
 
 export function getMobileVerifCode(mobile) {
-  const data = {
-    mobile,
-  };
   return request({
     url: '/userLogin/getVerif',
     method: 'post',
-    data,
+    params: { mobile },
   });
 }
 
 export function getUserInfo(userID) {
-  const data = {
-    userID,
-  };
-
   return request({
     url: '/userLogin/getInfo',
     method: 'get',
-    data,
+    params: { userID },
   });
 }
 

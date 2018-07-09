@@ -9,13 +9,17 @@ import store from './store';
 const whiteList = ['/login', '/bikeStations', '/carStations', '/stationSearch'];
 
 router.beforeEach((to, from, next) => {
+  store.dispatch('authUser').then((res) => {
+    const data = res.data.code;
+  });
   if (getToken) {
     /**
      *  用户登录身份有效
      */
-    if (to.path == '/login') {
+    if (to.path === '/login') {
       next({ path: '/' });
     } else {
+      store.dispatch('GenerateRoutes', { data });
       next();
     }
   } else {

@@ -4,13 +4,9 @@ import request from '@/utils/request';
  */
 
 export function hasAuth(token) {
-  const data = {
-    token,
-  };
-
   return request({
     url: '/userLogin/isAccessToken',
     method: '',
-    data,
+    params: { token },
   });
 }

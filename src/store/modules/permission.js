@@ -17,7 +17,7 @@ const permission = {
       return new Promise((resolve) => {
         const { authUser } = data;
         let accessedRouters;
-        if (authUser){
+        if (authUser) {
           accessedRouters = asyncRouterMap;
         } else {
           accessedRouters = [];

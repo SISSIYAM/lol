@@ -1,4 +1,5 @@
-import request from '@/utils/request';
+/* eslint-disable */
+import request from '../utils/request';
 /**
  * 验证用户登录状态是否任然有效
  */
@@ -6,7 +7,7 @@ import request from '@/utils/request';
 export function hasAuth(token) {
   return request({
     url: '/userLogin/isAccessToken',
-    method: '',
+    method: 'post',
     params: { token },
   });
 }

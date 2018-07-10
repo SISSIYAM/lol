@@ -1,4 +1,3 @@
-import { hasAuth } from '../../api/auth';
 import { constantRouterMap, asyncRouterMap } from '@/router';
 
 const permission = {
@@ -17,7 +16,7 @@ const permission = {
       return new Promise((resolve) => {
         const { authUser } = data;
         let accessedRouters;
-        if (authUser) {
+        if (authUser === 200) {
           accessedRouters = asyncRouterMap;
         } else {
           accessedRouters = [];

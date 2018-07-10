@@ -1,6 +1,7 @@
+/*eslint-disable*/
+import { Message } from 'element-ui';
 import router from './router';
 import store from './store';
-
 
 /**
  *  均不需要用户登录的路由列表
@@ -9,18 +10,22 @@ import store from './store';
 const whiteList = ['/login', '/bikeStations', '/carStations', '/stationSearch'];
 
 router.beforeEach((to, from, next) => {
-  store.dispatch('authUser').then((res) => {
-    const data = res.data.code;
-  });
-  if (getToken) {
+  if (to.matched.some(record => record.meta.auth)) {
     /**
      *  用户登录身份有效
      */
     if (to.path === '/login') {
       next({ path: '/' });
     } else {
-      store.dispatch('GenerateRoutes', { data });
-      next();
+      store.dispatch('authUser', { token }).then((res) => {
+        const data = res.data.code;
+        store.dispatch('GenerateRoutes', { data }).then(() => {
+          router.addRouters(store.getters.addRouters);
+        });
+      }).catch((err) => {
+        Message.error(err || '请重新登录');
+        next({ path: '/login' });
+      });
     }
   } else {
     /**
@@ -31,5 +36,7 @@ router.beforeEach((to, from, next) => {
     } else {
       next('/login');
     }
+    next('/login');
   }
 });
+

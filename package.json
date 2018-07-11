@@ -22,7 +22,9 @@
     "svg-sprite-loader": "^3.8.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "vux": "^2.9.2",
+    "vux-loader": "^1.2.9"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -65,6 +67,8 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "0.0.31",
     "karma-webpack": "^2.0.2",
+    "less": "^3.7.0",
+    "less-loader": "^4.1.0",
     "mocha": "^3.2.0",
     "nightwatch": "^0.9.12",
     "node-notifier": "^5.1.2",
@@ -91,7 +95,8 @@
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "yaml-loader": "^0.5.0"
   },
   "engines": {
     "node": ">= 6.0.0",

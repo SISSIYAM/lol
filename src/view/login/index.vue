@@ -1,10 +1,10 @@
 <template>
-  <div></div>
+  <div> 这里是登录</div>
 </template>
 
 <script>
 export default {
-  name: 'index',
+  name: 'login',
   props: {
     titleMes: String,
     titleMid: String,
@@ -13,53 +13,6 @@ export default {
   data() {
     return {
     };
-  },
-
-  mounted() {
-    //  初始化样式
-    this.getMarginTop();
-  },
-
-
-  methods: {
-
-    goBack() {
-      if (this.$props.toPathUrl === '' || this.$props.toPathUrl == null) {
-        this.$router.go(-1);
-      } else {
-        this.$router.push(this.$props.toPathUrl);
-      }
-    },
-
-    turnTo() {
-      if (this.$props.titleMes === '短信登录') {
-        this.$router.push('/register');
-      } else if (this.$props.titleMes === '密码登录') {
-        this.$router.push('/');
-      }
-    },
-
-    // 登录样式初始，原代码复制
-    getMarginTop() {
-      const Ptitle = this.$refs.title;
-      const CtitleImg = this.$refs.titleImg;
-      const titleTextMid = this.$refs.titleTextMid;
-      const valueHeight = Ptitle.offsetHeight - CtitleImg.offsetHeight;
-      if (this.$props.titleMid === '' || this.$props.titleMid == null) {
-        if (this.$props.titleMes === '') {
-          CtitleImg.style.marginTop = `${(valueHeight * 0.5) + 5}px`;
-        } else {
-          const CtitleText = this.$refs.titleText;
-          CtitleText.style.marginTop = `${(valueHeight * 0.5) + 5}px`;
-          CtitleImg.style.marginTop = `${(valueHeight * 0.5) + 5}px`;
-        }
-      } else {
-        CtitleImg.style.marginTop = `${(valueHeight * 0.5) + 5}px`;
-        titleTextMid.style.marginTop = `${(valueHeight * 0.5) + 5}px`;
-      }
-    },
-
-
   },
 };
 </script>

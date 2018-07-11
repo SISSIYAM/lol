@@ -4,20 +4,18 @@
     <drawer-bar class="drawer-container"></drawer-bar>
     <div class="main-container">
       <navbar></navbar>
-      <little-utils></little-utils>
       <routing-xiuxiu></routing-xiuxiu>
     </div>
   </div>
 </template>
 <script>
-import { drawerBar, navbar, littleUtils, routingXiuxiu } from './components';
+import { drawerBar, navbar, routingXiuxiu } from './components';
 
 export default {
   name: 'initLayout',
   components: {
     drawerBar,
     navbar,
-    littleUtils,
     routingXiuxiu,
   },
   computed: {

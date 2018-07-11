@@ -34,7 +34,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      //'vue$': 'vue/dist/vue.esm.js',
+      'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
     }
   },
@@ -103,5 +103,14 @@ module.exports = {
     net: 'empty',
     tls: 'empty',
     child_process: 'empty'
-  }
+  },
+  externals: {
+    'AMap': 'AMap',
+  },
 }
+
+const vuxLoader = require('vux-loader')
+const webpackConfig = module.exports;
+module.exports = vuxLoader.merge(webpackConfig,{
+  plugins:['vux-ui']
+})

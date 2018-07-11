@@ -1,26 +1,35 @@
 <template>
   <el-menu class="navbar-container">
-    <div class="drawer-container" @click="toggleDrawerBar" :class="drawerBar.opened">
+    <div class="drawer-container"  @click="toggleDrawerBar" :class="drawerBar.opened">
       <svg-icon icon-class="icon_male" class="user-icon"></svg-icon>
     </div>
     <div class="bike-car-container">
-      <div class="tabs" v-bind:class="{selected: isBike}">
-        <p>单车</p>
-      </div>
-      <div class="tabs" v-bind:class="{selected: !isBike}">
-        <p>汽车</p>
-      </div>
+      <tab v-model="index01" prevent-default @on-before-index-change="switchTabItem">
+        <tab-item>单车</tab-item>
+        <tab-item>汽车</tab-item>
+      </tab>
+    </div>
+    <div class="little-utils-container">
+      <svg-icon icon-class="icon_male" class="user-icon"></svg-icon>
+      <svg-icon icon-class="icon_male" class="user-icon"></svg-icon>
     </div>
   </el-menu>
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import { Tab, TabItem } from 'vux';
 
 export default {
   name: 'navbar',
+  components: {
+    TabItem,
+    Tab,
+  },
   data() {
     return {
       isBike: true,
+      index01: 0,
+      index: 0,
     };
   },
   computed: {
@@ -32,11 +41,23 @@ export default {
     toggleDrawerBar() {
       this.$store.dispatch('toggleDrawerBar');
     },
+    switchTabItem(index) {
+      console.log('on-before-index-change', index);
+      this.$vux.loading.show({
+        text: '稍等',
+      });
+      setTimeout(() => {
+        this.$vux.loading.hide();
+        this.index01 = index;
+      }, 1000);
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less">
+  @import '~vux/src/styles/1px.less';
+  @import '~vux/src/styles/center.less';
 .navbar-container {
   height: 50px;
   line-height: 50px;
@@ -54,7 +75,29 @@ export default {
     display: inline-flex;
     font-family: PingFangBold;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 14px;
+    .vux-tab-wrap{
+      position: inherit;
+      .vux-tab-container {
+        height: 44px;
+        top: 0;
+        left: 113px;
+        right: 171px;
+        overflow: hidden;
+        position: absolute;
+        .vux-tab .vux-tab-item.vux-tab-selected {
+          color: #369ebe;
+          border-bottom: 3px solid #369ebe;
+        }
+        .vux-tab .vux-tab-ink-bar {
+         dispaly:none;
+        }
+      }
+    }
+  }
+  .little-utils-container {
+    display: inline-block;
+    margin: 0 8px;
   }
 }
 </style>

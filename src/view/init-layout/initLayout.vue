@@ -4,12 +4,15 @@
     <drawer-bar class="drawer-container"></drawer-bar>
     <div class="main-container">
       <navbar></navbar>
+      <search-Bar></search-Bar>
       <routing-xiuxiu></routing-xiuxiu>
     </div>
   </div>
 </template>
 <script>
+import searchBar from '../../view/station-search/index';
 import { drawerBar, navbar, routingXiuxiu } from './components';
+
 
 export default {
   name: 'initLayout',
@@ -17,6 +20,7 @@ export default {
     drawerBar,
     navbar,
     routingXiuxiu,
+    searchBar,
   },
   computed: {
     drawerBar() {
@@ -44,6 +48,8 @@ export default {
     postion:relative;
     height:100%;
     width:100%;
+    margin: 0;
+    padding: 0;
   }
   .drawer-bg {
     background: #000;

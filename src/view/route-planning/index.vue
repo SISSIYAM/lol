@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div><p>这里是行程规划入口</p></div>
 </template>
 
 <script>

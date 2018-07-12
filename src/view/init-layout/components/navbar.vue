@@ -10,20 +10,21 @@
       </tab>
     </div>
     <div class="little-utils-container">
-      <svg-icon icon-class="icon_male" class="user-icon"></svg-icon>
-      <svg-icon icon-class="icon_male" class="user-icon"></svg-icon>
+      <svg-icon icon-class="icon_male" class="right-item"></svg-icon>
+      <svg-icon icon-class="icon_male" class="right-item"></svg-icon>
     </div>
   </el-menu>
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import { Tab, TabItem } from 'vux';
+import { Tab, TabItem, Loading } from 'vux';
 
 export default {
   name: 'navbar',
   components: {
     TabItem,
     Tab,
+    Loading,
   },
   data() {
     return {
@@ -59,7 +60,7 @@ export default {
   @import '~vux/src/styles/1px.less';
   @import '~vux/src/styles/center.less';
 .navbar-container {
-  height: 50px;
+  height: 44px;
   line-height: 50px;
   .drawer-container {
     line-height:58px;
@@ -82,22 +83,26 @@ export default {
         height: 44px;
         top: 0;
         left: 113px;
-        right: 171px;
+        right: 134px;
         overflow: hidden;
         position: absolute;
         .vux-tab .vux-tab-item.vux-tab-selected {
           color: #369ebe;
           border-bottom: 3px solid #369ebe;
         }
-        .vux-tab .vux-tab-ink-bar {
-         dispaly:none;
-        }
       }
     }
   }
   .little-utils-container {
-    display: inline-block;
-    margin: 0 8px;
+    float: right;
+    height: 100%;
+    &:focus {
+      outline:none;
+    }
+    .right-item{
+      display: inline-block;
+      margin: 3px 20px;
+    }
   }
 }
 </style>

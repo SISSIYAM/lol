@@ -1,5 +1,5 @@
 <template>
-    <div></div>
+    <div>这里是咻咻开锁入口</div>
 </template>
 
 <script>

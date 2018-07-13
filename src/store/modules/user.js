@@ -1,4 +1,5 @@
 import { hasAuth } from '../../api/auth';
+import ShareBikeApi from '../../utils/sharebikeCordovaApi';
 
 const user = {
   state: {
@@ -33,12 +34,12 @@ const user = {
      * 获取储存中的用户UUID
      * @param {{data.uuid:string}} data
      */
-    // hasUsersToken({ commit }) {
-    //   ShareBikeApi.getUserInfo((data) => {
-    //     const token = data.uuid;
-    //     commit('SET_TOKEN', token);
-    //   });
-    // },
+    hasUsersToken({ commit }) {
+      ShareBikeApi.getUserInfo((data) => {
+        const token = data.uuid;
+        commit('SET_TOKEN', token);
+      });
+    },
     /**
      * 验证用户登录状态
      */

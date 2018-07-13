@@ -1,14 +1,28 @@
 <template>
-  <div> 这里是登录</div>
+  <div id="wapper">
+    <div id="form-wapper">
+      <title-com :title-mes="title" class="titleCom"></title-com>
+      <text-desc :GenText="getText" :detaText1="detaText1" :detaText2="detaText2"></text-desc>
+      <form-suite></form-suite>
+      <form-phone slot="formPhone" ref="userPhone"></form-phone>
+      <form-pwd slot="formPwd" ref="userPwd"></form-pwd>
+      <form-other slot="formOther" :statusD="statusDes"></form-other>
+    </div>
+  </div>
 </template>
 
 <script>
+import { formOther, formPhone, formPwd, formSuite, textDesc, titleCom } from './components';
+
 export default {
   name: 'login',
-  props: {
-    titleMes: String,
-    titleMid: String,
-    toPathUrl: String,
+  components: {
+    titleCom,
+    formOther,
+    formPhone,
+    formPwd,
+    formSuite,
+    textDesc,
   },
   data() {
     return {

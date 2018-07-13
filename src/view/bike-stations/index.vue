@@ -1,10 +1,10 @@
 <template>
-  <div></div>
+  <div>这里是单车地图入口</div>
 </template>
 
 <script>
 export default {
-  name: 'index',
+  name: 'bikeStations',
 };
 </script>
 

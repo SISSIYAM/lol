@@ -1,11 +1,16 @@
 import request from '@/utils/request';
 
 export function getCurrentCityAllStations(areaId) {
-  return request({
-    url: '/station/getAllStationInfo',
-    method: 'post',
-    params: { areaId },
-  });
+  return request('/station/getAllStationInfo', { areaId });
+}
+
+export function getStationByGPS(radiusValue, lng, lat) {
+  const data = {
+    radius: radiusValue,
+    longtitude: lng,
+    latitude: lat,
+  };
+  return request.post('/station/getStationByGPS', data);
 }
 
 export function getNearbyThreeStations(longitude, latitude) {
@@ -13,19 +18,11 @@ export function getNearbyThreeStations(longitude, latitude) {
     longitude,
     latitude,
   };
-  return request({
-    url: '/station/next3station',
-    method: 'post',
-    data,
-  });
+  return request.post('/station/next3station', data);
 }
 
 export function getOneStationDetails(stationId) {
-  return request({
-    url: '/station/getStationDetail',
-    method: 'post',
-    params: { stationId },
-  });
+  return request('/station/getStationDetail', { stationId });
 }
 
 export function getNearbyOneUsableStation(longitude, latitude, type) {
@@ -34,11 +31,7 @@ export function getNearbyOneUsableStation(longitude, latitude, type) {
     latitude,
     type,
   };
-  return request({
-    url: '/station/getUsableStation',
-    method: 'post',
-    data,
-  });
+  return request('/station/getUsableStation', data);
 }
 
 export function bookStation(type, stationId) {
@@ -46,11 +39,7 @@ export function bookStation(type, stationId) {
     type,
     stationId,
   };
-  return request({
-    url: '/station/bookStation',
-    method: 'post',
-    data,
-  });
+  return request('/station/bookStation', data);
 }
 
 export function updateStationStatus(mac, status) {
@@ -58,25 +47,13 @@ export function updateStationStatus(mac, status) {
     mac,
     status,
   };
-  return request({
-    url: '/station/updateStationStatus',
-    method: 'post',
-    data,
-  });
+  return request('/station/updateStationStatus', data);
 }
 
 export function oneTourFeeCharging(cost) {
-  return request({
-    url: '/station/charging',
-    method: '',
-    params: { cost },
-  });
+  return request('/station/charging', { cost });
 }
 
 export function getOneStationNumber(mac) {
-  return request({
-    url: '/station/getNoByMac',
-    method: 'post',
-    params: { mac },
-  });
+  return request('/station/getNoByMac', { mac });
 }

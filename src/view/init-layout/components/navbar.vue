@@ -5,7 +5,8 @@
     </div>
     <div class="bike-car-container">
       <tab v-model="index01" prevent-default @on-before-index-change="switchTabItem">
-        <tab-item>单车</tab-item>
+        <tab-item>单车
+        </tab-item>
         <tab-item>汽车</tab-item>
       </tab>
     </div>

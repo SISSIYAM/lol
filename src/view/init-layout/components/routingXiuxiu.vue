@@ -1,12 +1,18 @@
 <template>
   <div class="routing-xiuxiu-container">
+    <search-Bar></search-Bar>
+    <bike-stations></bike-stations>
     <tabbar class="vux-demo-tabbar" icon-calss="" slot="bottom">
       <tabbar-item :link="{path:'/routePlanning'}">
-        <span><svg-icon></svg-icon></span>
+        <span slot="icon">
+          <svg-icon icon-class="icon_male"></svg-icon>
+        </span>
         <span slot="label">行程规划</span>
       </tabbar-item>
       <tabbar-item :link="{path:'/xiuxiuUnlocking'}">
-        <span><svg-icon></svg-icon></span>
+        <span slot="icon">
+          <svg-icon icon-class="broadcasting"></svg-icon>
+        </span>
         <span slot="label">咻咻开锁</span>
       </tabbar-item>
     </tabbar>
@@ -15,13 +21,17 @@
 
 <script>
 import { Tabbar, TabbarItem } from 'vux';
+import searchBar from '../../../view/station-search/index';
+import BikeStations from '../../bike-stations/index';
 
 
 export default {
   name: 'routingXiuxiu',
   components: {
+    BikeStations,
     TabbarItem,
     Tabbar,
+    searchBar,
   },
 };
 </script>
@@ -32,9 +42,9 @@ export default {
   @import '~vux/src/styles/tap.less';
 
   .routing-xiuxiu-container{
-   min-height: calc( 100vh - 74px );
-    position:absolute;
-    overflow: hidden;
+   min-height: calc( 100vh - 44px );
+    position: relative;
+    background: #fbc4c4;
     .weui-tabbar {
       display: -webkit-box;
       display: -ms-flexbox;
@@ -44,7 +54,7 @@ export default {
       bottom: 10px;
       left:7px;
       width: 96%;
-      background-color: #9dc3ea;
+      background-color: #ffffff;
       border-radius: 3px;
       .weui-tabbar__label {
         text-align: center;

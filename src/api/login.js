@@ -6,11 +6,7 @@ export function loginByUserAccount(mobile, password) {
     password,
   };
 
-  return request({
-    url: '/userLogin/login',
-    method: 'post',
-    data,
-  });
+  return request('/userLogin/login', data);
 }
 
 export function loginByMobileVerifCode(mobile, verif) {
@@ -19,27 +15,15 @@ export function loginByMobileVerifCode(mobile, verif) {
     verif,
   };
 
-  return request({
-    url: '/userLogin/loginVerif',
-    method: 'post',
-    data,
-  });
+  return request('/userLogin/loginVerif', data);
 }
 
 export function getMobileVerifCode(mobile) {
-  return request({
-    url: '/userLogin/getVerif',
-    method: 'post',
-    params: { mobile },
-  });
+  return request('/userLogin/getVerif', { mobile });
 }
 
 export function getUserInfo(userID) {
-  return request({
-    url: '/userLogin/getInfo',
-    method: 'get',
-    params: { userID },
-  });
+  return request('/userLogin/getInfo', { userID });
 }
 
 export function afterUserSignupfillInfo(name, password) {
@@ -47,11 +31,7 @@ export function afterUserSignupfillInfo(name, password) {
     name,
     password,
   };
-  return request({
-    url: '/userLogin/finishInfo',
-    method: 'post',
-    data,
-  });
+  return request('/userLogin/finishInfo', data);
 }
 
 export function retrieveVerifCode(mobile, password, verif) {
@@ -60,16 +40,9 @@ export function retrieveVerifCode(mobile, password, verif) {
     password,
     verif,
   };
-  return request({
-    url: '/userLogin/findPassword',
-    method: 'post',
-    data,
-  });
+  return request('/userLogin/findPassword',data);
 }
 
 export function logout() {
-  return request({
-    url: '/userLogin/logout',
-    method: 'post',
-  });
+  return request('/userLogin/logout');
 }

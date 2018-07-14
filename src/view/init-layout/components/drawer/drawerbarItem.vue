@@ -4,7 +4,7 @@
       <router-link :to="item.path" :key="item.name">
         <el-menu-item :index="item.path">
           <svg-icon icon-class="item.meta.icon"></svg-icon>
-          <span slot="title">{{item.children[0].meta.title}}</span>
+          <span slot="title">{{item.meta.title}}</span>
         </el-menu-item>
       </router-link>
     </template>

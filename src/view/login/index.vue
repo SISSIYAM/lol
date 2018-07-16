@@ -1,21 +1,27 @@
 <template>
-  <div id="wapper">
+  <div class="wapper">
     <div id="form-wapper">
-      <title-com :title-mes="title[index]" class="titleCom" @click="switchLoginType"></title-com>
-      <text-desc :GenText="getText[index]" :detaText1="detaText1[index]"
-                 :detaText2="detaText2[index]">
+      <title-com :title-mes="content[index].title" class="titleCom"
+                 v-bind:loginType="loginType"
+                 v-on:switchLoginType="switchLoginType($event)">
+      </title-com>
+      <text-desc :GenText="content[index].dataText" :dataText1="content[index].dataText1"
+                 :dataText2="content[index].dataText2">
       </text-desc>
       <form-suite></form-suite>
       <form-phone slot="formPhone" ref="userPhone"></form-phone>
       <form-pwd v-if="loginType === 'password'" slot="formPwd" ref="userPwd"></form-pwd>
-      <form-check v-else slot="formCheck" ref="userCheck"> </form-check>
-      <form-other slot="formOther" :statusD="statusDes[index]"></form-other>
+      <form-check v-else-if="loginType === 'verifyCode'" slot="formCheck" ref="userCheck">
+      </form-check>
+      <form-other slot="formOther" :statusD="content[index].statusDes.item"></form-other>
     </div>
   </div>
 </template>
 
 <script>
 import { formOther, formPhone, formPwd, formSuite, textDesc, titleCom, formCheck } from './components';
+
+const index = 1;
 
 export default {
   name: 'login',
@@ -30,54 +36,52 @@ export default {
   },
   data() {
     return {
-      title: ['密码登录', 'sissi', '短信登录'],
-      getText: ['手机验证', '密码登录'],
-      detaText1: ['请输入您的手机号码', '请输入您的手机和密码'],
-      detaText2: ['登录或注册您的YouTe停车桩账号', '登录您的YouTe停车桩账号'],
-      statusDes: [
-        '登录即表示已阅读并同意《车桩服务规则》',
-        '点击登录，即表示已阅读并同意《车桩服务规则》',
+      content: [
+        {
+          title: '密码登录',
+          dataText: '手机验证',
+          dataText1: '请输入您的手机号',
+          dataText2: '登录或注册您的YouTe停车桩账号',
+          statusDes: {
+            status: 'part2',
+            DeedText: '登录',
+            ClauseText: '点击登录，即表示已阅读并同意《车桩服务规则》',
+          },
+        },
+        {
+          title: '短信登录',
+          dataText: '密码登录',
+          dataText1: '请输入您的手机和密码',
+          dataText2: '登录您的YouTe停车桩账号',
+          statusDes: {
+            status: 'part1',
+            DeedText: '登录',
+            ClauseText: '登录即表示已阅读并同意《车桩服务规则》',
+          },
+        },
       ],
-      // 设计为用户登录默认为密码登录
       loginType: 'password',
     };
   },
   methods: {
-    switchLoginType() {
+    switchLoginType(res) {
+      this.loginType = res;
       if (this.loginType === 'password') {
-        this.title.index = 0;
-        this.getText.index = 0;
+        this.content.$set(index, 0);
       } else {
-
+        this.content.$set(index, 1);
       }
     },
   },
 };
 </script>
 
-<style lang="scss" scoped type="text/css">
-
-  .login-options{
+<style lang="scss">
+  .wapper {
     width: 100%;
-    background-color: #f1f1f161;
-    display: inline-block;
-    overflow: hidden;
-    font-weight: bold;
-  }
-
-  .title-img{
-    float: left;
-    margin-left: 3%;
-  }
-
-  .title-mid{
-    width: auto;
-  }
-
-  .title-text{
-    float: right;
-    height: auto;
-    margin-right: 3%;
-    font-weight: bold;
+    height: 100%;
+    .titleCom {
+      height: 8%;
+    }
   }
 </style>

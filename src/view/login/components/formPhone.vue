@@ -17,5 +17,11 @@ export default {
 </script>
 
 <style scoped>
-
+  .input_text{
+    width: 90%;
+    font-weight: bold;
+    color: black;
+    font-size: 1.1em;
+    margin: 0.57em auto;
+  }
 </style>

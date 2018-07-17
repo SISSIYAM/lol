@@ -1,37 +1,58 @@
 /* eslint-disable */
 class ShareBikeCordovaApi {
   constructor() {
-    /*
-    *
-    * ËùÓĞµÄÒÔHandle¿ªÍ·µÄ¶¼Îª´ÓÔ­Éú·µ»ØµÄ½á¹û
-    *
-    * */
+    /**
+     *
+     * æ‰€æœ‰çš„Handleå¼€å¤´çš„æ–¹æ³•ä¸ºå›è°ƒ
+     *
+     * */
     window.addEventListener('HandleGetUserLocation', (data) => {
       console.log('wwww')
       this.handleGetUserLocation(data);
     }, '');
   }
 
-  /*
-   * ´ÓÊı¾İ¿â»ñµÃÓÃ»§¸öÈËĞÅÏ¢,½á¹¹Îª¶ÔÏó½á¹¹
+  /**
    *
-   * /
-  getUserInfo(successCallback) {
-    Cordova.exec((response) => {
-      successCallback(response);
-    }, (data) => {
-      failCallback(data);
-    }, 'ShareBikePlugins',
-    'getUserInfo',
-    []);
+   * å­˜å‚¨ç”¨æˆ·çš„ä¸ªäººä¿¡æ¯ï¼Œå°†æ¥å£ä¸­è¿”å›çš„æ•°æ®å…¨éƒ¨é€šè¿‡msgå¯¹è±¡ä¼ å…¥
+   * ç”¨æˆ·ä¿¡æ¯å¯¹è±¡ msg: {
+   *                  id:
+   *                  uuid:
+   *                  pic:
+   *                }
+   * */
+  saveUserInfo(successCallback,msg) {
+    Cordova.exec(() => {
+        successCallback();
+      }, (data) => {
+        failCallback(data);
+      }, "ShareBikePlugins",
+      "saveUserInfo",
+      [msg]);
   }
 
-  /*
-  * ¿ªÊ¼»ñµÃÓÃ»§µ±Ç°Î»ÖÃ£¬²»Í¬µÄÀàÖĞĞèÒªÖØĞ´µ±Ç°ÀàµÄ"handleGetUserLocation "À´»ñµÃÓÃ»§µ±Ç°Î»ÖÃ
-  *
+  /**
+   * è·å¾—ç”¨æˆ·çš„ä¿¡æ¯ responseä¸­ä¸ºç”¨æˆ·çš„å®Œæ•´ä¿¡æ¯åˆ—è¡¨
+   *
+   */
+
+  getUserInfo(successCallback) {
+    Cordova.exec((response) => {
+        successCallback(response);
+      }, (data) => {
+        failCallback(data);
+      }, 'ShareBikePlugins',
+      'getUserInfo',
+      []);
+  }
+
+  /**
+   * è°ƒç”¨getUserLocationæ˜¯ä¸ºäº†è·å¾—ç”¨æˆ·å½“å‰çš„ä½ç½®ï¼Œéœ€è¦å®ç°haadleGetUserLocationè·å¾—ç”¨æˆ·çš„ä½ç½®ä¿¡æ¯
+   *
+   *
    */
   getUserLocation() {
-    console.log("¿ªÊ¼»ñµÃ¶¨Î»ĞÅÏ¢");
+    console.log("???????????");
     Cordova.exec((response) => {
 
       }, (data) => {
@@ -39,17 +60,53 @@ class ShareBikeCordovaApi {
       }, 'ShareBikePlugins',
       'getLocation');
   }
-  /*
-  *
-  * »ñµÃÓÃ»§µ±Ç°Î»ÖÃ
-  * ÏëÒª»ñµÃÓÃ»§µÄÎ»ÖÃÀàĞèÒªÊµÏÖ¸ÃÀà
-  * data½á¹¹£º
-  * {
+
+  /**
+   *
+   * è°ƒç”¨æ”¯ä»˜å®æ”¯ä»˜
+   * å°†è°ƒç”¨æ¥å£è¿”å›çš„æ•°æ®å…¨éƒ¨é€šè¿‡msgä¼ å…¥åŸç”Ÿ
+   *
+   * */
+  alipay(msg) {
+    Cordova.exec(() => {
+        successCallback();
+
+      }, (data) => {
+        failCallback(data);
+      }, "ShareBikePlugins",
+      "aliPay",
+      [msg]);
+  }
+  /**
+   *
+   * å¾®ä¿¡æ”¯ä»˜
+   * å°†è°ƒç”¨æ¥å£è¿”å›çš„æ•°æ®å…¨éƒ¨é€šè¿‡msgä¼ å…¥åŸç”Ÿ
+   *
+   * */
+  wxpay(msg) {
+    Cordova.exec(() => {
+        successCallback();
+
+      }, (data) => {
+        failCallback(data);
+      }, "ShareBikePlugins",
+      "wechatPay",
+      [msg]);
+  }
+
+  // ---------------------------------------------------------------------------------
+  // ä»¥ä¸‹éƒ½ä¸ºä»åŸç”Ÿå›è°ƒå›æ¥çš„å‡½æ•°ï¼Œå¦‚æœåœ¨ä¸åŒçš„ç•Œé¢ä½¿ç”¨ï¼Œéœ€è¦å®ç°ä½¿ç”¨ç•Œé¢å®ç°è¯¥å‡½æ•°
+  // ---------------------------------------------------------------------------------
+  /**
+   *
+   * åŸç”Ÿå›è°ƒå›æ¥çš„ç”¨æˆ·ä¿¡æ¯
+   * data
+   * {
   * lat:
   * lng:
   * }
-  *
-  * */
+   *
+   * */
   handleGetUserLocation(data) {
 
   }

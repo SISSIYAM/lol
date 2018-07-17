@@ -1,4 +1,5 @@
 import { hasAuth } from '../../api/auth';
+import { loginByUserAccount, loginByMobileVerifCode } from '../../api/login';
 import ShareBikeApi from '../../utils/sharebikeCordovaApi';
 
 const user = {
@@ -27,6 +28,12 @@ const user = {
     SET_CODE: (state, code) => {
       state.code = code;
     },
+    SET_ID: () => {},
+    SET_ACCOUNT: () => {},
+    SET_NAME: () => {},
+    SET_EMAIL: () => {},
+    SET_TELNO: () => {},
+    SET_PASSWORD: () => {},
   },
 
   actions: {
@@ -41,7 +48,7 @@ const user = {
       });
     },
     /**
-     * 验证用户登录状态
+     * 验证用户登录状态是否过期
      */
     authUser({ commit }, { token }) {
       return new Promise((resolve) => {
@@ -51,6 +58,38 @@ const user = {
           resolve();
         });
       });
+    },
+
+    LoginByUserAccount({ commit }, loginForm) {
+      const userPhone = loginForm.userPhone.trim();
+      const password = loginForm.password.trim();
+      return new Promise((resolve, reject) => {
+        loginByUserAccount(userPhone, password).then((response) => {
+          const data = response.data;
+          commit('SET_TOKEN', data.uuid);
+          ShareBikeApi.saveUserInfo((data) => {
+            const data = data;
+            commit ('SET_')
+          });
+          resolve();
+        }).catch((error) => {
+          reject(error);
+        });
+      },
+      );
+    },
+
+    LoginByMobileVerifCode({ commit }, userPhone, userCheck) {
+      return new Promise((resolve, reject) => {
+        loginByMobileVerifCode(userPhone, userCheck).then((response) => {
+          const data = response.data;
+          commit('SET_TOKEN', data.uuid);
+          resolve();
+        }).catch((error) => {
+          reject(error);
+        });
+      },
+      );
     },
   },
 };

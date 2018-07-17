@@ -13,15 +13,13 @@
       <form-pwd v-if="loginType === 'password'" slot="formPwd" ref="userPwd"></form-pwd>
       <form-check v-else-if="loginType === 'verifyCode'" slot="formCheck" ref="userCheck">
       </form-check>
-      <form-other slot="formOther" :statusD="content[index].statusDes.item"></form-other>
+      <form-other slot="formOther" :statusD="content[index].statusDes"></form-other>
     </div>
   </div>
 </template>
 
 <script>
 import { formOther, formPhone, formPwd, formSuite, textDesc, titleCom, formCheck } from './components';
-
-const index = 1;
 
 export default {
   name: 'login',
@@ -61,17 +59,58 @@ export default {
         },
       ],
       loginType: 'password',
+      index: 1,
     };
   },
   methods: {
     switchLoginType(res) {
       this.loginType = res;
       if (this.loginType === 'password') {
-        this.content.$set(index, 0);
+        this.index = 0;
       } else {
-        this.content.$set(index, 1);
+        this.index = 1;
       }
     },
+
+    sendPost() {
+      const self = this;
+      const userPhone = self.$refs.userPhone.value;
+      if (self.loginType === 'password') {
+        const password = self.encrypt(this.$refs.userPwd.value);
+        const regUser = /^1[3|4|5|7|8][0-9]{9}$/;
+        if (userPhone == null || userPhone === '') {
+          self.showTotal('提示信息', '手机号不能为空', '');
+        } else if (!regUser.test(userPhone)) {
+          self.showTotal('提示信息', '请输入正确的手机号');
+        } else if (password == null || password === '') {
+          self.showTotal('提示信息', '密码不能为空');
+        } else {
+          const loginForm = {
+            userPhone,
+            password,
+          };
+          self.$store.dispatch('LoginByUserAccount', loginForm).then(() => {
+            self.$router.push({ path: '/' });
+          }).catch(() => {});
+        }
+      } else {
+        const userCheck = self.$refs.userCheck.checkNum;
+        const loginForm = {
+          userPhone,
+          userCheck,
+        };
+        if (userPhone == null || userPhone === '') {
+          self.showTotal('提示信息', '请输入手机号', '');
+        } else if (userCheck == null || userCheck === '') {
+          self.showTotal('提示信息', '验证码不能为空', '');
+        } else {
+          self.$store.dispatch('LoginByMobileVerifCode', loginForm).then(() => {
+            self.$router.push({ path: '/' });
+          }).catch(() => {});
+        }
+      }
+    },
+
   },
 };
 </script>

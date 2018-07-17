@@ -5,10 +5,10 @@
     </div>
     <div class="detali">
       <p>
-        <span>{{detaText1}}</span>
+        <span>{{dataText1}}</span>
       </p>
       <p>
-        <span>{{detaText2}}</span>
+        <span>{{dataText2}}</span>
       </p>
     </div>
   </div>
@@ -19,8 +19,8 @@ export default {
   name: '',
   props: {
     GenText: String,
-    detaText1: String,
-    detaText2: String,
+    dataText1: String,
+    dataText2: String,
   },
 };
 </script>

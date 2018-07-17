@@ -13,9 +13,13 @@ import store from './store';
 import './icons';
 import './permission';
 
+import encryptCode from './utils/encrypt';
+
 Vue.use(Element, {
   size: 'small',
 });
+
+Vue.use(encryptCode);
 
 Vue.use(Vuex);
 Vue.config.productionTip = false;

@@ -6,24 +6,24 @@ export function loginByUserAccount(mobile, password) {
     password,
   };
 
-  return request('/userLogin/login', data);
+  return request.post('/userLogin/login', data);
 }
 
-export function loginByMobileVerifCode(mobile, verif) {
+export function loginByMobileVerifCode(mobile, verify) {
   const data = {
     mobile,
-    verif,
+    verify,
   };
 
-  return request('/userLogin/loginVerif', data);
+  return request.post('/userLogin/loginVerif', data);
 }
 
 export function getMobileVerifCode(mobile) {
-  return request('/userLogin/getVerif', { mobile });
+  return request.post('/userLogin/getVerif', { mobile });
 }
 
 export function getUserInfo(userID) {
-  return request('/userLogin/getInfo', { userID });
+  return request.post('/userLogin/getInfo', { userID });
 }
 
 export function afterUserSignupfillInfo(name, password) {
@@ -31,18 +31,18 @@ export function afterUserSignupfillInfo(name, password) {
     name,
     password,
   };
-  return request('/userLogin/finishInfo', data);
+  return request.post('/userLogin/finishInfo', data);
 }
 
-export function retrieveVerifCode(mobile, password, verif) {
+export function retrieveVerifCode(mobile, password, verify) {
   const data = {
     mobile,
     password,
-    verif,
+    verify,
   };
-  return request('/userLogin/findPassword',data);
+  return request.post('/userLogin/findPassword', data);
 }
 
 export function logout() {
-  return request('/userLogin/logout');
+  return request.post('/userLogin/logout');
 }

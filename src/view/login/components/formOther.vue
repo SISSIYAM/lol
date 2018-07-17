@@ -34,12 +34,51 @@ export default {
     };
   },
   computed: {
+    resultS() {
+      if (this.$props.statusD.status === 'part1') {
+        return 'part1';
+      } else if (this.$props.statusD.status === 'part2') {
+        return 'part2';
+      } else if (this.$props.statusD.status === 'part3') {
+        return 'part3';
+      } else if (this.$props.statusD.status === 'part4') {
+        return 'part4';
+      } else if (this.$props.statusD.status === 'part5') {
+        return 'part5';
+      }
+      return true;
+    },
   },
   methods: {
-    forgetPwd() {
-      this.$router.push('/retPwdP1');
+    postFrom() {
+      // eslint-disable-next-line
+      switch (this.resultS) {
+        case 'part1':
+          //  调用传递
+          this.$parent.sendPost();
+          break;
+        case 'part2':
+          this.$parent.sendPost();
+          break;
+        case 'part3':
+          this.$parent.sendPost();
+          break;
+        case 'part4':
+          this.$parent.sendPost();
+          break;
+        case 'part5':
+          this.$parent.sendPost();
+          break;
+      }
     },
     //  更改密码可见性
+    showPwd() {
+      if (this.TextType === 'password') {
+        this.TextType = 'text';
+      } else {
+        this.TextType = 'password';
+      }
+    },
   },
 };
 </script>

@@ -5,9 +5,5 @@ import request from '../utils/request';
  */
 
 export function hasAuth(token) {
-  return request({
-    url: '/userLogin/isAccessToken',
-    method: 'post',
-    params: { token },
-  });
+  return request('/userLogin/isAccessToken', { token });
 }

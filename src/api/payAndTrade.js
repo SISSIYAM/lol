@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
 export function getCurrentBalance() {
-  return request('/tradeAccount/showBalance');
+  return request.post('/tradeAccount/showBalance');
 }
 
 export function billQuery(pageStart, tradeDate) {
@@ -9,6 +9,5 @@ export function billQuery(pageStart, tradeDate) {
     pageStart,
     tradeDate,
   };
-  return request({'/tradeDetail/search', data);
+  return request.post('/tradeDetail/search', data);
 }
-

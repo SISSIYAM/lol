@@ -4,7 +4,7 @@ import AMap from 'AMap';
 class Map {
   constructor() {
     this.lineArray = [];// 路线数组
-    this.createMap = function (container, zoomLeavel) {
+    this.createMap = (container, zoomLeavel) => {
       const map = new AMap.Map(container, {
         resizeEnable: true,
         zoom: zoomLeavel,
@@ -12,7 +12,7 @@ class Map {
 
       return map;
     };
-    this.setMapCenter = function (lng, lat, map, zoomLeavel) {
+    this.setMapCenter = (lng, lat, map, zoomLeavel) => {
       map.setZoomAndCenter(zoomLeavel, [lng, lat]);
     };
     /*
@@ -23,17 +23,21 @@ class Map {
     *   lat: 纬度,
     *   lng: 经度，
     *   icon：图标（url）  icon和iconobj同时只能传一个
-    *   iconobj: 图标对象，通过AMap.Icon创建的对象   icon和iconobj同时只能传一个
+    *   iconobj: 图标对象，通过createMapIcon创建的对象   icon和iconobj同时只能传一个
     *   title: 标题
     * }
+    *
+    * clickAction: marker的点击事件
+    *
     * */
-    this.createMarker = function (obj) {
+    this.createMarker = (obj, clickAction) => {
       const marker = new AMap.Marker({
         map: obj.map,
         icon: obj.icon ? obj.icon : obj.iconobj,
         position: [obj.lng, obj.lat],
         title: obj.title,
       });
+      marker.on('click', clickAction);
       return marker;
     };
     /*
@@ -53,7 +57,7 @@ class Map {
     *  }
     * }
     * */
-    this.beginDrawWalkLine = function (obj) {
+    this.beginDrawWalkLine = (obj) => {
       const mythis = this;
       AMap.service('AMap.Walking', () => {
         const walk = new AMap.Walking({
@@ -83,7 +87,7 @@ class Map {
     *  }
     * }
     * */
-    this.beginDrawRideLine = function (obj) {
+    this.beginDrawRideLine = (obj) => {
       const mythis = this;
       AMap.service('AMap.Riding', () => {
         const ride = new AMap.Riding({
@@ -100,7 +104,7 @@ class Map {
     * 清除Marker
     *
     * */
-    this.clearMarker = function (map, marker) {
+    this.clearMarker = (map, marker) => {
       map.remove(marker);
     };
 
@@ -108,7 +112,7 @@ class Map {
     * 清除路线
     *
     * */
-    this.clearLine = function () {
+    this.clearLine = () => {
       this.lineArray.forEach((line) => {
         line.clear();
       });
@@ -125,7 +129,7 @@ class Map {
     * }
     *
     * */
-    this.createMapIcon = function (url, size) {
+    this.createMapIcon = (url, size) => {
       const icon = new AMap.Icon({
         image: url,
         imageSize: new AMap.Size(size.width, size.height),
@@ -142,20 +146,18 @@ class Map {
     * callBack：回调函数，将搜索结果返回
     *
     * */
-    this.getSearchResults = function (city, key, callBack) {
+    this.getSearchResults = (city, key, callBack) => {
       AMap.plugin('AMap.Autocomplete', () => {
-        const  autoOptions = {
+        const autoOptions = {
           city,
         };
-        const autoComplete= new AMap.Autocomplete(autoOptions);
-        autoComplete.search(ev.data, function(status, result) {
+        const autoComplete = new AMap.Autocomplete(autoOptions);
+        autoComplete.search(key, (status, result) => {
           // 搜索成功时，result即是对应的匹配数据
           callBack(result.tips);
-        })
+        });
       });
-    }
-
-
+    };
   }
 }
 const mymap = new Map();

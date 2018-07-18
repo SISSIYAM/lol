@@ -90,7 +90,8 @@ export default {
             password,
           };
           self.$store.dispatch('LoginByUserAccount', loginForm).then(() => {
-            self.$router.push({ path: '/' });
+            console.log('test');
+            self.$router.go(-1);
           }).catch(() => {});
         }
       } else {

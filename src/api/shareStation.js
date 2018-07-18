@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
 export function getCurrentCityAllStations(areaId) {
-  return request('/station/getAllStationInfo', { areaId });
+  return request.post('/station/getAllStationInfo', { areaId });
 }
 
 export function getStationByGPS(radiusValue, lng, lat) {
@@ -22,7 +22,7 @@ export function getNearbyThreeStations(longitude, latitude) {
 }
 
 export function getOneStationDetails(stationId) {
-  return request('/station/getStationDetail', { stationId });
+  return request.post('/station/getStationDetail', { stationId });
 }
 
 export function getNearbyOneUsableStation(longitude, latitude, type) {
@@ -31,7 +31,7 @@ export function getNearbyOneUsableStation(longitude, latitude, type) {
     latitude,
     type,
   };
-  return request('/station/getUsableStation', data);
+  return request.post('/station/getUsableStation', data);
 }
 
 export function bookStation(type, stationId) {
@@ -39,7 +39,7 @@ export function bookStation(type, stationId) {
     type,
     stationId,
   };
-  return request('/station/bookStation', data);
+  return request.post('/station/bookStation', data);
 }
 
 export function updateStationStatus(mac, status) {
@@ -47,13 +47,28 @@ export function updateStationStatus(mac, status) {
     mac,
     status,
   };
-  return request('/station/updateStationStatus', data);
+  return request.post('/station/updateStationStatus', data);
 }
 
 export function oneTourFeeCharging(cost) {
-  return request('/station/charging', { cost });
+  return request.post('/station/charging', { cost });
 }
 
 export function getOneStationNumber(mac) {
-  return request('/station/getNoByMac', { mac });
+  return request.post('/station/getNoByMac', { mac });
 }
+
+export function getUserSearchLog(type) {
+  return request.post('/searchLog/getUserSearchLog', { type });
+}
+
+export function insertSearchLog(address, value, longitude, latitude) {
+  const data = {
+    address,
+    value,
+    longitude,
+    latitude,
+  };
+  return request.post('/searchLog/insertSearchLog', data);
+}
+

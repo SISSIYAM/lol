@@ -1,6 +1,5 @@
 import axios from 'axios';
 import qs from 'qs';
-import Vue from 'vue';
 
 // 设置axios信息
 // axios.defaults.baseURL = 'http://bike.zhunilink.com:8889';
@@ -23,7 +22,7 @@ export default {
       timeout: 5000,
       headers: {
         mobile_session_flag: true,
-        session_token: Vue.prototype.GOBALUUID,
+        session_token: '',
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
       },

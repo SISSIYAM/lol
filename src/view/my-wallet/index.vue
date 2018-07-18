@@ -1,13 +1,234 @@
+/* eslint-disable */
 <template>
-  <div></div>
+  <div class="wrapper">
+    <!--<title-com :title-mid="title" :to-path-url="url" class="titleCom"></title-com>-->
+    <div class="title">
+      <p class="titleName">{{titleName}}</p>
+      <p class="detail" @click="rechargeHistory">明细</p>
+    </div>
+    <div class="wrapper_back">
+      <div class="infoWrapper">
+        <div class="rowDivMoney">
+          <p class="txt3">余额(元)</p>
+          <p class="txt2">{{ money }}</p>
+        </div>
+        <div class="line"></div>
+        <div class="rowDiv2" @click="recharge">
+          <p class="txtWallet">充值</p>
+        </div>
+        <div class="line"></div>
+        <div class="rowDiv2" @click="reposit">
+          <p class="txtWallet">提现</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+/* eslint-disable */
+import PayAndTrade from '../../api/payAndTrade';
+
 export default {
-  name: 'myWallet',
+  data() {
+    return {
+      titleName: '我的钱包',
+      url: '/mainPage',
+      money: '0.00',
+    };
+  },
+
+  computed: {
+  },
+
+  mounted() {
+    this.getMoney();
+  },
+
+  methods: {
+    backPrePage() {
+      this.$router.go(-1);
+    },
+
+    //  充值
+    recharge() {
+      this.$router.push({
+        path: '/recharge',
+        name: 'recharge',
+      });
+    },
+
+    //  提现
+    reposit() {
+    },
+    // 明细
+    rechargeHistory() {
+      this.$router.push({
+        path: '/rechargeHistory',
+        name: 'rechargeHistory',
+      });
+    },
+
+    getMoney() {
+      const myThis = this;
+      PayAndTrade.getCurrentBalance().then((response) => {
+        console.log(response.data);
+        if (response.data.code != 200) {
+          //            myThis.showTotal("提示信息", "获取余额失败", '');
+        } else {
+          console.log('获取余额成功');
+          myThis.money = response.data.data;
+        }
+      }).catch((error) => {
+        console.log(error);
+      });
+    },
+    showTotal(title, content, strPath) {
+      const Vue = this;
+      //  弹出框
+      //         this.$vux.alert.show({
+      //           title: title,
+      //           content: content,
+      //           onHide() {
+      //             if (strPath == null || strPath == '') {
+      //               console.log("隐藏")
+      //             } else {
+      //               Vue.$router.push(strPath);
+      //             }
+      //           }
+      //         })
+    },
+  },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  .wrapper {
+    width: 100%;
+    height: 100%;
+    font-weight: 600;
+  }
+  /*********标题栏  *********/
+  .title {
+    padding-top: 20px;
+    height: 44px;
+    line-height: 44px;
+    width: 100%;
+    background-color: #f1f1f161;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+  }
 
+  .titleName {
+    line-height: 64px;
+    position: absolute;
+    text-align: center;
+    left: 0;
+    right: 0;
+    margin: 0px;
+    font-size: 18px;
+    color: black;
+    vertical-align: middle;
+    /* font-family: PingFangBold; */
+  }
+
+  .leftIcon {
+    line-height: 44px;
+    position: absolute;
+    left: 20px;
+    width: 24px;
+    height: 24px;
+    z-index: 9;
+  }
+  .detail {
+    line-height: 64px;
+    position: absolute;
+    text-align: right;
+    left: 0;
+    right: 0;
+    margin: 0px;
+    font-size: 15px;
+    color: black;
+    vertical-align: middle;
+    /* font-family: PingFangBold; */
+  }
+
+  /*********标题栏 the end *********/
+  .titleCom {
+    height: 8%;
+  }
+
+  .wrapper_back {
+    background-color: #f9f9f9;
+    width: 100%;
+    height: 100%;
+  }
+
+  .line {
+    background-color: #dfdfdf;
+    height: 1px;
+    width: 100%;
+    opacity: 0.4;
+    margin-left: 20px;
+  }
+
+  .rightArrow {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 20px;
+  }
+
+  .rowDivMoney {
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  .rowDiv2 {
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+  }
+
+  .smallIcon {
+    margin-left: 10px;
+    width: 22px;
+    height: 22px;
+  }
+
+  .userImage {
+    width: 58px;
+    height: 58px;
+    position: absolute;
+    right: 50px;
+  }
+
+  .infoWrapper {
+    background-color: white;
+  }
+
+  .txtWallet {
+    margin-right: 70%;
+    font-size: 14px;
+    color: #333333;
+  }
+
+  .txt2 {
+    margin-top: 10%;
+    font-size: 50px;
+    color: #ffffff;
+  }
+
+  .txt3 {
+    margin-top: 10%;
+    font-size: 20px;
+    color: #ffffff;
+  }
 </style>

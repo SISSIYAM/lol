@@ -28,12 +28,42 @@ const user = {
     SET_CODE: (state, code) => {
       state.code = code;
     },
-    SET_ID: () => {},
-    SET_ACCOUNT: () => {},
-    SET_NAME: () => {},
-    SET_EMAIL: () => {},
-    SET_TELNO: () => {},
-    SET_PASSWORD: () => {},
+    SET_ID: (state, id) => {
+      state.id = id;
+    },
+    SET_ACCOUNT: (state, account) => {
+      state.account = account;
+    },
+    SET_NAME: (state, name) => {
+      state.name = name;
+    },
+    SET_EMAIL: (state, email) => {
+      state.email = email;
+    },
+    SET_TELNO: (state, telNo) => {
+      state.telNo = telNo;
+    },
+    SET_PASSWORD: (state, password) => {
+      state.password = password;
+    },
+    SET_CREATETIME: (state, createTime) => {
+      state.createTime = createTime;
+    },
+    SET_STATUS: (state, status) => {
+      state.status = status;
+    },
+    SET_GROUPID: (state, groupId) => {
+      state.groupId = groupId;
+    },
+    SET_HEADPIC: (state, headPic) => {
+      state.headPic = headPic;
+    },
+    SET_GROUP: (state, group) => {
+      state.group = group;
+    },
+    SET_AUTHSTATUS: (state, authStatus) => {
+      state.authStatus = authStatus;
+    },
   },
 
   actions: {
@@ -65,12 +95,13 @@ const user = {
       const password = loginForm.password.trim();
       return new Promise((resolve, reject) => {
         loginByUserAccount(userPhone, password).then((response) => {
-          const data = response.data;
+          const data = response.data.data;
           commit('SET_TOKEN', data.uuid);
-          ShareBikeApi.saveUserInfo((data) => {
-            const data = data;
-            commit ('SET_')
-          });
+          commit('SET_ID', data.id);
+          commit('SET_NAME', data.name);
+          commit('SET_ACCOUNT', data.account);
+          commit('SET_HEADPIC', data.headPic);
+          // ShareBikeApi.saveUserInfo(data);
           resolve();
         }).catch((error) => {
           reject(error);

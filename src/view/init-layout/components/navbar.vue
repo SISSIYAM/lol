@@ -19,6 +19,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { Tab, TabItem, Loading } from 'vux';
+import store from '../../../store';
 
 export default {
   name: 'navbar',
@@ -41,8 +42,13 @@ export default {
   },
   methods: {
     toggleDrawerBar() {
-      this.$store.dispatch('toggleDrawerBar');
+      if (store.getters.authStatus) {
+        this.$store.dispatch('toggleDrawerBar');
+      } else {
+        this.$router.push({ path: '/login' });
+      }
     },
+
     switchTabItem(index) {
       console.log('on-before-index-change', index);
       this.$vux.loading.show({

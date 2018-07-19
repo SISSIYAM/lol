@@ -19,6 +19,7 @@ const user = {
     group: '',
     token: '',
     code: '',
+    authStatus: false,
   },
 
   mutations: {
@@ -101,6 +102,7 @@ const user = {
           commit('SET_NAME', data.name);
           commit('SET_ACCOUNT', data.account);
           commit('SET_HEADPIC', data.headPic);
+          commit('SET_AUTHSTATUS', true);
           // ShareBikeApi.saveUserInfo(data);
           resolve();
         }).catch((error) => {

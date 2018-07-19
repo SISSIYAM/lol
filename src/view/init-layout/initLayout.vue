@@ -1,6 +1,6 @@
 <template>
   <div class="app-wrapper" :class="classObj" >
-    <div v-if="drawerBar.opened" class="drawer-bg" @click="handleClickOutside"></div>
+    <div v-if="drawerBar.opened" class="drawer-bg" v-on:click="handleClickOutside($event)"></div>
     <drawer-bar class="drawer-container"></drawer-bar>
     <div class="main-container">
       <navbar></navbar>
@@ -11,7 +11,7 @@
 <script>
 import { drawerBar, navbar, routingXiuxiu } from './components';
 
-export default {
+export default{
   name: 'initLayout',
   components: {
     drawerBar,
@@ -25,6 +25,7 @@ export default {
     classObj() {
       return {
         hideDrawer: !this.drawerBar.opened,
+        openDrawer: this.drawerBar.opened,
         withoutAnimation: this.drawerBar.withoutAnimation,
       };
     },
@@ -46,6 +47,10 @@ export default {
     width:100%;
     margin: 0;
     padding: 0;
+    &.openDrawer {
+      position: fixed;
+      top:0;
+    }
   }
   .drawer-bg {
     background: #000;

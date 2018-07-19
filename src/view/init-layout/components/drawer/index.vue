@@ -8,7 +8,12 @@
     text-color="#bfcbd9"
     active-text-color="#409EFF"
   >
-    <drawer-bar-item :routes="permission_routers"></drawer-bar-item>
+    <drawer-bar-item
+      v-for="route in permission_routers"
+      :key="route.name"
+      :item="route"
+      :base-path="route.path">
+    </drawer-bar-item>
   </el-menu>
 </template>
 
@@ -19,7 +24,10 @@ import drawerBarItem from './drawerbarItem';
 export default {
   components: { drawerBarItem },
   computed: {
-    ...mapGetters(['drawerBar', 'permission_routers']),
+    ...mapGetters([
+      'drawerBar',
+      'permission_routers',
+    ]),
     isCollapse() {
       return !this.drawerBar.opened;
     },

@@ -2,8 +2,13 @@
 import AMap from 'AMap';
 
 class Map {
+
+
   constructor() {
     this.lineArray = [];// 路线数组
+
+    const MapPositionPicker = '';
+
     this.createMap = (container, zoomLeavel) => {
       const map = new AMap.Map(container, {
         resizeEnable: true,
@@ -15,6 +20,19 @@ class Map {
     this.setMapCenter = (lng, lat, map, zoomLeavel) => {
       map.setZoomAndCenter(zoomLeavel, [lng, lat]);
     };
+
+    /**
+     *
+     * 加载高德UI
+     *
+     * */
+    this.loadMapUI = (successCallback) => {
+      AMapUI.loadUI(['misc/PositionPicker'], (PositionPicker) => {
+        this.MapPositionPicker = PositionPicker;
+        successCallback();
+      });
+    };
+
     /*
     * 创建marker
     * 传入结构：
@@ -158,6 +176,30 @@ class Map {
         });
       });
     };
+    /**
+     *
+     * 创建中心点位置
+     *
+     * */
+    this.createCenterMarker = (map) => {
+      const positionPicker = new this.MapPositionPicker({
+        mode: 'dragMap',
+        map: map,
+        iconStyle:{//自定义外观
+          url:'../../static/images/map_center.png',//图片地址
+          size:[27,48],  //要显示的点大小，将缩放图片
+          ancher:[0,0],//锚点的位置，即被size缩放之后，图片的什么位置作为选中的位置
+        }
+      });
+      return positionPicker;
+    };
+    this.positionStart = (positionPicker) => {
+      positionPicker.start();
+    };
+    this.positionStop = (positionPicker) => {
+      positionPicker.stop();
+    };
+
   }
 }
 const mymap = new Map();

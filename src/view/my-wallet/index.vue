@@ -3,6 +3,7 @@
   <div class="wrapper">
     <!--<title-com :title-mid="title" :to-path-url="url" class="titleCom"></title-com>-->
     <div class="title">
+			<img class="leftIcon" src="../../../static/images/icon_back.png" v-on:click="backPrePage"/>
       <p class="titleName">{{titleName}}</p>
       <p class="detail" @click="rechargeHistory">明细</p>
     </div>
@@ -14,11 +15,15 @@
         </div>
         <div class="line"></div>
         <div class="rowDiv2" @click="recharge">
+					<img class="smallIcon" src="../../../static/images/recharge.png">
           <p class="txtWallet">充值</p>
+          <img class="rightArrow" src="../../../static/images/right_arrow.png"/>					
         </div>
         <div class="line"></div>
         <div class="rowDiv2" @click="reposit">
+          <img class="smallIcon" src="../../../static/images/reposit.png">					
           <p class="txtWallet">提现</p>
+          <img class="rightArrow" src="../../../static/images/right_arrow.png"/>					
         </div>
       </div>
     </div>
@@ -27,7 +32,7 @@
 
 <script>
 /* eslint-disable */
-import PayAndTrade from '../../api/payAndTrade';
+import { getCurrentBalance } from '../../api/payAndTrade';
 
 export default {
   data() {
@@ -70,8 +75,8 @@ export default {
     },
 
     getMoney() {
-      const myThis = this;
-      PayAndTrade.getCurrentBalance().then((response) => {
+      const myThis = this;		
+      getCurrentBalance().then((response) => {
         console.log(response.data);
         if (response.data.code != 200) {
           //            myThis.showTotal("提示信息", "获取余额失败", '');
@@ -83,8 +88,9 @@ export default {
         console.log(error);
       });
     },
-    showTotal(title, content, strPath) {
-      const Vue = this;
+		
+//     showTotal(title, content, strPath) {
+//       const Vue = this;
       //  弹出框
       //         this.$vux.alert.show({
       //           title: title,
@@ -97,7 +103,7 @@ export default {
       //             }
       //           }
       //         })
-    },
+    // },
   },
 };
 </script>
@@ -187,6 +193,7 @@ export default {
     flex-direction: column;
     align-items: center;
     position: relative;
+		background-image: url("./../../../static/images/wallet_background.png");
   }
 
   .rowDiv2 {

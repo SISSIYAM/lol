@@ -1,6 +1,6 @@
 <template>
   <el-menu class="navbar-container">
-    <div class="drawer-container"  @click="toggleDrawerBar" :class="drawerBar.opened">
+    <div class="drawer-container" @click="showPoper">
       <svg-icon icon-class="icon_male" class="user-icon"></svg-icon>
     </div>
     <div class="bike-car-container">
@@ -19,7 +19,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import { Tab, TabItem, Loading } from 'vux';
-import store from '../../../store';
 
 export default {
   name: 'navbar',
@@ -41,14 +40,6 @@ export default {
     ]),
   },
   methods: {
-    toggleDrawerBar() {
-      if (store.getters.authStatus) {
-        this.$store.dispatch('toggleDrawerBar');
-      } else {
-        this.$router.push({ path: '/login' });
-      }
-    },
-
     switchTabItem(index) {
       console.log('on-before-index-change', index);
       this.$vux.loading.show({
@@ -58,6 +49,9 @@ export default {
         this.$vux.loading.hide();
         this.index01 = index;
       }, 1000);
+    },
+    showPoper() {
+      this.$emit('showPageTotal');
     },
   },
 };

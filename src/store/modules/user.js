@@ -19,7 +19,7 @@ const user = {
     group: '',
     token: '',
     code: '',
-    authStatus: false,
+    authCode: '',
   },
 
   mutations: {
@@ -62,8 +62,8 @@ const user = {
     SET_GROUP: (state, group) => {
       state.group = group;
     },
-    SET_AUTHSTATUS: (state, authStatus) => {
-      state.authStatus = authStatus;
+    SET_AUTHCODE: (state, authCode) => {
+      state.authCode = authCode;
     },
   },
 
@@ -85,7 +85,7 @@ const user = {
       return new Promise((resolve) => {
         hasAuth(token).then((response) => {
           const data = response.data;
-          commit('SET_CODE', data.code);
+          commit('SET_AUTHCODE', data.code);
           resolve();
         });
       });
@@ -102,7 +102,7 @@ const user = {
           commit('SET_NAME', data.name);
           commit('SET_ACCOUNT', data.account);
           commit('SET_HEADPIC', data.headPic);
-          commit('SET_AUTHSTATUS', true);
+
           // ShareBikeApi.saveUserInfo(data);
           resolve();
         }).catch((error) => {

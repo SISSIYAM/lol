@@ -17,6 +17,7 @@ import StationInfo from './components/stationInfo';
 import BookingTime from './components/bookingTime';
 import BookingDetail from './components/bookingDetail';
 import { bookStation } from '../../api/shareStation';
+import ShareApi from '../../utils/sharebikeCordovaApi';
 
 export default {
   name: 'StationBooking',
@@ -26,6 +27,7 @@ export default {
       isStationInfo: true, // 是否显示站点信息界面
       isBookingDetail: false, // 是否显示预定详细界面
       canHidden: true, // 判断是否通过点击上面的空白区域取消界面（目前只有站点信息界面为true）
+      timeStamp: '',
       // 用于预约详细界面的数据
       bookingType: '', // 0：停车预约，1：取车预约
       bookingValue: '', // 预约类型文字内容
@@ -124,6 +126,7 @@ export default {
       this.isSelectTime = false;
       this.isStationInfo = false;
       this.orderTime = String(value.getHours()) + ':' + String(value.getMinutes());
+      this.timeStamp = value.getTime();
       console.log('收到值:' + value);
       console.log(this.free_num);
       console.log(this.stationInfo);
@@ -140,6 +143,7 @@ export default {
       this.isSelectTime = false;
       this.isBookingDetail = false;
       this.canHidden = true;
+      this.$emit('removeStation');
       this.beginBooking();
     //  下一步：正式预约
     //   this.beginBooking();
@@ -153,9 +157,12 @@ export default {
       console.log('可以预约了');
       const type = this.bookingType;
       const myid = this.stationInfo.id;
-      bookStation(type, myid).then((response) => {
+      bookStation(type, myid, this.bookingType, this.timeStamp).then((response) => {
         console.log('预约成功');
         console.log(response);
+        if (response.data.code === 200) {
+          ShareApi.saveBookingStation(response.data.data);
+        }
       }).catch((error) => {
 
       });

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import qs from 'qs';
+import store from '../store';
 
 // 设置axios信息
 // axios.defaults.baseURL = 'http://bike.zhunilink.com:8889';
@@ -22,7 +23,7 @@ export default {
       timeout: 5000,
       headers: {
         mobile_session_flag: true,
-        session_token: '',
+        session_token: store.getters.userToken,
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
       },
@@ -48,4 +49,3 @@ export default {
     );
   },
 };
-

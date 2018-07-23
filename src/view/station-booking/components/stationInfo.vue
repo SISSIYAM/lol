@@ -1,14 +1,15 @@
 <template>
   <div id="wrap">
     <div class="title flex-h flex-vc flex-hc">
-      <div class="title_icon"></div>
+      <div class="title_icon">
+        <svg-icon icon-class="icon_location"></svg-icon>
+      </div>
       <div class="title_content flex-v">
         <div class="title_content_head">{{ address }}</div>
         <div class="title_content_detail">{{ addressDetail }}</div>
       </div>
       <div class="title_btn flex-h flex-vc flex-hc">
-        <div class="title_btn_icon"></div>
-        <div class="title_btn_title">到这里</div>
+        <svg-icon icon-class="book_go_where" class="go_where"></svg-icon>
       </div>
 
     </div>
@@ -67,7 +68,7 @@ export default {
       width: 100%;
       height: 80px;
       .title_icon {
-        background: blue;
+        /*background: blue;*/
         width: 20px;
         height: 20px;
       }
@@ -92,16 +93,9 @@ export default {
         border-radius: 20px;
         -moz-border-radius: 20px;
         -webkit-border-radius: 20px;
-        background: #4DBBFF;
-        .title_btn_icon {
-          width: 20px;
-          height: 20px;
-          background: red;
-        }
-        .title_btn_title{
-          font-size: 12px;
-          color: white;
-          font-weight: 100;
+        .go_where{
+          width: 100%;
+          height: 100%;
         }
       }
     }

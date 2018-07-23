@@ -34,11 +34,14 @@ export function getNearbyOneUsableStation(longitude, latitude, type) {
   return request.post('/station/getUsableStation', data);
 }
 
-export function bookStation(type, stationId) {
+export function bookStation(type, stationId,stationType,timeStamp) {
   const data = {
     type,
     stationId,
+    stationType,
+    timeStamp,
   };
+  console.log(data);
   return request.post('/station/bookStation', data);
 }
 

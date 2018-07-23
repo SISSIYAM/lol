@@ -13,7 +13,7 @@
 
     <li v-for="value in searchResults" v-on:click="selectPlace(value)">
       <div class="li_left_icon">
-
+        <svg-icon icon-class="search_black_location"></svg-icon>
       </div>
       <div class="li_content">
         <div class="title">
@@ -22,7 +22,6 @@
         <div class="detail">
           {{ value.district }}
         </div>
-
       </div>
       <div class="line"></div>
 
@@ -84,13 +83,16 @@ export default {
       }
     },
     selectPlace(obj) {
+      console.log(obj);
       // 存储搜索结果
       SearchResults.isSearching = true;
       SearchResults.searchLocation = {
-        lng: obj.location.lng,
-        lat: obj.location.lat,
+        lng: String(obj.location.lng),
+        lat: String(obj.location.lat),
         des: obj.name,
       };
+      console.log('存储了');
+      console.log(SearchResults.searchLocation);
       this.goBack();
       this.insertSearchLog(obj);
     },
@@ -176,7 +178,7 @@ export default {
       .li_left_icon {
         width: 20px;
         height: 20px;
-        background: red;
+        /*background: red;*/
         margin-left: 20px;
       }
       .title, .detail {
@@ -184,11 +186,11 @@ export default {
         margin-left: 20px;
       }
       .title {
-        font-size: 20px;
+        font-size: 16px;
         font-weight: 800;
       }
       .detail {
-        font-size: 16px;
+        font-size: 12px;
         color: gray;
       }
       .line {

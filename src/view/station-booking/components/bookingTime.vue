@@ -1,7 +1,7 @@
 <template>
   <div id="wrap">
     <div class="head flex-h flex-hsb flex-vc">
-      <div class="head_left_delete" @click="cancelClick"></div>
+      <div class="head_left_delete" @click="cancelClick">取消</div>
       <div class="head_center">预定时间</div>
       <div class="head_right_sure" @click="sureClick">确定</div>
 
@@ -145,9 +145,9 @@ export default {
       background: white;
     }
     .head_left_delete {
-      width: 20px;
+      /*width: 20px;*/
       height: 20px;
-      background: red;
+      /*background: red;*/
     }
     .head_center {
       width: 100px;

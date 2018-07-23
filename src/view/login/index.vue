@@ -91,7 +91,7 @@ export default {
           };
           self.$store.dispatch('LoginByUserAccount', loginForm).then(() => {
             console.log('test');
-            self.$router.go(-1);
+            self.$router.push({ path: '/' });
           }).catch(() => {});
         }
       } else {

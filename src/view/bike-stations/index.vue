@@ -4,8 +4,10 @@
     <router-link :to="{ path: '/stationSearch', params: {} }">
       <div class="search_btn">
         <div class="search_back">
-          <div class="search_icon"></div>
-          <div class="search_value">{{ searchLocation.value }}</div>
+          <div class="search_icon">
+            <svg-icon icon-class="search_icon"></svg-icon>
+          </div>
+          <div class="search_value">{{ stationName }}</div>
         </div>
       </div>
     </router-link>
@@ -27,7 +29,6 @@ import ShareAPI from '../../utils/sharebikeCordovaApi';
 
 import StationBooking from '../station-booking/index';
 
-
 export default {
   name: 'bikeStations',
   components: {
@@ -41,16 +42,14 @@ export default {
         lng: '',
         address: '我的位置',
       },
-      // 搜索目标位置
-      searchLocation: {
-        lat: '',
-        lng: '',
-        value: '搜地点、查站点、找车位',
-      },
+      stationName: '搜站点、查站点、找车位',
       // 地图变量
       map: '',
       // 用户定位点
       userMarker: '',
+      // 中心移动点的图标
+      positionPicker: '',
+
       // 是否是第一次打开，为true代表第一次打开，用于判断searchLocation的赋值内容
       isFirstIn: true,
       // 地图上显示的所有的站点
@@ -64,27 +63,43 @@ export default {
         freeNum: '',
         useNum: '',
       },
+      // 计时器
+      stationTimer: '',
     };
   },
   mounted() {
     console.log('你好');
     this.initMap();
-    // ShareAPI.handleGetUserLocation = this.handleGetUserLocation.bind(this);
-    // ShareAPI.getUserLocation();
-    // 是否从搜索界面返回，如果是，则进行搜索，定位点不需要进行搜索
-    console.log(SearchResults);
-    if (SearchResults.isSearching) {
-      SearchResults.isSearching = false;
-      this.setSearchLocation(SearchResults.searchLocation);
-    }
+
+    // 更新站点信息
+    this.updateStationInfo();
   },
   methods: {
     initMap() {
-      // 创建地图，传入缩小级别
-      this.map = MapMethod.createMap('map_container', 11);
-      MapMethod.setMapCenter(113.544888, 22.265654, this.map, 14);
+      MapMethod.loadMapUI(() => {
+        // 创建地图，传入缩小级别
+        this.map = MapMethod.createMap('map_container', 11);
+        this.positionPicker = MapMethod.createCenterMarker(this.map);
+        // MapMethod.setMapCenter(113.558371,22.280243, this.map, 14);
+        this.positionPicker.on('success', this.positionMoveSuccess);
+        console.log('正在加载地图');
+        console.log(typeof SearchResults.searchLocation.lat);
+        if (SearchResults.searchLocation.lat.length > 0) {
+          console.log('找到了');
+          this.setMapCenter(SearchResults.searchLocation);
+        }
+        // 在正式打包的时候需要打开，获得用户定位信息
+        ShareAPI.handleGetUserLocation = this.handleGetUserLocation.bind(this);
+        ShareAPI.getUserLocation();
+      });
     },
-    // 获得用户定位信息
+    /**
+     *
+     * 1。获得用户定位位置
+     * 2。创建用户的当前位置图标
+     *
+     *
+     * */
     handleGetUserLocation(data) {
       MapMethod.clearMarker(this.map, this.userMarker);
       this.userLocation = {
@@ -95,35 +110,68 @@ export default {
         map: this.map,
         lat: data.lat,
         lng: data.lng,
-        icon: 'http://utsmarthomeplatform.oss-cn-shenzhen.aliyuncs.com/commonFile_uploadFile/c093ee70ffe749339120c78670dd20c0.png',
+        icon: '../../static/images/my_location.png',
         title: '我的位置',
       });
-      // this.setSearchLocation();
       // 如果搜索点不存在，则设置搜索点为定位点，进行搜索
-      if (this.searchLocation.lat.length <= 0) {
-        this.setSearchLocation(this.userLocation);
+      if (SearchResults.searchLocation.lat.length <= 0) {
+        this.setMapCenter(this.userLocation);
       }
     },
-    // 设置搜索点的坐标位置
-    setSearchLocation(obj) {
-      this.searchLocation = {
-        lat: obj.lat,
-        lng: obj.lng,
-
+    /**
+     *
+     * 设置地图中心
+     *
+     *
+     * */
+    setMapCenter(position) {
+      MapMethod.positionStop(this.positionPicker);
+      MapMethod.setMapCenter(position.lng,position.lat, this.map, 14);
+      MapMethod.positionStart(this.positionPicker);
+      console.log('定位到中心了')
+    },
+    /**
+     *
+     *
+     * 拖拽地图后的事件
+     *
+     * */
+    positionMoveSuccess(positionResult) {
+      console.log('拖拽结束');
+      console.log(positionResult);
+      SearchResults.searchLocation = {
+        lat: String(positionResult.position.lat),
+        lng: String(positionResult.position.lng),
+        des: positionResult.regeocode.pois[0].name,
       };
-      if (obj.des) {
-        this.searchLocation.value = obj.des;
-      }
-      // 缺少marker坐标
-
-      MapMethod.setMapCenter(this.searchLocation.lng, this.searchLocation.lat, this.map, 14);
       this.searchNearbyStations();
+      this.updateStationInfo();
+      this.stationName = SearchResults.searchLocation.des;
     },
-    // 搜索附近的车桩列表
+    /**
+     *
+     *
+     * 每隔多久开始搜索附近的车桩
+     *
+     * */
+    // 每隔1分钟更新界面上的车桩信息
+    updateStationInfo() {
+      const self = this;
+      clearInterval(this.stationTimer);
+      this.stationTimer = setInterval(() => {
+        self.searchNearbyStations();
+      }, 60000);
+    },
+    /**
+     *
+     *
+     * 开始搜索附近的车桩
+     *
+     *
+     * */
     searchNearbyStations() {
-      console.log('开始搜索');
       const myThis = this;
-      getStationByGPS(2, this.searchLocation.lng, this.searchLocation.lat).then((response) => {
+      getStationByGPS(1, SearchResults.searchLocation.lng, SearchResults.searchLocation.lat).then((response) => {
         console.log(JSON.stringify(response));
         if (response.data.code === 200) {
           myThis.allStations = myThis.changeMarkImage(response.data.data);
@@ -132,8 +180,16 @@ export default {
         console.log(error);
       });
     },
+    /**
+     *
+     * 设置站点图片样式
+     *
+     *
+     * */
     // 改变图片
     changeMarkImage(objs) {
+      // 清除图标
+      this.clearAllStationMarker();
       objs.forEach((stationInfo) => {
         if (stationInfo.usage >= 0.0 && stationInfo.usage <= 0.4) {
           stationInfo.icon = 'http://utsmarthomeplatform.oss-cn-shenzhen.aliyuncs.com/commonFile_uploadFile/60db77dc402f458cbaf7f5dd967a1c03.png';
@@ -142,10 +198,16 @@ export default {
         } else {
           stationInfo.icon = 'http://utsmarthomeplatform.oss-cn-shenzhen.aliyuncs.com/commonFile_uploadFile/8df3eefaf0104def9aeedc107f017dc5.png';
         }
+        // 创建图标
         this.beginDrawMarker(stationInfo);
       });
       return objs;
     },
+    /**
+     *
+     * 开始绘制站点
+     *
+     * */
     // 开始绘制站点
     beginDrawMarker(station) {
       // MapMethod.clearMarker()
@@ -176,9 +238,32 @@ export default {
       });
       this.allStationMarkers.push(marker);
     },
+    /**
+     *
+     * 清除所有站点图标
+     *
+     * */
+    // 清除所有marker
+    clearAllStationMarker() {
+      this.allStationMarkers.forEach((marker) => {
+        MapMethod.clearMarker(this.map, marker);
+      });
+      this.allStationMarkers = [];
+    },
+    /**
+     *
+     * 移除掉站点信息
+     *
+     * */
+    // 站点信息消失
     removeStation() {
       this.stationBookingShow = false;
     },
+  },
+  beforeDestroy() {
+
+    clearInterval(this.stationTimer);
+    this.stationTimer = '';
   },
   destroyed() {
     console.log('已经销毁了');
@@ -188,6 +273,7 @@ export default {
 
 <style lang="scss" scoped>
   @import "../../styles/index.scss";
+  @import "../station-booking/css/flex.css";
   #wrap{
     width: 100%;
     height: calc( 100vh - 44px );
@@ -215,12 +301,10 @@ export default {
       background: white;
       .search_icon {
         width: 10px;
-        height: 10px;
-        background: yellow;
       }
       .search_value{
-        width: 150px;
-        height: 15px;
+        /*width: 150px;*/
+        margin-left: 10px;
         font-size: 10px;
         color: lightgray;
         text-align: center;
@@ -231,7 +315,6 @@ export default {
     position: absolute;
     width: calc(100%);
     height: calc(100vh - 34px);
-    /*bottom: 10px;*/
     z-index: 1000;
     top: 0;
   }

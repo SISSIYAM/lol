@@ -1,11 +1,12 @@
 import request from '@/utils/request';
 
 export function loginByUserAccount(mobile, password) {
+
   const data = {
     mobile,
     password,
   };
-
+  console.log(data);
   return request.post('/userLogin/login', data);
 }
 

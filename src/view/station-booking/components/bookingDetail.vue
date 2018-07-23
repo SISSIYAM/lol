@@ -1,13 +1,17 @@
 <template>
   <div id="bookDetail">
     <div class="header flex-h flex-vc flex-hc">
-      <div class="timeicon"></div>
+      <div class="timeicon">
+        <svg-icon icon-class="book_clock"></svg-icon>
+      </div>
       <div class="timeValue">今天 {{ orderTime }}</div>
     </div>
     <div class="middleLine"></div>
     <div class="detail flex-v flex-hc">
       <div class="detail_title flex-h">
-        <div class="detail_title_icon"></div>
+        <div class="detail_title_icon">
+          <svg-icon icon-class="icon_location"></svg-icon>
+        </div>
         <div class="detail_title_value">{{address}}</div>
       </div>
       <div class="detail_num">车桩编号:{{orderNum}}</div>
@@ -63,8 +67,8 @@ export default {
     height: 50px;
     .timeicon{
       width: 20px;
-      height: 20px;
-      background: red;
+      /*height: 20px;*/
+      /*background: red;*/
     }
     .timeValue {
       text-align: center;
@@ -82,7 +86,7 @@ export default {
     .detail_title_icon {
       width: 20px;
       /*height: 20px;*/
-      background: red;
+      /*background: red;*/
     }
     .detail_title_value {
       margin-left: 10px;

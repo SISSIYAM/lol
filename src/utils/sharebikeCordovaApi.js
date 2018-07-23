@@ -1,5 +1,12 @@
 /* eslint-disable */
 class ShareBikeCordovaApi {
+
+  userLocation = {
+    lat: '',
+    lng: '',
+    des: '',
+  };
+
   constructor() {
     /**
     *
@@ -7,10 +14,13 @@ class ShareBikeCordovaApi {
     *
     * */
     window.addEventListener('HandleGetUserLocation', (data) => {
-      console.log('wwww')
-      this.handleGetUserLocation(data);
+      console.log('wwww');
+      this.onHandleGetUserLocation(data);
     }, '');
   }
+
+  // 回调内容
+
 
   /**
   *
@@ -23,11 +33,11 @@ class ShareBikeCordovaApi {
   * ..........
   * }
   * */
-  saveUserInfo(successCallback,msg) {
+  saveUserInfo(msg) {
     Cordova.exec(() => {
-        successCallback();
+
       }, (data) => {
-        failCallback(data);
+
       }, "ShareBikePlugins",
       "saveUserInfo",
       [msg]);
@@ -96,6 +106,20 @@ class ShareBikeCordovaApi {
       [msg]);
   }
 
+  /**
+   *
+   * 存储预约车桩信息
+   *
+   * */
+  saveBookingStation(msg) {
+    Cordova.exec(() => {
+      }, (data) => {
+      }, "ShareBikePlugins",
+      "saveUserOrderInfo",
+      [msg]);
+  }
+
+
   // ---------------------------------------------------------------------------------
   // 以下都为从原生回调回来的函数，如果在不同的界面使用，需要实现使用界面实现该函数
   // ---------------------------------------------------------------------------------
@@ -110,7 +134,14 @@ class ShareBikeCordovaApi {
   *
   * */
   handleGetUserLocation(data) {
-
+  }
+  onHandleGetUserLocation(data) {
+    this.userLocation = {
+      lat: data.lat,
+      lng: data.lng,
+      des: data.des,
+    };
+    this.handleGetUserLocation(data);
   }
 }
 

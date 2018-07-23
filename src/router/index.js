@@ -54,6 +54,24 @@ export const constantRouterMap = [
     hidden: true,
     name: 'carStations',
   },
+  {
+    path: '/recharge',
+    component: () => import('@/view/my-wallet/recharge'),
+    hidden: true,
+    name: 'recharge',
+  },
+  {
+    path: '/rechargeHistory',
+    component: () => import('@/view/my-wallet/rechargeHistory'),
+    hidden: true,
+    name: 'rechargeHistory',
+  },
+  {
+    path: '/rechargeResult',
+    component: () => import('@/view/my-wallet/rechargeResult'),
+    hidden: true,
+    name: 'rechargeResult',
+  },
 ];
 
 export const asyncRouterMap = [

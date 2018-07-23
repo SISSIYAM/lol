@@ -17,17 +17,14 @@ router.beforeEach((to, from, next) => {
      */
       store.dispatch('authUser', { token }).then((res) => {
         const data = res.data.code;
-        if (data === 200){
-          store.dispatch('GenerateRoutes', {data}).then(() => {
-            router.addRouters(store.getters.addRouters);
-          });
-        } else {
-          next({ path: '/login'});
-        }
+        store.dispatch('GenerateRoutes', { data }).then(() => {
+          router.addRouters(store.getters.addRouters);
+        });
       }).catch((err) => {
         Message.error(err || '请重新登录');
         next({ path: '/login' });
       });
+
   } else {
     /**
      * 用户的登录身份失效

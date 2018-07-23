@@ -4,7 +4,9 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import Element from 'element-ui';
+import DrawerLayout from 'vue-drawer-layout';
 import 'element-ui/lib/theme-chalk/index.css';
+import { AlertPlugin, ConfirmPlugin, LoadingPlugin } from 'vux';
 
 import App from './App';
 import router from './router';
@@ -14,6 +16,11 @@ import './icons';
 import './permission';
 
 import encryptCode from './utils/encrypt';
+
+Vue.use(AlertPlugin);
+Vue.use(ConfirmPlugin);
+Vue.use(LoadingPlugin);
+Vue.use(DrawerLayout);
 
 Vue.use(Element, {
   size: 'small',

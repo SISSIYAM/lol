@@ -1,4 +1,4 @@
-import { constantRouterMap, asyncRouterMap } from '@/router';
+import { constantRouterMap } from '@/router';
 
 const permission = {
   state: {
@@ -12,19 +12,6 @@ const permission = {
     },
   },
   actions: {
-    GenerateRoutes({ commit }, data) {
-      return new Promise((resolve) => {
-        const { authUser } = data;
-        let accessedRouters;
-        if (authUser === 200) {
-          accessedRouters = asyncRouterMap;
-        } else {
-          accessedRouters = [];
-        }
-        commit('SET_ROUTERS', accessedRouters);
-        resolve();
-      });
-    },
   },
 };
 

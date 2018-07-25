@@ -5,7 +5,7 @@ import Router from 'vue-router';
  * 用户进入入口
  */
 
-import initLayout from '@/view/init-layout/initLayout';
+import initLayout from '@/view/init-Layout/initLayout';
 
 Vue.use(Router);
 
@@ -72,9 +72,6 @@ export const constantRouterMap = [
     hidden: true,
     name: 'rechargeResult',
   },
-];
-
-export const asyncRouterMap = [
   {
     path: '/personalInfo',
     component: () => import('@/view/personal-info/index'),

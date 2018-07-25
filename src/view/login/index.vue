@@ -1,7 +1,7 @@
 <template>
   <div class="wapper">
     <div id="form-wapper">
-      <title-com :title-mes="content[index].title" class="titleCom"
+      <title-com v-bind:title-mes="content[index].title" class="titleCom"
                  v-bind:loginType="loginType"
                  v-on:switchLoginType="switchLoginType($event)">
       </title-com>
@@ -49,8 +49,8 @@ export default {
         {
           title: '短信登录',
           dataText: '密码登录',
-          dataText1: '请输入您的手机和密码',
-          dataText2: '登录您的YouTe停车桩账号',
+          dataText1: '请输入手机和密码',
+          dataText2: '登录您的“优车位”账号',
           statusDes: {
             status: 'part1',
             DeedText: '登录',
@@ -106,10 +106,35 @@ export default {
           self.showTotal('提示信息', '验证码不能为空', '');
         } else {
           self.$store.dispatch('LoginByMobileVerifCode', loginForm).then(() => {
-            self.$router.push({ path: '/' });
+            // self.$router.push({ path: '/' });
           }).catch(() => {});
         }
       }
+    },
+
+    sendCheck() {
+      const self = this;
+      const userPhone = this.$refs.userPhone.value;
+      const regUser = /^1[3|4|5|7|8][0-9]{9}$/;
+      if (userPhone == null || userPhone === '') {
+        self.showTotal('提示信息', '手机号不能为空');
+        return false;
+      } else if (!regUser.test(userPhone)) {
+        self.showTotal('提示信息', '请输入正确的手机号');
+        return false;
+      }
+      const userPhone1 = {
+        userPhone,
+      };
+      self.$store.dispatch('GetMobileVerifCode', { userPhone1 }).then((response) => {
+        console.log(response.data);
+        if (response.data.code === 200) {
+          self.showTotal('提示信息', '发送验证码成功', '');
+        } else {
+          self.showTotal('提示信息', '请稍后重试', '');
+        }
+      }).catch(() => {});
+      return true;
     },
 
   },

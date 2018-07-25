@@ -75,3 +75,29 @@ export function insertSearchLog(address, value, longitude, latitude) {
   return request.post('/searchLog/insertSearchLog', data);
 }
 
+// 获取最近站点的可用停车桩列表
+export function getUsableStation(lng, lat, type) {
+  const data = {
+    lng,
+    lat,
+    type,
+  };
+  return request.post('/station/getUsableStation', data);
+}
+export function tripPlan(startLongitude, startLatitude, endLongitude, endLatitude, type) {
+  const data = {
+    startLongitude,
+    startLatitude,
+    endLongitude,
+    endLatitude,
+    type,
+  };
+  return request.post('/tripPlan/start', data);
+}
+// 一键预约
+export function batchBookStation(stationIds) {
+  const data = {
+    stationIds,
+  };
+  return request.post('/station/batchBookStation', data);
+}

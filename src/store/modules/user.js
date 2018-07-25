@@ -1,5 +1,5 @@
 import { hasAuth } from '../../api/auth';
-import { loginByUserAccount, loginByMobileVerifCode } from '../../api/login';
+import { loginByUserAccount, loginByMobileVerifCode, getMobileVerifCode } from '../../api/login';
 import ShareBikeApi from '../../utils/sharebikeCordovaApi';
 
 const user = {
@@ -65,6 +65,9 @@ const user = {
     SET_AUTHCODE: (state, authCode) => {
       state.authCode = authCode;
     },
+    SET_MOBILE: (state, mobile) => {
+      state.mobile = mobile;
+    },
   },
 
   actions: {
@@ -81,12 +84,15 @@ const user = {
     /**
      * 验证用户登录状态是否过期
      */
-    authUser({ commit }, { token }) {
-      return new Promise((resolve) => {
+    authUser({ commit }, token) {
+      return new Promise((resolve, reject) => {
+        console.log(`authUser:${token}`);
         hasAuth(token).then((response) => {
           const data = response.data;
           commit('SET_AUTHCODE', data.code);
-          resolve();
+          resolve(response);
+        }).catch((error) => {
+          reject(error);
         });
       });
     },
@@ -102,7 +108,6 @@ const user = {
           commit('SET_NAME', data.name);
           commit('SET_ACCOUNT', data.account);
           commit('SET_HEADPIC', data.headPic);
-
           // ShareBikeApi.saveUserInfo(data);
           resolve();
         }).catch((error) => {
@@ -123,6 +128,16 @@ const user = {
         });
       },
       );
+    },
+
+    GetMobileVerifCode({ commit }, userPhone1) {
+      return new Promise((resolve) => {
+        getMobileVerifCode(userPhone1).then((response) => {
+          const code = response.data;
+          commit('SET_MOBILE', code);
+          resolve();
+        }).catch(() => {});
+      });
     },
   },
 };

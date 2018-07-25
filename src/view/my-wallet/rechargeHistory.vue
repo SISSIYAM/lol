@@ -20,16 +20,16 @@
 
 <script>
 	
-import { Alert } from 'vux'
+
 import { getRechargeHistory } from '../../api/payAndTrade'
 
 
 export default {
 	
-  components: { Alert, },
 		
 	data() {
 		return{
+			show: false,
 			titleName:'明细',
 			rechargeList:[]
 		}
@@ -55,15 +55,20 @@ export default {
 					}
 			]
 		}
-		this.getRechargeList()
+		this.getRechargeList();
+		
+		
+		this.show = true;
 	},
 		
 	methods: {
-		//返回
+		
+		// 返回
 		backPrePage: function () {
 			this.$router.go(-1);
 		},
-		//获取充值记录
+	
+		// 获取充值记录
 		getRechargeList:function () {
 			var _this =this;
 			getRechargeHistory({
@@ -73,7 +78,7 @@ export default {
 				console.log(response.data);
 				if(response.data.code != 200){
 					console.log("获取充值记录失败")
-					// _this.showTotal("提示信息","获取充值记录失败",'');
+					_this.showPlugin("提示信息","获取充值记录失败");
 				}else{
 					console.log("获取充值记录成功")
 					_this.rechargeList=response.data;
@@ -84,34 +89,18 @@ export default {
 			});
 		},
 		
-		showTotal: function (title,content,strPath) {
-	// 			 let Vue = this;
-	// 			 console.log('tanchu');
-	// 			 //  弹出框
-	// 			 this.$vux.alert.show({
-	// 				 title: title,
-	// 				 content: content,
-	// 				 onHide () {
-	// 					 if(strPath == null || strPath == ''){
-	// 						 console.log("隐藏")
-	// 					 }else{
-	// 						 Vue.$router.push(strPath);
-	// 					 }
-	// 				 }
-	// 			 })
-		},
-		
-	  showPlugin () {
-		  this.$vux.alert.show({
-		   title: 'VUX is Cool',
-			 content: _this.$t('Do you agree?'),
-			 onShow () {
-			   console.log('Plugin: I\'m showing')
-			 },
-			 onHide () {
-				 console.log('Plugin: I\'m hiding now')
-			 }
-		 })
+		// 提示框
+	  showPlugin (title , content) {
+			this.$vux.alert.show({
+        title: title,
+        content: content,
+        onShow () {
+          console.log('显示的时候触发的事件');
+        },
+        onHide () {
+          console.log('点击确定按钮后触发');
+        }
+      });
 	 },
 	 
 	}

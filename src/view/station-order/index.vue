@@ -20,55 +20,55 @@
 </template>
 
 <script>
-			
+
 export default {
-	
-	name: 'stationOrder',
-	
-	data() {
-		return{
-			titleName:'我的预约',
-			orderList:[]
-		}
-	},
-		
-	mounted() {
-		if(true){
-			this.orderList=[
-				{
-					"tradeAmount": '已取消',
-					"time_style": '今天18:50 停车预约',
-					"location":'珠海优特科技大厦 珠海市-香洲区-兴华路210号'
-				},
-				{
-					"tradeAmount": '超时',
-					"tradeType": '今天13:50 取车预约',
-					"location":'珠海优特科技大厦 珠海市-香洲区-兴华路210号'
-				},
-				{
-					"tradeAmount": '完成',
-					"tradeType": '今天20:50 停车预约',
-					"location":'珠海优特科技大厦 珠海市-香洲区-兴华路210号'
-				}
-			]
-		}
-		this.getOrder()
-	},
-		
-	methods: {
-		//返回
-		backPrePage: function () {
-			this.$router.go(-1);
-		},
-		getOrder:function () {
-			console.log('获取预约数据成功');
-		},	 
-	}
-}
+
+  name: 'stationOrder',
+
+  data() {
+    return {
+      titleName: '我的预约',
+      orderList: [],
+    };
+  },
+
+  mounted() {
+    if (true) {
+      this.orderList = [
+        {
+          tradeAmount: '已取消',
+          time_style: '今天18:50 停车预约',
+          location: '珠海优特科技大厦 珠海市-香洲区-兴华路210号',
+        },
+        {
+          tradeAmount: '超时',
+          tradeType: '今天13:50 取车预约',
+          location: '珠海优特科技大厦 珠海市-香洲区-兴华路210号',
+        },
+        {
+          tradeAmount: '完成',
+          tradeType: '今天20:50 停车预约',
+          location: '珠海优特科技大厦 珠海市-香洲区-兴华路210号',
+        },
+      ];
+    }
+    this.getOrder();
+  },
+
+  methods: {
+    // 返回
+    backPrePage() {
+      this.$router.go(-1);
+    },
+    getOrder() {
+      console.log('获取预约数据成功');
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
-	
+
 	/*********标题栏  *********/
 	.title {
 		padding-top: 20px;
@@ -116,7 +116,7 @@ export default {
 		font-family: PingFangBold;
 	}
 	/*********标题栏 the end *********/
-	
+
   #wapper{
     width: 100%;
     height: 100%;

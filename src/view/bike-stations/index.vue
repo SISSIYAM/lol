@@ -82,8 +82,6 @@ export default {
         this.positionPicker = MapMethod.createCenterMarker(this.map);
         // MapMethod.setMapCenter(113.558371,22.280243, this.map, 14);
         this.positionPicker.on('success', this.positionMoveSuccess);
-        console.log('正在加载地图');
-        console.log(typeof SearchResults.searchLocation.lat);
         if (SearchResults.searchLocation.lat.length > 0) {
           console.log('找到了');
           this.setMapCenter(SearchResults.searchLocation);
@@ -106,11 +104,15 @@ export default {
         lng: data.lng,
         lat: data.lat,
       };
+      const icon = MapMethod.createMapIcon('http://utsmarthomeplatform.oss-cn-shenzhen.aliyuncs.com/commonFile_uploadFile/014ac347622c4ffdbae0d832fcfc84ba.png', {
+        width: 36,
+        height: 43,
+      });
       this.userMarker = MapMethod.createMarker({
         map: this.map,
         lat: data.lat,
         lng: data.lng,
-        icon: '../../static/images/my_location.png',
+        iconobj: icon,
         title: '我的位置',
       });
       // 如果搜索点不存在，则设置搜索点为定位点，进行搜索
@@ -224,7 +226,6 @@ export default {
       }, this.markerClick);
       // 给marker添加点击事件
       marker.on('click', () => {
-        console.log(station);
         this.stationBookingShow = true;
         const useNum = Number(station.usage) * Number(station.total);
         const freeNum = Number(station.total) - Number(useNum);

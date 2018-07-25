@@ -1,6 +1,5 @@
 const getters = {
-  drawerBar: state => state.app.drawerBar,
-  permission_routers: state => state.permission.routers,
+  authCode: state => state.user.authCode,
   addRouters: state => state.permission.addRouters,
   userToken: state => state.user.token,
 };

@@ -6,18 +6,15 @@
 
     <tabbar class="vux-demo-tabbar" icon-calss="" slot="bottom">
       <tabbar-item :link="{path:'/routePlanning'}">
-        <span slot="icon">
-          <svg-icon icon-class="icon_male"></svg-icon>
-        </span>
+        <svg-icon icon-class="icon_male"></svg-icon>
         <span slot="label">行程规划</span>
       </tabbar-item>
       <tabbar-item :link="{path:'/xiuxiuUnlocking'}">
-        <span slot="icon">
-          <svg-icon icon-class="broadcasting"></svg-icon>
-        </span>
+        <svg-icon icon-class="broadcasting"></svg-icon>
         <span slot="label">咻咻开锁</span>
       </tabbar-item>
     </tabbar>
+
   </div>
 </template>
 

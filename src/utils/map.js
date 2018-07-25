@@ -74,19 +74,44 @@ class Map {
     *   lng:经度
     *  }
     * }
+    * index: 数组传过来的下标
     * */
-    this.beginDrawWalkLine = (obj) => {
+    this.beginDrawWalkLine = (obj, successCallback) => {
       const mythis = this;
       AMap.service('AMap.Walking', () => {
         const walk = new AMap.Walking({
           city: obj.city,
-          map: obj.map,
+          // map: obj.map,
           hideMarkers: true,
           outlineColor: 'black',
         });
-        walk.search([obj.startpoi.lng, obj.startpoi.lat], [obj.endpoi.lng, obj.endpoi.lat]);
+        walk.search([obj.startpoi.lng, obj.startpoi.lat], [obj.endpoi.lng, obj.endpoi.lat], (status, results) => {
+          console.log('jieguoshi');
+          console.log(results);
+          let path = [];
+          // 计算步行路线
+          results.routes[0].steps.forEach((value, index) => {
+            path = path.concat(value.path);
+          });
+          console.log(path);
+          mythis.drawWalkLine(obj.map, path);
+          successCallback(results, obj.index, obj.tripType);
+        });
         mythis.lineArray.push(walk);
       });
+    };
+    // 绘制步行路线
+    this.drawWalkLine = (map, BusArr) => {
+      const walkPolyline = new AMap.Polyline({
+        map: map,
+        path: BusArr,
+        showDir:true,
+        dirImg:'https://a.amap.com/jsapi_demos/static/images/mass0.png',
+        strokeColor: 'lightgray',   // 线颜色
+        strokeWeight: 6           // 线宽
+      });
+      map.setFitView();
+      this.lineArray.push(walkPolyline);
     };
     /*
     *
@@ -105,18 +130,86 @@ class Map {
     *  }
     * }
     * */
-    this.beginDrawRideLine = (obj) => {
+    this.beginDrawRideLine = (obj, successCallback) => {
       const mythis = this;
       AMap.service('AMap.Riding', () => {
         const ride = new AMap.Riding({
           city: obj.city,
-          map: obj.map,
+          // map: obj.map,
           hideMarkers: true,
-          outlineColor: 'red',
+          // outlineColor: 'red',
         });
-        ride.search([obj.startpoi.lng, obj.startpoi.lat], [obj.endpoi.lng, obj.endpoi.lat]);
-        mythis.lineArray.push(ride);
+        ride.search([obj.startpoi.lng, obj.startpoi.lat], [obj.endpoi.lng, obj.endpoi.lat], (status, results) => {
+          console.log('骑行');;
+          console.log(results);
+          successCallback(results, obj.index, obj.tripType);
+          this.drawBikeLine(map, results);
+        });
       });
+    };
+    // 设置公交路线的绘制
+    this.drawBikeLine = (map, BusArr) => {
+      const bikePolyline = new AMap.Polyline({
+        map: map,
+        path: BusArr,
+        strokeColor: "#09f",//线颜色
+        strokeOpacity: 0.8,//线透明度
+        strokeWeight: 6,
+        showDir: true,
+      });
+      map.setFitView();
+      this.lineArray.push(bikePolyline);
+    };
+    /*
+    *
+    * 绘制公交
+    * obj:结构
+    * {
+    *  map:地图对象,
+    *  city:城市名称
+    *  startpoi:{
+    *   lat:纬度
+    *   lng:经度
+    *  },
+    *  endpoi:{
+    *   lat:纬度，
+    *   lng:经度
+    *  }
+    * }
+    * */
+    this.beginDrawBus = (obj, lineIndex, successCallback) => {
+      const self = this;
+      AMap.service('AMap.Transfer', function() { //回调函数
+        const bus = new AMap.Transfer({
+          city: obj.city,
+          // map: obj.map,
+          hideMarkers: true,
+        });
+        //TODO: 使用driving对象调用驾车路径规划相关的功能
+        bus.search([obj.startpoi.lng, obj.startpoi.lat], [obj.endpoi.lng, obj.endpoi.lat], function(status, result) {
+          console.log('公交');
+          console.log(result);
+          if (status === 'complete') {
+            self.drawBusLine(obj.map, result.plans[lineIndex].path);
+            successCallback(result.plans[lineIndex], obj.index, obj.tripType);
+          }
+        });
+
+      });
+    };
+    // 设置公交路线的绘制
+    this.drawBusLine = (map, BusArr) => {
+      const busPolyline = new AMap.Polyline({
+        map: map,
+        path: BusArr,
+        strokeColor: "#FDAEAB",//线颜色
+        strokeOpacity: 0.8,//线透明度
+        strokeWeight: 6,
+        // dirColor: 'pink',
+        showDir: true,
+      });
+      map.setFitView();
+      this.lineArray.push(busPolyline);
     };
     /*
     * 清除Marker
@@ -130,9 +223,12 @@ class Map {
     * 清除路线
     *
     * */
-    this.clearLine = () => {
+    this.clearLine = (map) => {
+      console.log('正在清除');
       this.lineArray.forEach((line) => {
-        line.clear();
+        console.log('正在清除');
+        // line.clear();
+        map.remove(line);
       });
     };
 
@@ -186,7 +282,7 @@ class Map {
         mode: 'dragMap',
         map: map,
         iconStyle:{//自定义外观
-          url:'../../static/images/map_center.png',//图片地址
+          url:'http://utsmarthomeplatform.oss-cn-shenzhen.aliyuncs.com/commonFile_uploadFile/fa9c3ce9de17481bb6cd4f90f68b6872.png',//图片地址
           size:[27,48],  //要显示的点大小，将缩放图片
           ancher:[0,0],//锚点的位置，即被size缩放之后，图片的什么位置作为选中的位置
         }

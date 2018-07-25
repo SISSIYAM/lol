@@ -112,7 +112,7 @@ export default {
 		},
 		
 		//alipay支付
-		alipaySign:function () {
+		alipaySign () {
 			  aliPay({
 				body:"用户充值",
 				subject:"用户充值",
@@ -123,7 +123,7 @@ export default {
 				.then(function (response) {
 					console.log(response);
 					if (response.data.code == 200) {
-						alipay();
+             ShareBikeApi.alipay();
 					} else {
 
 					}
@@ -134,7 +134,7 @@ export default {
 		},
 		
 		//微信支付
-		wxpaySign:function () {
+		wxpaySign () {
 			console.log("开始微信支付");
 			var money = this.value * 100;
 			wxPay({
@@ -144,8 +144,9 @@ export default {
 			}).then(function (response) {
 				console.log("微信支付结果 : " + response);
 				if(response.data.code == 200) {
-					wxpay(response.data.data);
-				}
+					console.log(response);
+          ShareBikeApi.wxpay(response.data.data);
+ 				}
 			})
 		}
 		

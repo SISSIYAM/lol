@@ -8,18 +8,27 @@ import store from './store';
  * @type {string[]}
  */
 const whiteList = ['/', '/bikeStations', '/carStations', '/stationSearch'];
-const token = store.getters.userToken;
 
 router.beforeEach((to, from, next) => {
-  if (token) {
+  console.log('mytoken:' + store.getters.userToken);
+  if (store.getters.userToken) {
     /**
-     *  用户登录身份有效
+     *  是注册用户
      */
-      store.dispatch('authUser', { token }).then((res) => {
+      store.dispatch('authUser', {token: store.getters.userToken}).then(res => {
         const data = res.data.code;
-        store.dispatch('GenerateRoutes', { data }).then(() => {
-          router.addRouters(store.getters.addRouters);
-        });
+        console.log(data);
+        if(data === 200){
+          /**
+           * 如果用户登录身份任然有效
+           */
+          next();
+        } else {
+          /**
+           * 如果用户登录身份失效
+           */
+          next({ path: '/login'});
+        }
       }).catch((err) => {
         Message.error(err || '请重新登录');
         next({ path: '/login' });
@@ -27,9 +36,12 @@ router.beforeEach((to, from, next) => {
 
   } else {
     /**
-     * 用户的登录身份失效
+     * 非注册用户
      */
     if (whiteList.indexOf(to.path) !== -1) {
+      /**
+       * 使用无需登录功能
+       */
       next();
     }
     else if (to.path ==='/login'){

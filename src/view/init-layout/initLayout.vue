@@ -13,35 +13,30 @@
             </div>
           </div>
           <div>
-            <div class="row-div" :link="{path:'/myWallet'}">
+            <router-link :to="{path:'/myWallet'}" class="row-div">
               <svg-icon icon-class="my_wallet" class="small-icon"></svg-icon>
               <p class="txt">我的钱包</p>
-            </div>
-
-            <div class="row-div" :link="{path:'/stationOrder'}">
+            </router-link>
+            <router-link :to="{path:'/stationOrder'}" class="row-div">
               <svg-icon icon-class="station_order"></svg-icon>
               <p class="txt">我的订单</p>
-            </div>
-
-            <div class="row-div" :link="{path:'/stationBooking'}">
+            </router-link>
+            <router-link :to="{path:'/stationBooking'}" class="row-div">
               <svg-icon icon-class="station_reservation"></svg-icon>
               <p class="txt">我的预约</p>
-            </div>
-
-            <div class="row-div" :link="{path:'/'}">
+            </router-link>
+            <router-link :to="{path:''}" class="row-div">
               <svg-icon icon-class="report"></svg-icon>
               <p class="txt">违停举报</p>
-            </div>
-
-            <div class="row-div" :link="{path:'/customerService'}">
+            </router-link>
+            <router-link :to="{path:'/customerService'}" class="row-div">
               <svg-icon icon-class="customer_service"></svg-icon>
               <p class="txt">客服中心</p>
-            </div>
-
-            <div class="row-div" :link="{path:'/setting'}">
+            </router-link>
+            <router-link :to="{path:'/setting'}" class="row-div">
               <svg-icon icon-class="setting"></svg-icon>
               <p class="txt">系统设置</p>
-            </div>
+            </router-link>
           </div>
         </div>
       </div>

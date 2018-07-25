@@ -1,7 +1,6 @@
 /* eslint-disable */
 <template>
   <div class="wrapper">
-    <!--<title-com :title-mid="title" :to-path-url="url" class="titleCom"></title-com>-->
     <div class="title">
 			<img class="leftIcon" src="../../../static/images/icon_back.png" v-on:click="backPrePage"/>
       <p class="titleName">{{titleName}}</p>
@@ -35,22 +34,26 @@
 import { getCurrentBalance } from '../../api/payAndTrade';
 
 export default {
+	
   data() {
+		
     return {
       titleName: '我的钱包',
       url: '/mainPage',
       money: '0.00',
     };
+		
   },
-
-  computed: {
-  },
-
+	
   mounted() {
+		
     this.getMoney();
+		
   },
 
   methods: {
+		
+		// 返回按钮
     backPrePage() {
       this.$router.go(-1);
     },
@@ -65,7 +68,9 @@ export default {
 
     //  提现
     reposit() {
+			
     },
+		
     // 明细
     rechargeHistory() {
       this.$router.push({
@@ -73,37 +78,38 @@ export default {
         name: 'rechargeHistory',
       });
     },
-
+		
+		// 获取余额
     getMoney() {
-      const myThis = this;		
+      const _this = this;		
       getCurrentBalance().then((response) => {
         console.log(response.data);
         if (response.data.code != 200) {
-          //            myThis.showTotal("提示信息", "获取余额失败", '');
+					_this.showPlugin("提示信息", "获取余额失败", '');
         } else {
           console.log('获取余额成功');
-          myThis.money = response.data.data;
+          _this.money = response.data.data;
         }
       }).catch((error) => {
         console.log(error);
       });
     },
 		
-//     showTotal(title, content, strPath) {
-//       const Vue = this;
-      //  弹出框
-      //         this.$vux.alert.show({
-      //           title: title,
-      //           content: content,
-      //           onHide() {
-      //             if (strPath == null || strPath == '') {
-      //               console.log("隐藏")
-      //             } else {
-      //               Vue.$router.push(strPath);
-      //             }
-      //           }
-      //         })
-    // },
+		// 提示框
+	  showPlugin (title , content) {
+			this.$vux.alert.show({
+        title: title,
+        content: content,
+        onShow () {
+          console.log('显示的时候触发的事件');
+        },
+        onHide () {
+          console.log('点击确定按钮后触发');
+        }
+      });
+	 }
+	 
+	 
   },
 };
 </script>
@@ -137,7 +143,6 @@ export default {
     font-size: 18px;
     color: black;
     vertical-align: middle;
-    /* font-family: PingFangBold; */
   }
 
   .leftIcon {
@@ -158,7 +163,6 @@ export default {
     font-size: 15px;
     color: black;
     vertical-align: middle;
-    /* font-family: PingFangBold; */
   }
 
   /*********标题栏 the end *********/

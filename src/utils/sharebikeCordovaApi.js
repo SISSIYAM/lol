@@ -17,10 +17,110 @@ class ShareBikeCordovaApi {
       console.log('wwww');
       this.onHandleGetUserLocation(data);
     }, '');
+    /**
+     *
+     * 扫描二维码回调
+     *
+     * */
+    window.addEventListener('HandleBikePile', (data) => {//蓝牙mac地址上送
+      console.log("HandleBikePile event");
+      this.onHandleBleCode(data["0"]);
+    }, "");
   }
 
   // 回调内容
+	/**
+	*
+	* 显示原生加载框
+	*
+	* {
+	*
+	*
+	* }
+	* */
+  showDialog(msg) {
+	  Cordova.exec((data) => {
 
+			}, (data) => {
+
+			}, "ShareBikePlugins",
+		  "showDialog",
+		  [msg]);
+  }
+	// 回调内容
+	/**
+	*
+	* 显示原生吐司
+	*
+	* {
+	*
+	*
+	* }
+	* */
+	 showToast(msg) {
+    Cordova.exec((data) => {
+      }, (data) => {
+      }, "ShareBikePlugins",
+      "showToast",
+      [msg]);
+  }
+	/**
+	*
+	* 调用摄像头拍照
+	*
+	* {
+	*
+	*
+	* }
+	* */
+	openCamera(msg) {
+		Cordova.exec((data) => {
+			}, (data) => {
+			}, "ShareBikePlugins",
+			"openCamera",
+			[msg]);
+	}
+	/**
+	*
+	* 选择相册头像作为头像
+	*
+	* {
+	*
+	*
+	* }
+	* */
+	openAlbum(msg) {
+		Cordova.exec((data) => {
+			}, (data) => {
+			}, "ShareBikePlugins",
+			"openAlbum",
+			[msg]);
+	}
+	/**
+	*
+	* 上传图片
+	*
+	* {
+	*
+	*
+	* }
+	* */
+	selectAlbum(msg) {
+		Cordova.exec((data) => {
+			}, (data) => {
+			}, "ShareBikePlugins",
+			"selectAlbum",
+			[msg]);
+	}
+	hideDialog() {
+    Cordova.exec((data) => {
+
+      }, (data) => {
+
+      }, "ShareBikePlugins",
+      "hideDialog",
+      []);
+  }
 
   /**
   *
@@ -50,7 +150,13 @@ class ShareBikeCordovaApi {
 
   getUserInfo(successCallback) {
     Cordova.exec((response) => {
-      successCallback(response);
+      console.log('前端获得');
+      console.log(typeof response);
+      console.log(response);
+      console.log(response.uuid);
+      const data = JSON.parse(response);
+      console.log(data);
+      successCallback(data);
     }, (data) => {
       failCallback(data);
     }, 'ShareBikePlugins',
@@ -118,8 +224,20 @@ class ShareBikeCordovaApi {
       "saveUserOrderInfo",
       [msg]);
   }
-
-
+  /**
+   *
+   * 调用扫描二维码
+   *
+   * */
+  startScan(successCallback, failCallback) {
+    Cordova.exec(() => {
+        successCallback();
+      }, (data) => {
+        failCallback(data);
+      }, "ShareBikePlugins",
+      "startScan",
+      ['0']);
+  }
   // ---------------------------------------------------------------------------------
   // 以下都为从原生回调回来的函数，如果在不同的界面使用，需要实现使用界面实现该函数
   // ---------------------------------------------------------------------------------
@@ -135,6 +253,7 @@ class ShareBikeCordovaApi {
   * */
   handleGetUserLocation(data) {
   }
+  // 获得用户定位回调
   onHandleGetUserLocation(data) {
     this.userLocation = {
       lat: data.lat,
@@ -143,6 +262,11 @@ class ShareBikeCordovaApi {
     };
     this.handleGetUserLocation(data);
   }
+  // 二维码扫描回调函数
+  onHandleBleCode(data) {
+
+  }
+
 }
 
 export default new ShareBikeCordovaApi();

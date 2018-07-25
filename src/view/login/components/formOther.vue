@@ -90,6 +90,7 @@ export default {
   button{
     width: 100%;
     height: 3.5em;
+    margin:19px;
   }
   }
 
@@ -99,8 +100,10 @@ export default {
     font-weight: 400;
     width: 90%;
     display: inline-block;
+    font-size: 12px;
   .span1{
     float: left;
+    margin-left:19px;
   }
   .span2{
     float: right;

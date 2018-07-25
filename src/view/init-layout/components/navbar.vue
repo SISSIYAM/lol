@@ -1,7 +1,7 @@
 <template>
   <el-menu class="navbar-container">
     <div class="drawer-container" @click="showPoper">
-      <svg-icon icon-class="icon_male" class="user-icon"></svg-icon>
+      <svg-icon icon-class="user" class="user-icon"></svg-icon>
     </div>
     <div class="bike-car-container">
       <tab v-model="index01" prevent-default @on-before-index-change="switchTabItem">
@@ -11,14 +11,15 @@
       </tab>
     </div>
     <div class="little-utils-container">
-      <svg-icon icon-class="icon_male" class="right-item"></svg-icon>
-      <svg-icon icon-class="icon_male" class="right-item"></svg-icon>
+      <svg-icon icon-class="message" class="right-item"></svg-icon>
+      <svg-icon icon-class="scan_code" class="right-item" :onclick="scanOrder"></svg-icon>
     </div>
   </el-menu>
 </template>
 <script>
 import { mapGetters } from 'vuex';
 import { Tab, TabItem, Loading } from 'vux';
+import ShareBikeApi from '@/utils/sharebikeCordovaApi';
 
 export default {
   name: 'navbar',
@@ -52,6 +53,11 @@ export default {
     },
     showPoper() {
       this.$emit('showPageTotal');
+    },
+
+    scanOrder() {
+      ShareBikeApi.startScan(() => {
+      }, (data) => {});
     },
   },
 };

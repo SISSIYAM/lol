@@ -13,6 +13,11 @@
 <script>
 export default {
   name: 'formPhone',
+  data() {
+    return {
+      value: '',
+    };
+  },
 };
 </script>
 

@@ -24,7 +24,6 @@
         </div>
       </div>
       <div class="line"></div>
-
     </li>
   </ul>
   </div>
@@ -38,6 +37,8 @@ import SearchResults from './searchResults';
 
 export default {
   name: 'stationSearch',
+  props: {
+  },
   data() {
     return {
       historyList: [],
@@ -91,8 +92,19 @@ export default {
         lat: String(obj.location.lat),
         des: obj.name,
       };
-      console.log('存储了');
-      console.log(SearchResults.searchLocation);
+      if (this.$route.params.searchType === 0) {
+        SearchResults.beginLocation = {
+          lng: String(obj.location.lng),
+          lat: String(obj.location.lat),
+          des: obj.name,
+        };
+      } else if(this.$route.params.searchType === 1) {
+        SearchResults.endLocation = {
+          lng: String(obj.location.lng),
+          lat: String(obj.location.lat),
+          des: obj.name,
+        };
+      }
       this.goBack();
       this.insertSearchLog(obj);
     },
@@ -109,6 +121,8 @@ export default {
       });
     },
     goBack() {
+      console.log('searchtype');
+      console.log(this.$route.params);
       this.$router.go(-1);
     },
   },

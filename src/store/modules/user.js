@@ -108,6 +108,8 @@ const user = {
           commit('SET_NAME', data.name);
           commit('SET_ACCOUNT', data.account);
           commit('SET_HEADPIC', data.headPic);
+          commit('SET_TELNO', data.telNo);
+          commit('SET_CREATETIME', data.createTime);
           // ShareBikeApi.saveUserInfo(data);
           resolve();
         }).catch((error) => {
@@ -117,7 +119,9 @@ const user = {
       );
     },
 
-    LoginByMobileVerifCode({ commit }, userPhone, userCheck) {
+    LoginByMobileVerifCode({ commit }, loginForm) {
+      const userPhone = loginForm.userPhone.trim();
+      const userCheck = loginForm.userCheck.trim();
       return new Promise((resolve, reject) => {
         loginByMobileVerifCode(userPhone, userCheck).then((response) => {
           const data = response.data;
@@ -137,6 +141,15 @@ const user = {
           commit('SET_MOBILE', code);
           resolve();
         }).catch(() => {});
+      });
+    },
+
+    UpdateUserName({ commit }, newName) {
+      return new Promise((resolve) => {
+        updateUserName(newName).then((response) => {
+          const code = response.data;
+          commit('SET_');
+        }).catch();
       });
     },
   },

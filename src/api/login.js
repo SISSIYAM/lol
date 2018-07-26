@@ -10,21 +10,21 @@ export function loginByUserAccount(mobile, password) {
   return request.post('/userLogin/login', data);
 }
 
-export function loginByMobileVerifCode(mobile, verify) {
+export function loginByMobileVerifCode(mobile, verif) {
   const data = {
     mobile,
-    verify,
+    verif,
   };
 
   return request.post('/userLogin/loginVerif', data);
 }
 
 export function getMobileVerifCode(mobile) {
-  return request.post('/userLogin/getVerif', { mobile });
+  return request.post('/userLogin/getVerif', mobile);
 }
 
 export function getUserInfo(userID) {
-  return request.post('/userLogin/getInfo', { userID });
+  return request.post('/userLogin/getInfo', userID);
 }
 
 export function afterUserSignupfillInfo(name, password) {

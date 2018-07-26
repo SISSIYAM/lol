@@ -106,7 +106,7 @@ export default {
           self.showTotal('提示信息', '验证码不能为空', '');
         } else {
           self.$store.dispatch('LoginByMobileVerifCode', loginForm).then(() => {
-            // self.$router.push({ path: '/' });
+            self.$router.push({ path: '/registerPage' });
           }).catch(() => {});
         }
       }
@@ -123,10 +123,11 @@ export default {
         self.showTotal('提示信息', '请输入正确的手机号');
         return false;
       }
-      const userPhone1 = {
-        userPhone,
+      const mobile = userPhone;
+      const mobile1 = {
+        mobile,
       };
-      self.$store.dispatch('GetMobileVerifCode', { userPhone1 }).then((response) => {
+      self.$store.dispatch('GetMobileVerifCode', mobile1).then((response) => {
         console.log(response.data);
         if (response.data.code === 200) {
           self.showTotal('提示信息', '发送验证码成功', '');

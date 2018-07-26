@@ -37,6 +37,12 @@ export const constantRouterMap = [
     name: 'login',
   },
   {
+    path: '/registerPage',
+    component: () => import('@/view/login/registerPage'),
+    hidden: true,
+    name: 'registerPage',
+  },
+  {
     path: '/stationSearch',
     component: () => import('@/view/station-search/index'),
     hidden: true,
@@ -77,6 +83,10 @@ export const constantRouterMap = [
     component: () => import('@/view/personal-info/index'),
     name: 'personalInfo',
     meta: { title: '个人信息', icon: 'icon_male', auth: true },
+  },
+  { path: '/changeName',
+    component: () => import('@/view/personal-info/changeName'),
+    name: 'changeName',
   },
   {
     path: '/myWallet',

@@ -1,7 +1,7 @@
 <template>
   <el-menu class="navbar-container">
     <div class="drawer-container" @click="showPoper">
-      <svg-icon icon-class="user" class="user-icon"></svg-icon>
+      <svg-icon icon-class="user" class="user-info"></svg-icon>
     </div>
     <div class="bike-car-container">
       <tab v-model="index01" prevent-default @on-before-index-change="switchTabItem">
@@ -19,6 +19,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { Tab, TabItem, Loading } from 'vux';
+import store from '@/store';
 import ShareBikeApi from '@/utils/sharebikeCordovaApi';
 
 export default {
@@ -35,11 +36,6 @@ export default {
       index: 0,
     };
   },
-  computed: {
-    ...mapGetters([
-      'drawerBar',
-    ]),
-  },
   methods: {
     switchTabItem(index) {
       console.log('on-before-index-change', index);
@@ -52,7 +48,11 @@ export default {
       }, 1000);
     },
     showPoper() {
-      this.$emit('showPageTotal');
+      if (store.getters.authCode) {
+        this.$emit('showPageTotal');
+      } else {
+        this.$router.push('/login');
+      }
     },
 
     scanOrder() {
@@ -74,7 +74,7 @@ export default {
     height:50px;
     float:left;
     padding: 0 10px;
-    .user-icon {
+    .user-info {
       width: 27px;
       height: 27px;
     }

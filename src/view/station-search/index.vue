@@ -5,7 +5,9 @@
       <svg-icon icon-class="icon_back" class="icon-back"></svg-icon>
     </div>
     <div id="inputRow">
-      <el-input class="myInput" placeholder="请输入内容" v-on:input="getAutoAdText" :clearable='true'></el-input>
+      <el-input class="myInput" placeholder="请输入内容"
+                v-on:input="getAutoAdText" :clearable='true'>
+      </el-input>
     </div>
 
   </div>

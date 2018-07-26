@@ -54,6 +54,8 @@ export default {
 
   .title_mid{
     width: auto;
+    text-align: center;
+    font-size: 13px;
   }
 
   .title_text{

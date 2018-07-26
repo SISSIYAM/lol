@@ -8,9 +8,12 @@
       <div class="drawer-content" slot="drawer">
         <div class="left-drawer-div">
           <div class="user-bg-div">
-            <div class="user-bg-bottom" v-on:click="handleMaskClick">
+            <router-link :to="{path:'/personalInfo'}" class="user-bg-bottom" >
               <svg-icon icon-class="icon_male" class="user-icon"></svg-icon>
-            </div>
+              <div class="userInfo">
+                <p class="userName">{{userName}}</p>
+              </div>
+            </router-link>
           </div>
           <div>
             <router-link :to="{path:'/myWallet'}" class="row-div">
@@ -51,9 +54,15 @@
 </template>
 <script>
 import { navbar, routingXiuxiu } from './components';
+import store from '../../store';
 
 export default {
   name: 'initLayout',
+  data() {
+    return {
+      userName: store.getters.userName,
+    };
+  },
   components: {
     navbar,
     routingXiuxiu,
@@ -91,8 +100,8 @@ export default {
     width: 100%;
   }
   .user-icon {
-    width: 70px;
-    height: 70px;
+    width: 70px !important;
+    height: 70px !important;
     margin-left: 20px;
     margin-right: 20px;
   }
@@ -125,5 +134,10 @@ export default {
   .main-drawer-div {
     height: 100%;
     width: 100%;
+  }
+  .userName {
+    color: #333333;
+    font-size: 17px;
+    margin-top: 5px;
   }
 </style>

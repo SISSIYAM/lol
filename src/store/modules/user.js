@@ -1,5 +1,5 @@
 import { hasAuth } from '../../api/auth';
-import { loginByUserAccount, loginByMobileVerifCode, getMobileVerifCode } from '../../api/login';
+import { loginByUserAccount, loginByMobileVerifCode, getMobileVerifCode, afterUserSignupfillInfo } from '../../api/login';
 import ShareBikeApi from '../../utils/sharebikeCordovaApi';
 
 const user = {
@@ -144,12 +144,23 @@ const user = {
       });
     },
 
-    UpdateUserName({ commit }, newName) {
+    UpdateUserName(newName) {
       return new Promise((resolve) => {
         updateUserName(newName).then((response) => {
           const code = response.data;
-          commit('SET_');
         }).catch();
+      });
+    },
+
+    AfterUserSignupfillInfo({ commit }, registerForm) {
+      const name = registerForm.name.trim();
+      const password = registerForm.password.trim();
+      return new Promise((resolve) => {
+        afterUserSignupfillInfo(name, password).then((response) => {
+          const data = response.data;
+          commit('SET_USERNAME', data);
+          resolve();
+        }).catch(() => {});
       });
     },
   },

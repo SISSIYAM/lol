@@ -60,7 +60,7 @@ export default {
     display: inline-block;
     margin-bottom: 3%;
     width: 90%;
-    margin-left:19px;
+    margin-left:16px;
   .checkInput{
     font-weight: bold;
     color: black;

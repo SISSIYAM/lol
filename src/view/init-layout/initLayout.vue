@@ -20,11 +20,11 @@
               <svg-icon icon-class="my_wallet" class="small-icon"></svg-icon>
               <p class="txt">我的钱包</p>
             </router-link>
-            <router-link :to="{path:'/stationOrder'}" class="row-div">
+            <router-link :to="{path:''}" class="row-div">
               <svg-icon icon-class="station_order"></svg-icon>
               <p class="txt">我的订单</p>
             </router-link>
-            <router-link :to="{path:'/stationBooking'}" class="row-div">
+            <router-link :to="{path:'/stationOrder'}" class="row-div">
               <svg-icon icon-class="station_reservation"></svg-icon>
               <p class="txt">我的预约</p>
             </router-link>

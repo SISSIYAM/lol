@@ -17,7 +17,6 @@
   </el-menu>
 </template>
 <script>
-import { mapGetters } from 'vuex';
 import { Tab, TabItem, Loading } from 'vux';
 import store from '@/store';
 import ShareBikeApi from '@/utils/sharebikeCordovaApi';

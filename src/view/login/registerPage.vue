@@ -23,7 +23,7 @@ import { formOther, formPhone, formPwd, formSuite, textDesc, titleCom, formCheck
 
 export default {
   name: 'registerPage',
-  component: {
+  components: {
     titleCom,
     formOther,
     formPhone,
@@ -57,21 +57,20 @@ export default {
       } else if (userPwd == null || userPwd === '') {
         self.showTotal('提示信息', '密码不能为空');
       } else {
-        this.$http.post('/userLogin/finishInfo', {
-          name: userName,
-          password: userPwd,
-        })
-          .then((response) => {
-            console.log(response.data);
-            if (response.data.code !== 200) {
-              self.showTotal('提示信息', '完善信息出现错误');
-            } else {
-              self.$router.push('/mainPage');
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        const registerForm = {
+          userName,
+          userPwd,
+        }
+        self.$store.dispatch('AfterUserSignupfillInfo', registerForm).then((response) => {
+          console.log(response.data);
+          if (response.data.code !== 200) {
+            self.showTotal('提示信息', '完善信息出现错误');
+          } else {
+            self.$router.push('/mainPage');
+          }
+        }).catch((error) => {
+          console.log(error);
+        });
       }
     },
     showTotal(title, content, strPath) {

@@ -119,6 +119,14 @@ export const constantRouterMap = [
     meta: { title: '设置', icon: '', auth: true },
   },
   {
+    path: '/report',
+    component: () => import('@/view/setting/report'),
+  },
+  {
+    path: '/aboutUs',
+    component: () => import('@/view/setting/aboutUs'),
+  },
+  {
     path: '/routePlanning',
     component: () => import('@/view/route-planning/index'),
     name: 'routePlanning',

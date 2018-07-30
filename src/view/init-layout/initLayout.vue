@@ -138,6 +138,6 @@ export default {
   .userName {
     color: #333333;
     font-size: 17px;
-    margin-top: 5px;
+    margin-top:25px;
   }
 </style>

@@ -1,5 +1,9 @@
 import { hasAuth } from '../../api/auth';
-import { loginByUserAccount, loginByMobileVerifCode, getMobileVerifCode, afterUserSignupfillInfo } from '../../api/login';
+import { loginByUserAccount,
+  loginByMobileVerifCode,
+  getMobileVerifCode,
+  afterUserSignupfillInfo,
+  logout } from '../../api/login';
 import ShareBikeApi from '../../utils/sharebikeCordovaApi';
 
 const user = {
@@ -110,6 +114,7 @@ const user = {
           commit('SET_HEADPIC', data.headPic);
           commit('SET_TELNO', data.telNo);
           commit('SET_CREATETIME', data.createTime);
+          commit('SET_AUTHCODE', true);
           // ShareBikeApi.saveUserInfo(data);
           resolve();
         }).catch((error) => {
@@ -144,17 +149,17 @@ const user = {
       });
     },
 
-    UpdateUserName(newName) {
-      return new Promise((resolve) => {
-        updateUserName(newName).then((response) => {
-          const code = response.data;
-        }).catch();
-      });
-    },
+    // UpdateUserName(newName) {
+    //     //   return new Promise((resolve) => {
+    //     //     updateUserName(newName).then((response) => {
+    //     //       const code = response.data;
+    //     //     }).catch();
+    //     //   });
+    //     // },
 
     AfterUserSignupfillInfo({ commit }, registerForm) {
-      const name = registerForm.name.trim();
-      const password = registerForm.password.trim();
+      const name = registerForm.userName.trim();
+      const password = registerForm.userPwd.trim();
       return new Promise((resolve) => {
         afterUserSignupfillInfo(name, password).then((response) => {
           const data = response.data;
@@ -163,6 +168,17 @@ const user = {
         }).catch(() => {});
       });
     },
+
+    Logout({ commit }) {
+      logout().then((response) => {
+        const data = response.data.code;
+        if (data === 200) {
+          commit('SET_AUTHCODE', false);
+        }
+      }).catch();
+    },
+
+
   },
 };
 

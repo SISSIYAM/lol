@@ -18,7 +18,6 @@
 </template>
 <script>
 import { Tab, TabItem, Loading } from 'vux';
-import store from '@/store';
 import ShareBikeApi from '@/utils/sharebikeCordovaApi';
 
 export default {
@@ -47,7 +46,8 @@ export default {
       }, 1000);
     },
     showPoper() {
-      if (store.getters.authCode) {
+      const needAuth = this.$store.getters.authCode;
+      if (needAuth) {
         this.$emit('showPageTotal');
       } else {
         this.$router.push('/login');

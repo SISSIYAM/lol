@@ -18,16 +18,17 @@
         <div class="rowDiv2">
           <p class="txt">手机号码</p>
           <p class="nickName">{{user.userPhone}}</p>
-          <svg-icon icon-class="right_arrow" class="right-arrow"></svg-icon>
         </div>
         <div class="line"></div>
       </div>
-      <div class='rowDiv2'>
-        <p class="txt">注册时间</p>
-        <p class='nickName'>{{user.createTime}}</p>
+      <br>
+      <div class="infoWrapper">
+        <div class='rowDiv2'>
+          <p class="txt">注册时间</p>
+          <p class='nickName'>{{user.createTime}}</p>
+        </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -50,6 +51,8 @@ export default {
     titleCom,
   },
   methods: {
+    getCurrentTime() {
+    },
   },
 };
 </script>
@@ -95,8 +98,8 @@ export default {
     color: #666666;
   }
   .right-arrow {
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     position: absolute;
     right: 20px;
   }
@@ -146,5 +149,7 @@ export default {
     left: 20px;
     font-size: 12px;
     color: #333333;
+    font-weight:lighter;
+    margin-left: 5px;
   }
 </style>

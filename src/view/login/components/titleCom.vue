@@ -58,10 +58,10 @@ export default {
     font-size: 13px;
   }
 
-  .title_text{
-    float: right;
-    height: auto;
-    margin-right: 3%;
-    font-weight: bold;
-  }
+  /*.title_text{*/
+    /*float: right;*/
+    /*height: auto;*/
+    /*margin-right: 3%;*/
+    /*font-weight: bold;*/
+  /*}*/
 </style>

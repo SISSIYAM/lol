@@ -2,7 +2,7 @@
   <div class="aboutUs-container">
     <title-com :title-mes="title" class="titleCom"></title-com>
     <div class="aboutUs-header">
-      <svg-icon icon-class="icon_male" class="aboutUs"></svg-icon>
+      <svg-icon icon-class="Youte" class="aboutUs"></svg-icon>
       <p> v{{currentVersion}}</p>
     </div>
     <div class="aboutUs-main">
@@ -33,6 +33,7 @@ export default {
   },
   data() {
     return {
+      title: '关于我们',
       currentVersion: '1.0.1',
     };
   },
@@ -41,10 +42,15 @@ export default {
 
 <style scoped>
   .aboutUs {
-    width:50px;
-    height:50px;
+    width:50px !important;
+    height:50px !important;
     display:block;
     margin: auto;
+  }
+  .titleCom{
+    margin-top: 0px;
+    font-weight: 500;
+    margin-right: 20px;
   }
   .cell-label {
     font-size: 13px;

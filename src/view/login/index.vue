@@ -8,18 +8,29 @@
       <text-desc :GenText="content[index].dataText" :dataText1="content[index].dataText1"
                  :dataText2="content[index].dataText2">
       </text-desc>
+      <div class="input-text" v-if="loginType === 'newPassword'">
+        <el-input :type="TextType" v-model="value" ref="userPwd" placeholder="请设置新的登录密码">
+          <template slot="prepend"><span style="color: black">新密码</span>&nbsp;</template>
+          <i slot="suffix" class="el-input__icon el-icon-view" @click="showPwd"></i>
+        </el-input>
+      </div>
       <form-suite></form-suite>
       <form-phone slot="formPhone" ref="userPhone"></form-phone>
       <form-pwd v-if="loginType === 'password'" slot="formPwd" ref="userPwd"></form-pwd>
       <form-check v-else-if="loginType === 'verifyCode'" slot="formCheck" ref="userCheck">
       </form-check>
-      <form-other slot="formOther" :statusD="content[index].statusDes"></form-other>
+      <form-check v-else-if="loginType === 'reset'" slot="formCheck" ref="userCheck">
+      </form-check>
+      <form-other slot="formOther" :statusD="content[index].statusDes"
+                  v-bind:loginType="loginType"
+                  v-on:switchLoginType="switchLoginType($event)"></form-other>
     </div>
   </div>
 </template>
 
 <script>
 import { formOther, formPhone, formPwd, formSuite, textDesc, titleCom, formCheck } from './components';
+import user from '../../store/modules/user';
 
 export default {
   name: 'login',
@@ -57,6 +68,26 @@ export default {
             ClauseText: '登录即表示已阅读并同意《车桩服务规则》',
           },
         },
+        { title: '',
+          dataText: '找回密码',
+          dataText1: '请输入您的手机号码',
+          dataText2: '验证并重新设置新的登录密码',
+          statusDes: {
+            status: 'part4',
+            DeedText: '验证',
+          },
+        },
+        { title: '',
+          dataText: '找回密码',
+          TextType: 'password',
+          dataText1: '请重置您的密码',
+          dataText2: '请设置您的新密码并牢记',
+          statusDes: {
+            status: 'part5',
+            DeedText: '确定',
+          },
+          value: '',
+        },
       ],
       loginType: 'password',
       index: 1,
@@ -66,18 +97,20 @@ export default {
     switchLoginType(res) {
       this.loginType = res;
       if (this.loginType === 'password') {
+        this.index = 1;
+      } else if (this.loginType === 'verifyCode') {
         this.index = 0;
       } else {
-        this.index = 1;
+        this.index = 2;
       }
     },
 
     sendPost() {
       const self = this;
       const userPhone = self.$refs.userPhone.value;
+      const regUser = /^1[3|4|5|7|8][0-9]{9}$/;
       if (self.loginType === 'password') {
         const password = self.encrypt(this.$refs.userPwd.value);
-        const regUser = /^1[3|4|5|7|8][0-9]{9}$/;
         if (userPhone == null || userPhone === '') {
           self.showTotal('提示信息', '手机号不能为空', '');
         } else if (!regUser.test(userPhone)) {
@@ -94,7 +127,7 @@ export default {
             self.$router.push({ path: '/' });
           }).catch(() => {});
         }
-      } else {
+      } else if (self.loginType === 'verifyCode') {
         const userCheck = self.$refs.userCheck.checkNum;
         const loginForm = {
           userPhone,
@@ -107,6 +140,44 @@ export default {
         } else {
           self.$store.dispatch('LoginByMobileVerifCode', loginForm).then(() => {
             self.$router.push({ path: '/registerPage' });
+          }).catch(() => {});
+        }
+      } else {
+        const userCheckNum = self.$refs.userCheck.userCheck;
+        if (userPhone == null || userPhone === '') {
+          self.$vux.confirm.show({
+            title: '提示',
+            content: '手机号不能为空！',
+          });
+        } else if (!regUser.test(userPhone)) {
+          self.$vux.confirm.show({
+            title: '提示',
+            content: '请输入正确的手机号！',
+          });
+        } else if (userCheckNum == null || userCheckNum === '') {
+          self.$vux.confirm.show({
+            title: '提示',
+            content: '验证码不能为空！',
+          });
+        } else {
+          const mobile = userPhone;
+          const mobile1 = {
+            mobile,
+          };
+          self.$store.dispatch('', mobile1).then((response) => {
+            console.log(response.data);
+            if (response.data.code === 200) {
+              self.$vux.confirm.show({
+                title: '提示',
+                content: '！',
+              });
+              self.switchLoginType();
+            } else {
+              self.$vux.confirm.show({
+                title: '提示',
+                content: '！',
+              });
+            }
           }).catch(() => {});
         }
       }
@@ -149,8 +220,12 @@ export default {
   .wapper {
     width: 100%;
     height: 100%;
-    .titleCom {
-      height: 8%;
-    }
+    .titleCom /deep/ .title_text {
+      height: auto;
+      font-weight: lighter;
+      margin-top: 11px;
+      font-size:0.9em;
+      margin-left:248px;
+  }
   }
 </style>

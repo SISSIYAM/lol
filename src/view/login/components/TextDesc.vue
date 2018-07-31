@@ -33,10 +33,9 @@ export default {
     margin: 1.4ex auto;
     width: 90%;
     .General{
-      font-family: 'Ping SC Semi';
       font-weight: bolder;
       margin: 0.005em auto;
-      font-size: 2.6em;
+      font-size: 1.3em;
       span{
         width: auto;
         float: left;
@@ -47,7 +46,7 @@ export default {
       span{
         color: #888888;
         width: auto;
-        font-size: 1em;
+        font-size: 0.8em;
         float: left;
         font-weight: lighter;
         margin: 0.01em auto;

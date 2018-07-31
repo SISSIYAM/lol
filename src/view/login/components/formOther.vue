@@ -4,11 +4,11 @@
       <el-button type="primary">{{ statusD.DeedText }}</el-button>
     </div>
     <div v-if="resultS === 'part1'" class="Clause">
-      <span class="span1">{{ statusD.ClauseText }}</span>
-      <span class="span2" @click.prevent="forgetPwd">忘记密码</span>
+      <span class="span3">{{ statusD.ClauseText }}</span>
+      <span class="span2" v-on:click="forgetPwd">忘记密码</span>
     </div>
     <div v-else-if="resultS === 'part2'" class="Clause">
-      <span>{{ statusD.ClauseText }}</span>
+      <span class="span1">{{ statusD.ClauseText }}</span>
     </div>
     <div v-else-if="resultS === 'part3'" class="Clause">
       <span class="span1">{{ statusD.ClauseText }}</span>
@@ -79,6 +79,10 @@ export default {
         this.TextType = 'password';
       }
     },
+
+    forgetPwd() {
+      this.$emit('switchLoginType', 'reset');
+    },
   },
 };
 </script>
@@ -95,18 +99,23 @@ export default {
   }
 
   .Clause{
-    margin-top: 0.8em;
     color: #888888;
     font-weight: 400;
     width: 90%;
     display: inline-block;
-    font-size: 12px;
   .span1{
-    float: left;
-    margin-left:19px;
+    margin-top: 0.8em;
+    font-size: 12px;
+    margin-left:23px;
   }
   .span2{
+    margin-top: 0.4em;
+    font-size: 12px;
     float: right;
+  }
+  .span3{
+    font-size: 11px;
+    margin-left:18px;
   }
   }
 </style>

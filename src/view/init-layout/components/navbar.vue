@@ -80,7 +80,6 @@ export default {
   }
   .bike-car-container {
     display: inline-flex;
-    font-family: PingFangBold;
     font-weight: bold;
     font-size: 14px;
     .vux-tab-wrap{

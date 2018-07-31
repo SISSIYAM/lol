@@ -6,7 +6,7 @@
     <div ref="titleTextMid" class="title_mid">
       {{ titleMid }}
     </div>
-    <div ref="titleText" class="title_text" v-on:click="turnTo" style="margin-top: 0px">
+    <div ref="titleText" class="title_text" v-on:click="turnTo">
       {{ titleMes }}
     </div>
   </div>
@@ -41,15 +41,17 @@ export default {
 <style scoped>
   #title{
     width: 100%;
-    background-color: #f1f1f161;
+    background-color: #ffffff;
     display: inline-block;
     overflow: hidden;
     font-weight: bold;
+    height:44px;
   }
 
   .title_img{
     float: left;
     margin-left: 3%;
+    margin-top:11px;
   }
 
   .title_mid{
@@ -58,10 +60,10 @@ export default {
     font-size: 13px;
   }
 
-  /*.title_text{*/
-    /*float: right;*/
-    /*height: auto;*/
-    /*margin-right: 3%;*/
-    /*font-weight: bold;*/
-  /*}*/
+  .title_text{
+    height: auto;
+    font-weight: bold;
+    margin-top: 11px;
+    font-size:0.9em;
+  }
 </style>

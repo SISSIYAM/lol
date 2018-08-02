@@ -7,7 +7,7 @@
       <tab v-model="index01" prevent-default @on-before-index-change="switchTabItem">
         <tab-item>单车
         </tab-item>
-        <tab-item>汽车</tab-item>
+        <!--<tab-item>汽车</tab-item>-->
       </tab>
     </div>
     <div class="little-utils-container">
@@ -46,12 +46,13 @@ export default {
       }, 1000);
     },
     showPoper() {
-      const needAuth = this.$store.getters.authCode;
-      if (needAuth) {
-        this.$emit('showPageTotal');
-      } else {
-        this.$router.push('/login');
-      }
+      // const needAuth = this.$store.getters.authCode;
+      // if (needAuth) {
+      //   this.$emit('showPageTotal');
+      // } else {
+      //   this.$router.push('/login');
+      // }
+      this.$emit('showPageTotal');
     },
 
     scanOrder() {
@@ -74,8 +75,8 @@ export default {
     float:left;
     padding: 0 10px;
     .user-info {
-      width: 27px;
-      height: 27px;
+      width: 22px;
+      height: 22px;
     }
   }
   .bike-car-container {
@@ -87,13 +88,40 @@ export default {
       .vux-tab-container {
         height: 44px;
         top: 0;
-        left: 113px;
-        right: 134px;
+        left: 102px;
+        right: 102px;
         overflow: hidden;
         position: absolute;
         .vux-tab .vux-tab-item.vux-tab-selected {
           color: #369ebe;
           border-bottom: 3px solid #369ebe;
+          display: block;
+        }
+        .vux-tab-ink-bar {
+          position: absolute;
+          height: 2px;
+          bottom: 0;
+          left: 0;
+          background-color: #ffffff;
+          text-align: center;
+        }
+        .vux-tab .vux-tab-item {
+          display: block;
+          -webkit-box-flex: 1;
+          -ms-flex: 1;
+          flex: 1;
+          width: 100%;
+          height: 100%;
+          -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+          /*background: -webkit-gradient(linear, left top, left bottom, from(#e5e5e5),
+          color-stop(#e5e5e5), to(rgba(229, 229, 229, 0))) bottom left no-repeat;*/
+          background: none;
+          background-size: 100% 1px;
+          font-size: 14px;
+          text-align: center;
+          line-height: 44px;
+          color: #666;
         }
       }
     }
@@ -106,7 +134,7 @@ export default {
     }
     .right-item{
       display: inline-block;
-      margin: 3px 20px;
+      margin: 3px 10px;
     }
   }
 }

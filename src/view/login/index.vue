@@ -220,12 +220,12 @@ export default {
   .wapper {
     width: 100%;
     height: 100%;
-    .titleCom /deep/ .title_text {
+    .titleCom .title_text {
       height: auto;
       font-weight: lighter;
       margin-top: 11px;
       font-size:0.9em;
-      margin-left:248px;
+      margin-left:80%;
   }
   }
 </style>

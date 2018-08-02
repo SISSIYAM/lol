@@ -80,7 +80,7 @@ export const constantRouterMap = [
   },
   {
     path: '/personalInfo',
-    component: () => import('@/view/personal-info/index'),
+    component: () => import('@/view/personal-info/personalInfo'),
     name: 'personalInfo',
     meta: { title: '个人信息', icon: 'icon_male', auth: true },
   },

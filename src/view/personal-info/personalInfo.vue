@@ -4,9 +4,14 @@
     <div class="wrapper_back">
       <div class="infoWrapper">
         <div class="rowDiv">
-        <p class="txt">头像</p>
+          <p class="txt">头像</p>
           <svg-icon icon-class="icon_male"  class="user-image"></svg-icon>
           <svg-icon icon-class="right_arrow" class="right-arrow"></svg-icon>
+          <div class="sissi">
+          <popup-picker :data ="updateList" @on-show="onShow"
+                        @on-hide="onHide" @on-change="onChange" >
+          </popup-picker>
+          </div>
         </div>
         <div class="line"></div>
         <router-link :to="{path:'/changeName'}" class="rowDiv2">
@@ -33,8 +38,10 @@
 </template>
 
 <script>
+import { PopupPicker } from 'vux';
 import titleCom from '../login/components/titleCom';
 import store from '../../store';
+import { formatDate } from '../../filters/date';
 
 export default {
   name: 'personalInfo',
@@ -43,15 +50,24 @@ export default {
       user: {
         userName: store.getters.userName,
         userPhone: store.getters.userPhone,
-        createTime: store.getters.createTime,
+        createTime: '',
       },
+      updateList: [['本地相册', '手机拍照']],
+      value: ['本地相册'],
     };
   },
   components: {
     titleCom,
+    PopupPicker,
+  },
+  created() {
+    this.formatCreateTime();
   },
   methods: {
-    getCurrentTime() {
+    formatCreateTime() {
+      const self = this;
+      const time = self.$store.getters.createTime;
+      this.user.createTime = formatDate(time, 'yyyy-MM-dd');
     },
   },
 };
@@ -61,7 +77,6 @@ export default {
   .wrapper{
     width: 100%;
     height: 100%;
-    font-family: "Ping SC Regular";
     font-weight: 600;
   }
   .titleCom{
@@ -93,13 +108,13 @@ export default {
   }
   .nickName{
     position: absolute;
-    right: 50px;
-    font-size: 14px;
+    right: 35px;
+    font-size: 13px;
     color: #666666;
   }
   .right-arrow {
-    width: 15px;
-    height: 15px;
+    width: 8px;
+    height: 8px;
     position: absolute;
     right: 20px;
   }
@@ -150,6 +165,6 @@ export default {
     font-size: 12px;
     color: #333333;
     font-weight:lighter;
-    margin-left: 5px;
+    margin-left: 3px;
   }
 </style>

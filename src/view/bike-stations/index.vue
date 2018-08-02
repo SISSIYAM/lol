@@ -307,7 +307,7 @@ export default {
         /*width: 150px;*/
         margin-left: 10px;
         font-size: 10px;
-        color: lightgray;
+        color:#999999;
         text-align: center;
       }
     }

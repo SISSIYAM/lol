@@ -103,6 +103,7 @@ export default {
     font-weight: 400;
     width: 90%;
     display: inline-block;
+    margin-left:20px;
   .span1{
     margin-top: 0.8em;
     font-size: 12px;
@@ -110,12 +111,10 @@ export default {
   }
   .span2{
     margin-top: 0.4em;
-    font-size: 12px;
-    float: right;
+    font-size: 11px;
   }
   .span3{
     font-size: 11px;
-    margin-left:18px;
   }
   }
 </style>

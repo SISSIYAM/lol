@@ -2,10 +2,10 @@
   <div id="wapper">
     <title-com :title-mid="titleMid" id="titleCom"></title-com>
     <div class="input_text">
-      <el-input v-model="value" placeholder="请输入新的昵称" clearable>
+      <el-input v-model="value" placeholder="请输入新的昵称" class="cover" clearable>
         <template slot="prepend">
-          <div style="width: 35px;">
-            <span style="color: black;">昵称</span>
+          <div class="title1">
+            <span>昵称</span>
           </div>
         </template>
       </el-input>
@@ -40,18 +40,31 @@ export default {
       this.showComfir('提示信息', `确定将昵称改为${this.value}吗`);
     },
     showComfir(title, content) {
+      const self = this;
       //  弹出框
       this.$vux.confirm.show({
         title,
         content,
-        theme: 'ios',
-        confirmText: '确认修改',
         // 组件除show外的属性
         onCancel() {
           console.log('已经取消'); // 当前 vm
         },
         onComfirm() {
-
+          const nikeName = {
+            nikeName: this.value,
+          }
+          self.$store.dispatch('UpdateUserName', nikeName).then((response) => {
+            if (response.data.code === 200) {
+              self.$vux.toast.show({
+                text: '更改成功！',
+              });
+            } else {
+              self.$vux.toast.show({
+                text: '更改失败，请稍后再试！',
+              });
+            }
+          }).catch();
+          self.$router.go(-1);
         },
       });
     },
@@ -64,12 +77,11 @@ export default {
     overflow: hidden;
   }
   #wapper{
-    font-family: "Ping SC Regular";
     font-weight: 600;
     width: 100%;
     height: 100%;
     #titleCom{
-      height: 8%;
+      height:44px;
     }
     .input_text{
       width: 90%;
@@ -86,6 +98,9 @@ export default {
         height: 3.5em;
         margin-left: 16px;
       }
+    }
+    title1 {
+      width:15px;
     }
   }
 </style>

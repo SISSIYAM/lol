@@ -11,7 +11,7 @@
       </tab>
     </div>
     <div class="little-utils-container">
-      <svg-icon icon-class="message" class="right-item"></svg-icon>
+      <!--<svg-icon icon-class="message" class="right-item"></svg-icon>-->
       <svg-icon icon-class="scan_code" class="right-item" :onclick="scanOrder"></svg-icon>
     </div>
   </el-menu>
@@ -46,14 +46,14 @@ export default {
       }, 1000);
     },
     showPoper() {
-      // const needAuth = this.$store.getters.authCode;
-      // if (needAuth) {
-      //   this.$emit('showPageTotal');
-      // } else {
-      //   this.$router.push('/login');
-      // }
-      this.$emit('showPageTotal');
-    },
+      const needAuth = this.$store.getters.authCode;
+      if (needAuth) {
+        this.$emit('showPageTotal');
+      } else {
+        this.$router.push('/login');
+      }
+      // this.$emit('showPageTotal');
+},
 
     scanOrder() {
       ShareBikeApi.startScan(() => {

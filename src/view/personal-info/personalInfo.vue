@@ -7,11 +7,6 @@
           <p class="txt">头像</p>
           <svg-icon icon-class="icon_male"  class="user-image"></svg-icon>
           <svg-icon icon-class="right_arrow" class="right-arrow"></svg-icon>
-          <div class="sissi">
-          <popup-picker :data ="updateList" @on-show="onShow"
-                        @on-hide="onHide" @on-change="onChange" >
-          </popup-picker>
-          </div>
         </div>
         <div class="line"></div>
         <router-link :to="{path:'/changeName'}" class="rowDiv2">
@@ -38,7 +33,7 @@
 </template>
 
 <script>
-import { PopupPicker } from 'vux';
+import { Group, PopupPicker } from 'vux';
 import titleCom from '../login/components/titleCom';
 import store from '../../store';
 import { formatDate } from '../../filters/date';
@@ -59,6 +54,7 @@ export default {
   components: {
     titleCom,
     PopupPicker,
+    Group,
   },
   created() {
     this.formatCreateTime();

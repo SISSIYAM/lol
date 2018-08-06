@@ -1,4 +1,6 @@
 /* eslint-disable */
+import RouteNavigator from './routeNavigator';
+
 class ShareBikeCordovaApi {
 
   userLocation = {
@@ -15,7 +17,7 @@ class ShareBikeCordovaApi {
     * */
     window.addEventListener('HandleGetUserLocation', (data) => {
       console.log('wwww');
-      this.onHandleGetUserLocation(data);
+      this.onHandleGetUserLocation(data['0']);
     }, '');
     /**
      *
@@ -26,6 +28,19 @@ class ShareBikeCordovaApi {
       console.log("HandleBikePile event");
       this.onHandleBleCode(data["0"]);
     }, "");
+    /**
+     *
+     * 从原生返回路线和预约数据，data的数据格式
+     * {
+     * "line":[],  路线数组
+     * "order":{}, 到达位置的车桩信息
+     * }
+     *
+     * */
+    window.addEventListener('HandleOrderAndLine', (data) => {
+      // 进行车桩判断，并且进行下一段导航
+      this.onHandleGetLineAndOrder(data['0']);
+    }, '');
   }
 
   // 回调内容
@@ -163,6 +178,20 @@ class ShareBikeCordovaApi {
     'getUserInfo',
     []);
   }
+  /**
+   *
+   * 删除用户信息
+   *
+   * */
+  deleteUser() {
+    Cordova.exec(() => {
+
+      }, (data) => {
+
+      }, "ShareBikePlugins",
+      "deleteUser",
+      []);
+  }
 
   /**
   * 调用getUserLocation是为了获得用户当前的位置，需要实现haadleGetUserLocation获得用户的位置信息
@@ -211,7 +240,30 @@ class ShareBikeCordovaApi {
       "wechatPay",
       [msg]);
   }
-
+  /**
+   *
+   * 出行规划，点击立即出发后，进入导航
+   *
+   * */
+  orderLineNavigator(lineList, orderList) {
+    Cordova.exec(() => {
+      }, (data) => {
+      }, "ShareBikePlugins",
+      "lineNavigator",
+      [lineList, orderList]);
+  }
+  /**
+   *
+   * 进行下一段路线导航
+   *
+   * */
+  nextLineNavigator(obj) {
+    Cordova.exec(() => {
+      }, (data) => {
+      }, "ShareBikePlugins",
+      "nextLineNavigator",
+      [obj]);
+  }
   /**
    *
    * 存储预约车桩信息
@@ -255,9 +307,10 @@ class ShareBikeCordovaApi {
   }
   // 获得用户定位回调
   onHandleGetUserLocation(data) {
+    console.log('回调书' + JSON.stringify(data));
     this.userLocation = {
-      lat: data.lat,
-      lng: data.lng,
+      lat: String(data.lat),
+      lng: String(data.lng),
       des: data.des,
     };
     this.handleGetUserLocation(data);
@@ -266,7 +319,33 @@ class ShareBikeCordovaApi {
   onHandleBleCode(data) {
 
   }
+  // 获得路线信息
+  onHandleGetLineAndOrder(data) {
+    console.log('用户导航到车桩，返回给前端的数据');
+    console.log(data);
+    RouteNavigator.orderInfo = data.order;
+    RouteNavigator.lines = data.line;
+    RouteNavigator.beginConnectBlue();
+  }
 
+
+
+  //
+  // {
+  //   'type': '',  // 数据类型：0：步行，1：骑行，2：公交
+  //   'headTitle': '',  // 标题，其中type为3或者4的时候，代表起点或终点的标题
+  //   'middleTitle': '',// 中间的标题，type为0，1，2的时候才会存在，为0时，只有middletitle，没有其他title
+  //   'bottomTitle': '',// 下面的标题，type为0，1，2的时候才会存在
+  //   'beginLat': '',// 本段路线开始的纬度
+  //   'beginLng': '',// 本段路线开始的经度
+  //   'endLat': '',// 本段路线结束点的纬度
+  //   'endLng': '',// 本段路线结束点的经度
+  //   "beginDumpId": 1, // 预约取车的车桩mac地址
+  //   "beginDumpNum": "02",//预约取车的车桩编号
+  //   "endDumpId": 56,// 预约停车的车桩mac地址，
+  //   "endDumpNum": "03",//预约停车的车桩编号
+  //   "path": 23, //公交路线号
+  // }
 }
 
 export default new ShareBikeCordovaApi();

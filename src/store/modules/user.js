@@ -178,7 +178,15 @@ const user = {
       logout().then((response) => {
         const data = response.data.code;
         if (data === 200) {
-          commit('SET_AUTHCODE', false);
+          commit('SET_AUTHCODE', '');
+          commit('SET_TOKEN', '');
+          commit('SET_ID', '');
+          commit('SET_NAME', '');
+          commit('SET_ACCOUNT', '');
+          commit('SET_HEADPIC', '');
+          commit('SET_TELNO', '');
+          commit('SET_CREATETIME', '');
+          // ShareBikeApi.deleteUser();
         }
       }).catch();
     },

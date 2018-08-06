@@ -101,3 +101,18 @@ export function batchBookStation(stationIds) {
   };
   return request.post('/station/batchBookStation', data);
 }
+
+// 锁状态上传
+export function lockStatusUpdate(mac) {
+  const data = {
+    mac
+  };
+  return request.post('/park/open', data);
+}
+// 锁状态上传
+export function lockStatusUpdateclose(mac) {
+  const data = {
+    mac
+  };
+  return request.post('/park/close', data);
+}

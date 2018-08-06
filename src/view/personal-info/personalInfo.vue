@@ -3,11 +3,29 @@
     <title-com :to-path-url="url" class="titleCom"></title-com>
     <div class="wrapper_back">
       <div class="infoWrapper">
-        <div class="rowDiv">
+        <div class="rowDiv" @click="onClick">
           <p class="txt">头像</p>
           <svg-icon icon-class="icon_male"  class="user-image"></svg-icon>
           <svg-icon icon-class="right_arrow" class="right-arrow"></svg-icon>
         </div>
+        <popup :show.sync="show" class="vux-popup-picker" id="" @on-hide="onPopupHide"
+               @on-show="$emit('on-show')" >
+          <div class="vux-popup-picker-container">
+            <div class="vux-popup-picker-header">
+              <flexbox>
+                <flexbox-item style="text-align:left;padding-left:15px;line-height:44px;"
+                              @click="onHide(false)">取消
+                </flexbox-item>
+                <flexbox-item style="text-align:right;padding-left:15px;line-height:44px;"
+                              @click="onHide(true)">确定
+                </flexbox-item>
+              </flexbox>
+            </div>
+            <picker :data="data" :value.sync="tempValue" @on-change="onPickerChange"
+                    :columns="columns" :fixed-columns="fixedColumns">
+            </picker>
+          </div>
+        </popup>
         <div class="line"></div>
         <router-link :to="{path:'/changeName'}" class="rowDiv2">
           <p class="txt">昵称</p>
@@ -33,11 +51,14 @@
 </template>
 
 <script>
-import { Group, PopupPicker } from 'vux';
+import { Popup, Picker, Flexbox, FlexboxItem } from 'vux';
 import titleCom from '../login/components/titleCom';
 import store from '../../store';
 import { formatDate } from '../../filters/date';
 
+const getObject = function (obj) {
+  return JSON.parse(JSON.stringify(obj));
+};
 export default {
   name: 'personalInfo',
   data() {
@@ -47,14 +68,48 @@ export default {
         userPhone: store.getters.userPhone,
         createTime: '',
       },
-      updateList: [['本地相册', '手机拍照']],
-      value: ['本地相册'],
+      tempValue: getObject(this.value),
+      closeType: false,
+      currentData: JSON.stringify(this.data), // used for detecting if it is after data change
     };
   },
   components: {
+    FlexboxItem,
     titleCom,
-    PopupPicker,
-    Group,
+    Popup,
+    Picker,
+    Flexbox,
+  },
+  props: {
+    title: String,
+    data: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    placeholder: String,
+    columns: {
+      type: Number,
+      default: 0,
+    },
+    fixedColumns: {
+      type: Number,
+      default: 0,
+    },
+    value: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    showName: Boolean,
+    inlineDesc: String,
+    showCell: {
+      type: Boolean,
+      default: true,
+    },
+    show: Boolean,
   },
   created() {
     this.formatCreateTime();
@@ -64,6 +119,53 @@ export default {
       const self = this;
       const time = self.$store.getters.createTime;
       this.user.createTime = formatDate(time, 'yyyy-MM-dd');
+    },
+
+    onClick() {
+      console.log('test');
+      this.show = true;
+    },
+
+    onHide(type) {
+      this.show = false;
+      if (type) {
+        this.closeType = true;
+        this.value = getObject(this.tempValue);
+      }
+      if (!type) {
+        this.closeType = false;
+        if (this.value.length > 0) {
+          this.tempValue = getObject(this.value);
+        }
+      }
+    },
+    onPopupHide(val) {
+      if (this.value.length > 0) {
+        this.tempValue = getObject(this.value);
+      }
+      this.$emit('on-hide', this.closeType);
+    },
+    onPickerChange(val) {
+      if (JSON.stringify(this.value) !== JSON.stringify(val)) {
+        // if has value, replace it
+        if (this.value.length) {
+          const nowData = JSON.stringify(this.data);
+          if (nowData !== this.currentData && this.currentData !== '[]') {
+            this.value = getObject(val);
+          }
+          this.currentData = nowData;
+        } else { // if no value, stay quiet
+          // if set to auto update, do update the value
+        }
+      }
+      this.$emit('on-shadow-change', getObject(val));
+    },
+  },
+  watch: {
+    value(val) {
+      if (JSON.stringify(val) !== JSON.stringify(this.tempValue)) {
+        this.tempValue = getObject(val);
+      }
     },
   },
 };
@@ -162,5 +264,15 @@ export default {
     color: #333333;
     font-weight:lighter;
     margin-left: 3px;
+  }
+  .vux-popup-picker {
+    border-top: 1px solid #04BE02;
+  }
+  .vux-popup-picker-header {
+    height: 44px;
+    color: #04BE02;
+  }
+  .vux-popup-picker-value {
+    display: inline-block;
   }
 </style>

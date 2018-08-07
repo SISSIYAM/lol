@@ -16,6 +16,23 @@ axios.interceptors.response.use(response => response, error => Promise.resolve(e
 export default {
   //  post
   post(url, data) {
+    if (url === '/userLogin/uploadimg') {
+      return axios({
+        method: 'post',
+        url,
+        data: qs.stringify(data),
+        timeout: 5000,
+        headers: {
+          mobile_session_flag: true,
+          session_token: store.getters.userToken,
+          'X-Requested-With': 'XMLHttpRequest',
+          'Content-Type': 'multipart/form-data;charset=utf-8',
+        },
+      }).then(
+        response => response,
+      ).then(
+        res => res);
+    }
     return axios({
       method: 'post',
       url,
@@ -25,7 +42,7 @@ export default {
         mobile_session_flag: true,
         session_token: store.getters.userToken,
         'X-Requested-With': 'XMLHttpRequest',
-        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+        'Content-Type': 'application/x-www-form-urlencoded;application/json;charset=utf-8',
       },
     }).then(
       response => response,

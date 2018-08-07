@@ -16,8 +16,8 @@
       </group>
 
       <group>
-        <cell title="用户协议" is-link class="cell-label"></cell>
-        <cell title="充值协议" is-link class="cell-label"></cell>
+        <cell title="用户协议" is-link class="cell-label" @click.native="goToCustomerAgreement"></cell>
+        <cell title="充值协议" is-link class="cell-label" @click.native="goToPayAgreement"></cell>
       </group>
 
       <div class="setting-button">
@@ -49,6 +49,12 @@ export default {
     },
     goToAboutUS() {
       this.$router.push({ path: '/aboutUs' });
+    },
+    goToCustomerAgreement() {
+      this.$router.push({ path: '/customerAgreement' });
+    },
+    goToPayAgreement() {
+      this.$router.push({ path: '/payAgreement' });
     },
     logout() {
       const self = this;

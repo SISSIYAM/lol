@@ -54,7 +54,7 @@ export default {
           statusDes: {
             status: 'part2',
             DeedText: '登录',
-            ClauseText: '点击登录，即表示已阅读并同意《车桩服务规则》',
+            ClauseText: '点击登录，即表示已阅读并同意',
           },
         },
         {
@@ -65,7 +65,7 @@ export default {
           statusDes: {
             status: 'part1',
             DeedText: '登录',
-            ClauseText: '登录即表示已阅读并同意《车桩服务规则》',
+            ClauseText: '登录即表示已阅读并同意',
           },
         },
         { title: '',

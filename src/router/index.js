@@ -140,6 +140,16 @@ export const constantRouterMap = [
     hidden: true,
     meta: { title: '咻咻开锁', icon: '', auth: true },
   },
+  {
+    path: '/customerAgreement',
+    component: () => import('@/view/setting/customerAgreement'),
+    name: '',
+  },
+  {
+    path: '/payAgreement',
+    component: () => import('@/view/setting/payAgreement'),
+    name: '',
+  },
 ];
 
 export default new Router({

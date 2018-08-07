@@ -7,6 +7,10 @@
           <p class="txt">头像</p>
           <svg-icon icon-class="icon_male"  class="user-image"></svg-icon>
           <svg-icon icon-class="right_arrow" class="right-arrow"></svg-icon>
+          <form enctype="multipart/form-data" method="post">
+            <input type="file" multiple name="file" @change="onfile"/>
+            <button @click="uploading">uploading</button>
+          </form>
         </div>
         <popup :show.sync="show" class="vux-popup-picker" id="" @on-hide="onPopupHide"
                @on-show="$emit('on-show')" >
@@ -55,6 +59,7 @@ import { Popup, Picker, Flexbox, FlexboxItem } from 'vux';
 import titleCom from '../login/components/titleCom';
 import store from '../../store';
 import { formatDate } from '../../filters/date';
+import { uploadingImg } from '../../api/userDetails';
 
 const getObject = function (obj) {
   return JSON.parse(JSON.stringify(obj));
@@ -70,7 +75,9 @@ export default {
       },
       tempValue: getObject(this.value),
       closeType: false,
-      currentData: JSON.stringify(this.data), // used for detecting if it is after data change
+      currentData: JSON.stringify(this.data),
+      selectedFileList: null,
+      selectedFileName: null,
     };
   },
   components: {
@@ -139,12 +146,14 @@ export default {
         }
       }
     },
+
     onPopupHide(val) {
       if (this.value.length > 0) {
         this.tempValue = getObject(this.value);
       }
       this.$emit('on-hide', this.closeType);
     },
+
     onPickerChange(val) {
       if (JSON.stringify(this.value) !== JSON.stringify(val)) {
         // if has value, replace it
@@ -159,6 +168,23 @@ export default {
         }
       }
       this.$emit('on-shadow-change', getObject(val));
+    },
+
+    onfile(event) {
+      this.selectedFile = event.target.files[0];
+      this.selectedFileName = event.target.name;
+    },
+
+    uploading() {
+      // const formData = new FormData();
+      // formData.append('file', this.selectedFile);
+      const data = this.selectedFile;
+      uploadingImg(data).then((response) => {
+        const code = response.code;
+        if (code === 200) {
+          console.log('图片上传成功');
+        }
+      }).catch();
     },
   },
   watch: {

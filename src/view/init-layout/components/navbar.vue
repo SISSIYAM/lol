@@ -46,14 +46,14 @@ export default {
       }, 1000);
     },
     showPoper() {
-      const needAuth = this.$store.getters.authCode;
-      if (needAuth) {
-        this.$emit('showPageTotal');
-      } else {
-        this.$router.push('/login');
-      }
-      // this.$emit('showPageTotal');
-},
+      // const needAuth = this.$store.getters.authCode;
+      // if (needAuth) {
+      //   this.$emit('showPageTotal');
+      // } else {
+      //   this.$router.push('/login');
+      // }
+      this.$emit('showPageTotal');
+    },
 
     scanOrder() {
       ShareBikeApi.startScan(() => {

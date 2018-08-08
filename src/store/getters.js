@@ -5,6 +5,7 @@ const getters = {
   userName: state => state.user.name,
   userPhone: state => state.user.telNo,
   createTime: state => state.user.createTime,
+  platformType: state => state.user.paltform,
 };
 
 export default getters;

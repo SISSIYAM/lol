@@ -139,7 +139,7 @@ export default {
           self.showTotal('提示信息', '验证码不能为空', '');
         } else {
           self.$store.dispatch('LoginByMobileVerifCode', loginForm).then(() => {
-            self.$router.push({ path: '/registerPage' });
+            self.$router.replace({ path: '/registerPage' });
           }).catch(() => {});
         }
       } else {

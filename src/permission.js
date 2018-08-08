@@ -7,7 +7,7 @@ import store from './store';
  *  均不需要用户登录的路由列表
  * @type {string[]}
  */
-const whiteList = ['/', '/bikeStations', '/carStations', '/stationSearch'];
+const whiteList = ['/', '/bikeStations', '/carStations', '/stationSearch', '/registerPage', '/stationAgreement'];
 
 router.beforeEach((to, from, next) => {
   console.log('mytoken:' + store.getters.userToken);

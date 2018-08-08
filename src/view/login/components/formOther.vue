@@ -5,26 +5,22 @@
     </div>
     <div v-if="resultS === 'part1'" class="Clause">
       <span class="span3">{{ statusD.ClauseText }}</span>
-      <router-link :to="{path:'/customerAgreement'}" class="text" >《车桩服务规则》</router-link>
+      <router-link :to="{path:'/stationAgreement'}" class="text" >《车桩服务规则》</router-link>
       <span class="span2" v-on:click="forgetPwd">忘记密码</span>
     </div>
     <div v-else-if="resultS === 'part2'" class="Clause">
       <span class="span1">{{ statusD.ClauseText }}</span>
-      <router-link :to="{path:'/customerAgreement'}" class="text">《车桩服务规则》</router-link>
+      <router-link :to="{path:'/stationAgreement'}" class="text">《车桩服务规则》</router-link>
     </div>
     <div v-else-if="resultS === 'part3'" class="Clause">
       <span class="span1">{{ statusD.ClauseText }}</span>
-      <router-link :to="{path:'/customerAgreement'}" class="text">《车桩服务规则》</router-link>
     </div>
     <div v-else-if="resultS === 'part4'" class="Clause">
       <span class="span1">{{ statusD.ClauseText }}</span>
-      <router-link :to="{path:'/customerAgreement'}" class="text">《车桩服务规则》</router-link>
     </div>
     <div v-else-if="resultS === 'part5'" class="Clause">
       <span class="span1">{{ statusD.ClauseText }}</span>
-      <router-link :to="{path:'/customerAgreement'}" class="text">《车桩服务规则》</router-link>
     </div>
-    <router-link :to="{path:'/customerAgreement'}" class="text">《车桩服务规则》</router-link>
   </div>
 </template>
 
@@ -116,14 +112,16 @@ export default {
     margin-left:23px;
   }
   .span2{
-    margin-top: 0.4em;
+    margin-top: 0.5em;
     font-size: 11px;
+    float: right;
   }
   .span3{
     font-size: 11px;
   }
   .text{
     color:#2CB8FF;
+    font-size: 12px;
     }
   }
 </style>

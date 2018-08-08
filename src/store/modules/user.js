@@ -25,6 +25,7 @@ const user = {
     token: '',
     code: '',
     authCode: '',
+    platform: '',
   },
 
   mutations: {
@@ -73,9 +74,21 @@ const user = {
     SET_MOBILE: (state, mobile) => {
       state.mobile = mobile;
     },
+    SET_PLATFORM: (state, platform) => {
+      state.paltform = platform;
+    },
   },
 
   actions: {
+    /**
+     * 获取用户设备平台属性调不通api请求入口
+     * */
+    checkPlatform({ commit }) {
+      ShareBikeApi.checkPlatform((data) => {
+        const platformType = data.type;
+        commit('SET_PLATFORM', platformType);
+      });
+    },
     /**
      * 获取储存中的用户UUID
      * @param {{data.uuid:string}} data

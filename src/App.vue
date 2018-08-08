@@ -8,6 +8,7 @@
 export default {
   name: 'App',
   created() {
+    this.$store.dispatch('checkPlatform');
     this.$store.dispatch('hasUsersToken');
   },
 };

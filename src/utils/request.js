@@ -14,25 +14,42 @@ axios.interceptors.response.use(response => response, error => Promise.resolve(e
 
 //  配置请求的方式
 export default {
-  //  post
+  // post总入口
   post(url, data) {
     if (url === '/userLogin/uploadimg') {
-      return axios({
-        method: 'post',
-        url,
-        data: qs.stringify(data),
-        timeout: 5000,
-        headers: {
-          mobile_session_flag: true,
-          session_token: store.getters.userToken,
-          'X-Requested-With': 'XMLHttpRequest',
-          'Content-Type': 'multipart/form-data;charset=utf-8',
-        },
-      }).then(
-        response => response,
-      ).then(
-        res => res);
+      console.log('去到图片上传===');
+      return this.postForUpload(url, data);
+    } else if (store.getters.platformType === 'ios') {
+      console.log('去到post for ios===');
+      return this.postForiOS(url, data);
     }
+    console.log('去到post for normal===');
+    return this.postForNormal(url, data);
+  },
+
+  // get总入口
+  get(url, data) {
+    if (store.getters.platformType === 'ios') {
+      return this.getForiOS(url, data);
+    }
+    return this.getForNomal(url, data);
+  },
+
+  // iOS的post方法
+  postForiOS(url, data) {
+    return new Promise(((resolve, reject) => {
+      Cordova.exec((response) => {
+        const obj = JSON.parse(response);
+        resolve(obj);
+      }, (data) => {
+        reject(data);
+      }, 'RequestPlugin',
+      'postAsync',
+      [url, data]);
+    }));
+  },
+  // 安卓或者web端的post方法
+  postForNormal(url, data) {
     return axios({
       method: 'post',
       url,
@@ -42,19 +59,49 @@ export default {
         mobile_session_flag: true,
         session_token: store.getters.userToken,
         'X-Requested-With': 'XMLHttpRequest',
-        'Content-Type': 'application/x-www-form-urlencoded;application/json;charset=utf-8',
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
       },
     }).then(
       response => response,
     ).then(
       res => res);
   },
-  // get
-  get(url, params) {
+  postForUpload(url, data1) {
+    return axios({
+      method: 'post',
+      url,
+      data: data1,
+      timeout: 5000,
+      headers: {
+        mobile_session_flag: true,
+        session_token: store.getters.userToken,
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'multipart/form-data;charset=utf-8',
+      },
+    }).then(
+      response => response,
+    ).then(res => res);
+  },
+  // iOS这边的get方法
+  getForiOS(url, data) {
+    return new Promise(((resolve, reject) => {
+      Cordova.exec((response) => {
+        const obj = JSON.parse(response);
+        resolve(obj);
+      }, (data) => {
+        const obj = JSON.parse(data);
+        reject(data);
+      }, 'RequestPlugin',
+      'getAsync',
+      [url, data]);
+    }));
+  },
+  // 安卓或web这边的get方法
+  getForNomal(url, data) {
     return axios({
       method: 'get',
       url,
-      params: qs.stringify(params),
+      params: qs.stringify(data),
       timeout: 5000,
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
@@ -65,4 +112,5 @@ export default {
       res => res,
     );
   },
+
 };

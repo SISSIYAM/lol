@@ -33,13 +33,11 @@ export const constantRouterMap = [
   {
     path: '/login',
     component: () => import('@/view/login/index'),
-    hidden: true,
     name: 'login',
   },
   {
     path: '/registerPage',
     component: () => import('@/view/login/registerPage'),
-    hidden: true,
     name: 'registerPage',
   },
   {
@@ -125,6 +123,10 @@ export const constantRouterMap = [
   {
     path: '/aboutUs',
     component: () => import('@/view/setting/aboutUs'),
+  },
+  {
+    path: '/stationAgreement',
+    component: () => import('@/view/setting/stationAgreement'),
   },
   {
     path: '/routePlanning',

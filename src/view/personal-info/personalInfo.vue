@@ -7,10 +7,8 @@
           <p class="txt">头像</p>
           <svg-icon icon-class="icon_male"  class="user-image"></svg-icon>
           <svg-icon icon-class="right_arrow" class="right-arrow"></svg-icon>
-          <form enctype="multipart/form-data" method="post">
-            <input type="file" multiple name="file" @change="onfile"/>
+            <input type="file" @change="onfile"/>
             <button @click="uploading">uploading</button>
-          </form>
         </div>
         <popup :show.sync="show" class="vux-popup-picker" id="" @on-hide="onPopupHide"
                @on-show="$emit('on-show')" >
@@ -172,19 +170,19 @@ export default {
 
     onfile(event) {
       this.selectedFile = event.target.files[0];
-      this.selectedFileName = event.target.name;
     },
 
     uploading() {
-      // const formData = new FormData();
-      // formData.append('file', this.selectedFile);
-      const data = this.selectedFile;
-      uploadingImg(data).then((response) => {
+      const form = new FormData();
+      form.append('file', this.selectedFile);
+      uploadingImg(form).then((response) => {
         const code = response.code;
         if (code === 200) {
           console.log('图片上传成功');
         }
-      }).catch();
+      }).catch((e) => {
+        console.log(e);
+      });
     },
   },
   watch: {

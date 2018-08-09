@@ -14,39 +14,29 @@
       <el-button type="primary">保存</el-button>
     </div>
     <!--<div v-transfer-dom>-->
-      <!--<confirm v-model="show">-->
-        <!--:title="确定更改昵称"-->
-        <!--@on-cancel="onCancel"-->
-        <!--@on-confirm="onConfirm"-->
-      <!--</confirm>-->
+    <!--<confirm v-model="show">-->
+    <!--:title="确定更改昵称"-->
+    <!--@on-cancel="onCancel"-->
+    <!--@on-confirm="onConfirm"-->
+    <!--</confirm>-->
     <!--</div>-->
   </div>
 </template>
 
 <script>
-import { Confirm, TransferDomDirective as TransferDom } from 'vux';
 import titleCom from '../login/components/titleCom';
 
 
 export default {
-  name: 'changeName',
-  directives: {
-    TransferDom,
-  },
+  name: 'changePassword',
   components: {
     titleCom,
-    Confirm,
   },
   data() {
     return {
       value: '',
-      titleMid: '修改昵称',
+      titleMid: '重置密码',
     };
-  },
-  mounted() {
-    // if (this.$route.params.oldName) {
-    //   this.value = this.$route.params.oldName;
-    // }
   },
   methods: {
     comfirmName() {
@@ -67,38 +57,6 @@ export default {
         }
       });
     },
-    // comfirmName() {
-    //   this.showComfir('提示信息', `确定将昵称改为${this.value}吗`);
-    // },
-    // showComfir(title) {
-    //   const self = this;
-    //   //  弹出框
-    //   this.$vux.confirm.show({
-    //     title,
-    //     content: self.value,
-    //     // 组件除show外的属性
-    //     onCancel() {
-    //       console.log('已经取消'); // 当前 vm
-    //     },
-    //     onConfirm() {
-    //       const Name = {
-    //         name: self.value,
-    //       };
-    //       self.$store.dispatch('UpdateUserName', Name).then((response) => {
-    //         if (response.code === 200) {
-    //           self.$vux.toast.show({
-    //             text: '更改成功！',
-    //           });
-    //         } else {
-    //           self.$vux.toast.show({
-    //             text: '更改失败，请稍后再试！',
-    //           });
-    //         }
-    //       }).catch();
-    //       self.$router.go(-1);
-    //     },
-    //   });
-    // },
   },
 };
 </script>

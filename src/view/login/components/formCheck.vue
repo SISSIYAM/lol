@@ -20,7 +20,7 @@ export default {
   data() {
     return {
       checkNum: '',
-      statusCheck: '发送验证码',
+      statusCheck: '获取验证码',
       staus: true,
       Stuas: false,
     };

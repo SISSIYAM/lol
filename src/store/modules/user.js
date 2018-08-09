@@ -163,12 +163,12 @@ const user = {
       });
     },
 
-    UpdateUserName({ commit }, newName) {
+    UpdateUserName({ commit }, Name) {
       return new Promise((resolve) => {
-        updateUserName(newName).then((response) => {
+        updateUserName(Name).then((response) => {
           const code = response.data.code;
           if (code === 200) {
-            commit('SET_USERNAME', newName);
+            commit('SET_USERNAME', Name);
           }
           resolve();
         }).catch();

@@ -19,6 +19,8 @@ export default {
     if (url === '/userLogin/uploadimg') {
       console.log('去到图片上传===');
       return this.postForUpload(url, data);
+    } else if (url === '/userLogin/updateName') {
+      return this.postForUpdateName(url, data);
     } else if (store.getters.platformType === 'ios') {
       console.log('去到post for ios===');
       return this.postForiOS(url, data);
@@ -77,6 +79,22 @@ export default {
         session_token: store.getters.userToken,
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'multipart/form-data;charset=utf-8',
+      },
+    }).then(
+      response => response,
+    ).then(res => res);
+  },
+  postForUpdateName(url, data2) {
+    return axios({
+      method: 'post',
+      url,
+      data: qs.stringify(data2),
+      timeout: 5000,
+      headers: {
+        mobile_session_flag: true,
+        session_token: store.getters.userToken,
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/json;charset=utf-8',
       },
     }).then(
       response => response,

@@ -7,8 +7,8 @@
           <p class="txt">头像</p>
           <svg-icon icon-class="icon_male"  class="user-image"></svg-icon>
           <svg-icon icon-class="right_arrow" class="right-arrow"></svg-icon>
-            <input type="file" @change="onfile"/>
-            <button @click="uploading">uploading</button>
+            <!--<input type="file" @change="onfile"/>-->
+            <!--<button @click="uploading">uploading</button>-->
         </div>
         <popup :show.sync="show" class="vux-popup-picker" id="" @on-hide="onPopupHide"
                @on-show="$emit('on-show')" >

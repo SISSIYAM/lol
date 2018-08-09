@@ -12,7 +12,7 @@
     </div>
     <div class="little-utils-container">
       <!--<svg-icon icon-class="message" class="right-item"></svg-icon>-->
-      <svg-icon icon-class="scan_code" class="right-item" :onclick="scanOrder"></svg-icon>
+      <svg-icon icon-class="scan" class="right-item" :onclick="scanOrder"></svg-icon>
     </div>
   </el-menu>
 </template>

@@ -4,11 +4,14 @@
     <div class="title">
 			<img class="leftIcon" src="../../../static/images/icon_back.png" v-on:click="backPrePage"/>
       <p class="titleName">{{titleName}}</p>
-      <p class="detail" @click="rechargeHistory">明细</p>
-    </div>
+			<div class="detail" @click="rechargeHistory">      
+				<p >明细</p>
+			</div>
+		</div>
     <div class="wrapper_back">
       <div class="infoWrapper">
         <div class="rowDivMoney">
+					<svg-icon icon-class="wallet" class="rowDivMoneyImg"></svg-icon>
           <p class="txt3">余额(元)</p>
           <p class="txt2">{{ money }}</p>
         </div>
@@ -73,6 +76,7 @@ export default {
 		
     // 明细
     rechargeHistory() {
+			console.log("跳转到明细界面");
       this.$router.push({
         path: '/rechargeHistory',
         name: 'rechargeHistory',
@@ -122,7 +126,7 @@ export default {
   }
   /*********标题栏  *********/
   .title {
-    padding-top: 20px;
+    padding-top: 5px;
     height: 44px;
     line-height: 44px;
     width: 100%;
@@ -155,14 +159,12 @@ export default {
   }
   .detail {
     line-height: 64px;
-    position: absolute;
-    text-align: right;
-    left: 0;
-    right: 0;
-    margin: 0px;
-    font-size: 15px;
+    text-align: right;    
+    font-size: 14px;
     color: black;
+		margin-left: 90%;
     vertical-align: middle;
+		z-index: 9;
   }
 
   /*********标题栏 the end *********/
@@ -193,13 +195,31 @@ export default {
 
   .rowDivMoney {
     height: 200px;
-    display: flex;
-    flex-direction: column;
+		width: 100%;
     align-items: center;
-    position: relative;
-		background-image: url("./../../../static/images/wallet_background.png");
+		}
+	
+	.rowDivMoneyImg {
+		height: 100% !important;
+		width: 100% !important;
+	}
+
+  .txt2 {
+    margin-top: 30px;
+		margin: 0 auto;
+		text-align: center;
+    font-size: 50px;
+    color: #FFFFFF;
+		z-index: 999;
   }
 
+  .txt3 {
+		margin: 0 auto;
+		text-align: center;
+    margin-top: -150px;
+    font-size: 20px;
+    color: floralwhite;
+  }
   .rowDiv2 {
     height: 60px;
     display: flex;
@@ -226,20 +246,9 @@ export default {
   }
 
   .txtWallet {
-    margin-right: 70%;
+    margin-left: 10px;
     font-size: 14px;
     color: #333333;
   }
 
-  .txt2 {
-    margin-top: 10%;
-    font-size: 50px;
-    color: #ffffff;
-  }
-
-  .txt3 {
-    margin-top: 10%;
-    font-size: 20px;
-    color: #ffffff;
-  }
 </style>

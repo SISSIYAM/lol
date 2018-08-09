@@ -7,11 +7,11 @@
 		<div class="wapper_item">
       <div class="item_cell" v-for=" recharge in rechargeList ">
         <div class="item_cell_text">
-					<div class="textLeft" @click="showPlugin">
+					<div class="textLeft">
 						<p class="textLeft_payDetail">{{recharge.tradeType}}</p>
-						<p class="textLeft_time">{{recharge.time}}</p>
+						<p class="textLeft_time">{{recharge.tradeTime}}</p>
 					</div>
-          <div class="textRight">{{recharge.tradeAmount}}</div>
+          <div :class="textRightStyle(recharge)">{{recharge.tradeAmount}}</div>
         </div>
       </div>
     </div>
@@ -29,36 +29,32 @@ export default {
 		
 	data() {
 		return{
-			show: false,
 			titleName:'明细',
-			rechargeList:[]
+			rechargeList:[],
 		}
 	},
 		
 	mounted() {
-		if(true){
+		if(false){
 			this.rechargeList=[
 				{
 					"tradeAmount": 24,
 					"tradeType": '停车费用',
-					"time":'2018.07.15-16:32:12'
+					"tradeTime":'2018.07.15-16:32:12'
 				},
 				{
 					"tradeAmount": -24,
 					"tradeType": '充值',
-					"time":'2018.07.15-16:32:12'              
+					"tradeTime":'2018.07.15-16:32:12'              
 				},
 				{
 					"tradeAmount": 24,
 					"tradeType": '停车费用',
-					"time":'2018.07.15-16:32:12'              
+					"tradeTime":'2018.07.15-16:32:12'              
 					}
 			]
 		}
-		this.getRechargeList();
-		
-		
-		this.show = true;
+		this.getRechargeList();	
 	},
 		
 	methods: {
@@ -69,24 +65,29 @@ export default {
 		},
 	
 		// 获取充值记录
-		getRechargeList:function () {
+		getRechargeList () {
 			var _this =this;
-			getRechargeHistory({
-			pageStart:1
-			})
-			.then(function (response) {
-				console.log(response.data);
-				if(response.data.code != 200){
-					console.log("获取充值记录失败")
+			getRechargeHistory(1).then((response) => {
+				console.log(response);
+				if (response.status != 200) {
 					_this.showPlugin("提示信息","获取充值记录失败");
-				}else{
+				} else {
 					console.log("获取充值记录成功")
-					_this.rechargeList=response.data;
+					_this.rechargeList=response.data;			
 				}
 			})
 			.catch(function (error) {
 				console.log(error);
 			});
+		},
+		
+		// 更改金额样式
+		textRightStyle(item) {
+			if (Number(item.tradeAmount) >= 0) {
+				return 'textRight_gray';
+			} else {
+				return 'textRight';
+			}
 		},
 		
 		// 提示框
@@ -111,11 +112,11 @@ export default {
 	
 	/*********标题栏  *********/
 	.title {
-		padding-top: 20px;
+		padding-top: 5px;
 		height: 44px;
 		line-height: 44px;
 		width: 100%;
-		background-color: #f1f1f161;
+		background-color: white;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -132,7 +133,6 @@ export default {
 		font-size: 18px;
 		color: black;
 		vertical-align: middle;
-		font-family: PingFangBold;
 	}
 
 	.leftIcon {
@@ -142,38 +142,23 @@ export default {
 		width: 24px;
 		height: 24px;
 		z-index: 9;
-		}
-	.detail {
-		line-height: 64px;
-		position: absolute;
-		text-align: right;
-		left: 0;
-		right: 0;
-		margin: 0px;
-		font-size: 15px;
-		color: black;
-		vertical-align: middle;
-		font-family: PingFangBold;
 	}
 	/*********标题栏 the end *********/
 	
   #wapper{
     width: 100%;
     height: 100%;
-    .titleCom{
-      height: 8%;
-    }
+		background-color: whitesmoke;
     .wapper_item{
-      width: 92%;
+      width: 100%;
       height: 100%;
-      font-family: "Ping SC Regular";
       font-weight: bold;
+			background-color: white;
     }
     .item_cell{
       width: 100%;
       display: inline-flex;
       padding-top: 10px;
-      padding-bottom: 10px;
       align-items: center;
       img{
         width: 19px;
@@ -191,17 +176,25 @@ export default {
           font-size: 14px;
         }
         .textRight{
-          margin: 0 0;
-          color: #333333;
+          margin: 0 10px;
+          color: red;
           font-size: 14px;
 					margin-left: auto;
+					align-items: center;
 					}
+					.textRight_gray{
+						margin: 0 10px;
+						color: black;
+						font-size: 14px;
+						margin-left: auto;
+						align-items: center;
+						}
 				.textLeft_payDetail{
 					color: #333333;
 					font-size: 14px;
 				}
 				.textLeft_time{
-					font-size: 5px;
+					font-size: 8px;
 				}
       }
     }

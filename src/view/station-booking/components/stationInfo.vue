@@ -64,6 +64,7 @@ export default {
     border-radius: 8px;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
     .title {
       width: 100%;
       height: 80px;

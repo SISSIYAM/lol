@@ -144,8 +144,10 @@ const user = {
       return new Promise((resolve, reject) => {
         loginByMobileVerifCode(userPhone, userCheck).then((response) => {
           const data = response.data;
-          commit('SET_TOKEN', data.uuid);
-          resolve();
+          if (data.msg === '登陆成功') {
+            commit('SET_TOKEN', data.uuid);
+          }
+          resolve(response);
         }).catch((error) => {
           reject(error);
         });
@@ -158,7 +160,7 @@ const user = {
         getMobileVerifCode(userPhone1).then((response) => {
           const code = response.data;
           commit('SET_MOBILE', code);
-          resolve();
+          resolve(response);
         }).catch(() => {});
       });
     },
@@ -170,7 +172,7 @@ const user = {
           if (code === 200) {
             commit('SET_USERNAME', Name);
           }
-          resolve();
+          resolve(response);
         }).catch();
       });
     },
@@ -182,7 +184,7 @@ const user = {
         afterUserSignupfillInfo(name, password).then((response) => {
           const data = response.data;
           commit('SET_USERNAME', data);
-          resolve();
+          resolve(response);
         }).catch(() => {});
       });
     },

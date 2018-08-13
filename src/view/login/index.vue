@@ -138,8 +138,13 @@ export default {
         } else if (userCheck == null || userCheck === '') {
           self.showTotal('提示信息', '验证码不能为空', '');
         } else {
-          self.$store.dispatch('LoginByMobileVerifCode', loginForm).then(() => {
-            self.$router.replace({ path: '/registerPage' });
+          self.$store.dispatch('LoginByMobileVerifCode', loginForm).then((response) => {
+            const code = response.data.data;
+            if (code === -2 || code === -1) {
+              self.$router.replace({ path: '/registerPage' });
+            } else if (code === 200) {
+              self.$router.replace({ path: '/' });
+            }
           }).catch(() => {});
         }
       } else {

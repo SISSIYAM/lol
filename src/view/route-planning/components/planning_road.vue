@@ -42,7 +42,7 @@ import RoadRide from './road_detail/road_ride';
 import RoadEnd from './road_detail/road_end';
 
 export default {
-  name: "planning_road",
+  name: 'planning_road',
   components: {
     RoadBegin,
     RoadWalk,
@@ -65,9 +65,9 @@ export default {
       aLength = aLength.toFixed(2);
       let aride = ride / 1000;
       aride = aride.toFixed(2);
-      this.roadTime = String(time) + '分钟';
-      this.roadLength = String(aLength) + '公里';
-      this.rideLength = String(aride) + '公里';
+      this.roadTime = `${String(time)}分钟`;
+      this.roadLength = `${String(aLength)}公里`;
+      this.rideLength = `${String(aride)}公里`;
       this.createComponentsIn(values, beginTitle, endTitle);
     },
     headerClicked() {
@@ -93,22 +93,22 @@ export default {
         if (index === 0) {
           // 步行
           const beginCom = {
-            'component': 'RoadBegin',
-            'obj':{
-              'title': beginTitle,
+            component: 'RoadBegin',
+            obj: {
+              title: beginTitle,
             },
           };
           this.comlist.push(beginCom);
         }
         let com = '';
-        switch (data.tripType){
+        switch (data.tripType) {
           case 0:
             const walkObj = {
-              'middleTitle': '步行' + data.results.routes[0].distance + '米',
+              middleTitle: `步行${data.results.routes[0].distance}米`,
             };
             com = {
-              'component': 'RoadWalk',
-              'obj': walkObj,
+              component: 'RoadWalk',
+              obj: walkObj,
             };
             break;
           case 1:
@@ -118,15 +118,15 @@ export default {
             // 公交车
             console.log(data.results);
             const busObj = {
-              'beginType': '上车',
-              'endType': '下车',
-              'beginTitle': data.results.segments[0].transit.on_station.name,
-              'endTitle': data.results.segments[0].transit.off_station.name,
-              'middleTitle': '共' + data.results.segments[0].transit.via_num + '站',
+              beginType: '上车',
+              endType: '下车',
+              beginTitle: data.results.segments[0].transit.on_station.name,
+              endTitle: data.results.segments[0].transit.off_station.name,
+              middleTitle: `共${data.results.segments[0].transit.via_num}站`,
             };
             com = {
-              'component': 'RoadRide',
-              'obj': busObj,
+              component: 'RoadRide',
+              obj: busObj,
             };
             break;
           default:
@@ -135,9 +135,9 @@ export default {
         this.comlist.push(com);
         if (index === values.length - 1) {
           const endCom = {
-            'component': 'RoadEnd',
-            'obj':{
-              'title': endTitle,
+            component: 'RoadEnd',
+            obj: {
+              title: endTitle,
             },
           };
           this.comlist.push(endCom);
@@ -154,16 +154,15 @@ export default {
     sortLineListArray(lineList) {
       return lineList.sort(this.compare);
     },
-    compare (obj1, obj2) {
+    compare(obj1, obj2) {
       const val1 = obj1.index;
       const val2 = obj2.index;
       if (val1 < val2) {
         return -1;
       } else if (val1 > val2) {
         return 1;
-      } else {
-        return 0;
       }
+      return 0;
     },
 
 
@@ -176,7 +175,7 @@ export default {
 
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

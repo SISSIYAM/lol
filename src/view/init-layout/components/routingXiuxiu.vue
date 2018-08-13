@@ -3,6 +3,25 @@
 
     <!--显示地图-->
     <bike-stations></bike-stations>
+    <div class="suspend-icons">
+      <div class="reservation-circle">
+        <svg-icon icon-class="noreservation" class="icons"></svg-icon>
+      </div>
+      <div class="red-envelope-circle">
+        <a>
+        <img v-bind:src="gifImg">
+        </a>
+      </div>
+    </div>
+    <br>
+    <div class="suspend-icons">
+      <div class="location-circle">
+        <svg-icon icon-class="location" class="icons"></svg-icon>
+      </div>
+      <div class="service-circle">
+        <svg-icon icon-class="service" class="icons"></svg-icon>
+      </div>
+    </div>
 
     <div id="whereGo">
       <div class="whereGoitem">
@@ -26,7 +45,6 @@
 </template>
 
 <script>
-import { Tabbar, TabbarItem } from 'vux';
 import searchBar from '../../../view/station-search/index';
 import BikeStations from '../../bike-stations/index';
 
@@ -37,6 +55,11 @@ export default {
     BikeStations,
     searchBar,
   },
+  // data() {
+  //   return {
+  //     gifImg: require('@/assets/redEnvelope.gif'),
+  //   };
+  // },
 };
 </script>
 
@@ -46,6 +69,40 @@ export default {
     position: relative;
     /*background: #fbc4c4;*/
   }
+  .suspend-icons {
+    display:inline;
+    padding: 10px 0;
+    position: absolute;
+    bottom:165px;
+    z-index:500;
+  }
+  .reservation-circle, .location-circle, .service-circle {
+    border-radius: 50%;
+    background-color: rgb(255, 87, 123);
+    height:30px;
+    width:30px;
+    position:absolute;
+    text-align: center;
+  }
+  .suspend-icons > .reservation-circle,  .suspend-icons > .location-circle{
+    left:20px;
+  }
+  .suspend-icons > .service-circle, .suspend-icons > .red-envelope-circle{
+    left:320px;
+  }
+  .suspend-icons > .location-circle, .suspend-icons > .service-circle {
+  }
+  .icons{
+    display:block;
+    position:absolute;
+  }
+
+  .reservation-circle > .icons, .location-circle > .icons, .service-circle > .icons  {
+    position:relative;
+    top: calc(55% - 10px);
+    left:calc(24%);
+  }
+
   #whereGo {
     display: flex;
     position: fixed;
@@ -56,6 +113,7 @@ export default {
     height:60px;
     background-color: #ffffff;
     border-radius: 3px;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
     .whereGoitem {
       display: block;
       -webkit-box-flex: 1;

@@ -100,7 +100,7 @@ export default {
           lat: String(obj.location.lat),
           des: obj.name,
         };
-      } else if(this.$route.params.searchType === 1) {
+      } else if (this.$route.params.searchType === 1) {
         SearchResults.endLocation = {
           lng: String(obj.location.lng),
           lat: String(obj.location.lat),
@@ -111,7 +111,7 @@ export default {
       this.insertSearchLog(obj);
     },
     insertSearchLog(obj) {
-      //上传数据
+      // 上传数据
       console.log(obj);
       insertSearchLog(obj.district, obj.name, obj.location.lng, obj.location.lat).then((response) => {
         console.log(response);

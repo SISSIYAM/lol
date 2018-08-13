@@ -21,7 +21,7 @@
 <script>
 import MapMethod from '../../utils/map';
 
-import { getStationByGPS } from '../../api/shareStation';
+import { getStationByGPS, getParkRegionByType } from '../../api/shareStation';
 
 import SearchResults from '../station-search/searchResults';
 
@@ -73,6 +73,8 @@ export default {
 
     // 更新站点信息
     this.updateStationInfo();
+    this.searchBlueArea();
+
   },
   methods: {
     initMap() {
@@ -104,9 +106,9 @@ export default {
         lng: data.lng,
         lat: data.lat,
       };
-      const icon = MapMethod.createMapIcon('http://utsmarthomeplatform.oss-cn-shenzhen.aliyuncs.com/commonFile_uploadFile/014ac347622c4ffdbae0d832fcfc84ba.png', {
-        width: 36,
-        height: 43,
+      const icon = MapMethod.createMapIcon('http://utsmarthomeplatform.oss-cn-shenzhen.aliyuncs.com/commonFile_uploadFile/f8961434c01d43d7a87f88dfad7b5866.png', {
+        width: 20,
+        height: 20,
       });
       this.userMarker = MapMethod.createMarker({
         map: this.map,
@@ -134,6 +136,14 @@ export default {
     },
     /**
      *
+     * 重新定位到用户当前位置
+     *
+     * */
+    setUserMapCenter() {
+      MapMethod.setMapCenter(ShareAPI.userLocation.lng, ShareAPI.userLocation.lat, 14);
+    },
+    /**
+     *
      *
      * 拖拽地图后的事件
      *
@@ -146,7 +156,7 @@ export default {
         lng: String(positionResult.position.lng),
         des: positionResult.regeocode.pois[0].name,
       };
-      this.searchNearbyStations();
+      this.judgeLocationIsAvaliable();
       this.updateStationInfo();
       this.stationName = SearchResults.searchLocation.des;
     },
@@ -161,8 +171,13 @@ export default {
       const self = this;
       clearInterval(this.stationTimer);
       this.stationTimer = setInterval(() => {
-        self.searchNearbyStations();
+        self.judgeLocationIsAvaliable();
       }, 60000);
+    },
+    judgeLocationIsAvaliable() {
+      if (SearchResults.searchLocation.lng !== 0 && SearchResults.searchLocation.lat.length !== 0) {
+        self.searchNearbyStations();
+      }
     },
     /**
      *
@@ -175,11 +190,36 @@ export default {
       const myThis = this;
       getStationByGPS(1, SearchResults.searchLocation.lng, SearchResults.searchLocation.lat).then((response) => {
         console.log(JSON.stringify(response));
+        console.log('json格式' + typeof response);
         if (response.data.code === 200) {
           myThis.allStations = myThis.changeMarkImage(response.data.data);
         }
       }).catch((error) => {
         console.log(error);
+      });
+    },
+    /**
+     *
+     * 获得电子围栏区域
+     *
+     * */
+    searchBlueArea() {
+      const self = this;
+      getParkRegionByType(3, -1).then((response) => {
+        console.log('电子围栏');
+        console.log(response);
+        if (response.data.code === 200) {
+          response.data.data.forEach((value) => {
+            const poiArr = [];
+            value.parkRegionDetailList.forEach((poi) => {
+              const p = MapMethod.createPoint({'lng': poi.longitude, 'lat': poi.latitude});
+              poiArr.push(p);
+            });
+            MapMethod.drawPolygon(poiArr, self.map);
+          });
+        }
+      }).catch((error) => {
+
       });
     },
     /**
@@ -300,6 +340,7 @@ export default {
       -webkit-border-radius: 20px;
       -moz-border-radius: 20px;
       background: white;
+      box-shadow: 2px 2px 2px rgba(0,0,0, 0.1);
       .search_icon {
         width: 10px;
       }
@@ -307,7 +348,7 @@ export default {
         /*width: 150px;*/
         margin-left: 10px;
         font-size: 10px;
-        color:#999999;
+        color: lightgray;
         text-align: center;
       }
     }

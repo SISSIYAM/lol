@@ -63,7 +63,7 @@ export default {
         }
         self.$store.dispatch('AfterUserSignupfillInfo', registerForm).then((response) => {
           console.log(response.data);
-          if (response.data.code !== 200) {
+          if (response.data.code === 200) {
             self.$router.push('/');
             self.showTotal('提示信息', '完善信息出现错误');
           } else {

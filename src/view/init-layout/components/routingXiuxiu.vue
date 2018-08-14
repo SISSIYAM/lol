@@ -5,7 +5,9 @@
     <bike-stations></bike-stations>
     <div class="suspend-icons">
       <div class="reservation-circle">
+        <router-link :to="({path:'/stationOrder'})">
         <svg-icon icon-class="noreservation" class="icons"></svg-icon>
+        </router-link>
       </div>
       <div class="red-envelope-circle">
         <a>
@@ -15,10 +17,10 @@
     </div>
     <br>
     <div class="suspend-icons">
-      <div class="location-circle">
+      <div class="location-circle" @click="getUserLocation">
         <svg-icon icon-class="location" class="icons"></svg-icon>
       </div>
-      <div class="service-circle">
+      <div class="service-circle" @click="callCustomer">
         <svg-icon icon-class="service" class="icons"></svg-icon>
       </div>
     </div>
@@ -55,11 +57,6 @@ export default {
     BikeStations,
     searchBar,
   },
-  // data() {
-  //   return {
-  //     gifImg: require('@/assets/redEnvelope.gif'),
-  //   };
-  // },
 };
 </script>
 

@@ -129,7 +129,7 @@ const user = {
           commit('SET_TELNO', data.telNo);
           commit('SET_CREATETIME', data.createTime);
           commit('SET_AUTHCODE', true);
-          ShareBikeApi.saveUserInfo(data);
+          // ShareBikeApi.saveUserInfo(data);
           resolve();
         }).catch((error) => {
           reject(error);
@@ -144,8 +144,8 @@ const user = {
       return new Promise((resolve, reject) => {
         loginByMobileVerifCode(userPhone, userCheck).then((response) => {
           const data = response.data;
-          if (data.msg === '登陆成功') {
-            commit('SET_TOKEN', data.uuid);
+          if (data.code === 200) {
+            commit('SET_TOKEN', data.msg);
           }
           resolve(response);
         }).catch((error) => {
@@ -183,7 +183,13 @@ const user = {
       return new Promise((resolve) => {
         afterUserSignupfillInfo(name, password).then((response) => {
           const data = response.data;
-          commit('SET_USERNAME', data);
+          if (data.code === 200) {
+            commit('SET_AUTHCODE', true);
+            commit('SET_USERNAME', data.name);
+            commit('SET_TOKEN', data.uuid);
+            commit('SET_TELNO', data.telNo);
+            commit('SET_CREATETIME', data.createTime);
+          }
           resolve(response);
         }).catch(() => {});
       });
@@ -201,7 +207,7 @@ const user = {
           commit('SET_HEADPIC', '');
           commit('SET_TELNO', '');
           commit('SET_CREATETIME', '');
-          ShareBikeApi.deleteUser();
+          // ShareBikeApi.deleteUser();
         }
       }).catch();
     },

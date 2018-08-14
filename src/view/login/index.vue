@@ -205,14 +205,14 @@ export default {
       };
       self.$store.dispatch('GetMobileVerifCode', mobile1).then((response) => {
         console.log(response.data);
-        if (response.data.code === 200) {
-          self.$router.push({ path: '/' });
-        } else {
-          self.$vux.confirm.show({
-            title: '提示',
-            content: '完善信息失败！',
-          });
-        }
+        // if (response.data.code === 200) {
+        //   self.$router.push({ path: '/' });
+        // } else {
+        //   self.$vux.confirm.show({
+        //     title: '提示',
+        //     content: '完善信息失败！',
+        //   });
+        // }
       }).catch(() => {});
       return true;
     },

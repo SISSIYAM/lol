@@ -65,9 +65,9 @@ export default {
           console.log(response.data);
           if (response.data.code === 200) {
             self.$router.push('/');
-            self.showTotal('提示信息', '完善信息出现错误');
+            self.showTotal('提示信息', '完善信息成功');
           } else {
-            self.$router.push('/');
+            self.showTotal('提示信息', '完善信息失败');
           }
         }).catch((error) => {
           console.log(error);

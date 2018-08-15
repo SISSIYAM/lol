@@ -2,27 +2,22 @@
   <div class="routing-xiuxiu-container">
 
     <!--显示地图-->
-    <bike-stations></bike-stations>
-    <div class="suspend-icons">
-      <div class="reservation-circle">
-        <router-link :to="({path:'/stationOrder'})">
+    <bike-stations ref="bikeStation"></bike-stations>
+    <div class="reservation-circle">
+      <router-link :to="({path:'/stationOrder'})">
         <svg-icon icon-class="noreservation" class="icons"></svg-icon>
-        </router-link>
-      </div>
-      <div class="red-envelope-circle">
-        <a>
-        <img v-bind:src="gifImg">
-        </a>
-      </div>
+      </router-link>
     </div>
-    <br>
-    <div class="suspend-icons">
-      <div class="location-circle" @click="getUserLocation">
-        <svg-icon icon-class="location" class="icons"></svg-icon>
-      </div>
-      <div class="service-circle" @click="callCustomer">
-        <svg-icon icon-class="service" class="icons"></svg-icon>
-      </div>
+    <div class="red-envelope-circle">
+      <a>
+        <img v-bind:src="gifImg">
+      </a>
+    </div>
+    <div class="location-circle" @click="getUserLocation">
+      <svg-icon icon-class="location" class="icons"></svg-icon>
+    </div>
+    <div class="service-circle" @click="callCustomer">
+      <svg-icon icon-class="service" class="icons"></svg-icon>
     </div>
 
     <div id="whereGo">
@@ -49,13 +44,27 @@
 <script>
 import searchBar from '../../../view/station-search/index';
 import BikeStations from '../../bike-stations/index';
+import ShareAPI from '../../../utils/sharebikeCordovaApi';
 
 
 export default {
   name: 'routingXiuxiu',
+  data() {
+    return {
+      gifImg: 'http://utsmarthomeplatform.oss-cn-shenzhen.aliyuncs.com/commonFile_uploadFile/29f7a91a89544c05bbb3b50beba9b278.gif',
+    };
+  },
   components: {
     BikeStations,
     searchBar,
+  },
+  methods: {
+    getUserLocation() {
+      this.$refs.bikeStation.setUserMapCenter();
+    },
+    callCustomer() {
+      ShareAPI.callPhone('18610282461');
+    },
   },
 };
 </script>
@@ -66,38 +75,43 @@ export default {
     position: relative;
     /*background: #fbc4c4;*/
   }
-  .suspend-icons {
+  .reservation-circle, .red-envelope-circle, .location-circle, .service-circle{
     display:inline;
-    padding: 10px 0;
     position: absolute;
-    bottom:165px;
-    z-index:500;
+    z-index: 500;
+  }
+  .reservation-circle{
+    bottom: 140px;
+    left: 10px;
+  }
+  .red-envelope-circle{
+    bottom: 140px;
+    right: 3px;
+    img{
+      width: 44px;
+    }
+  }
+  .location-circle{
+    bottom: 89px;
+    left: 10px;
+  }
+  .service-circle{
+    bottom: 89px;
+    right: 10px;
   }
   .reservation-circle, .location-circle, .service-circle {
     border-radius: 50%;
-    background-color: rgb(255, 87, 123);
+    background-color: #FFFFFF;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
     height:30px;
     width:30px;
     position:absolute;
     text-align: center;
   }
-  .suspend-icons > .reservation-circle,  .suspend-icons > .location-circle{
-    left:20px;
-  }
-  .suspend-icons > .service-circle, .suspend-icons > .red-envelope-circle{
-    left:320px;
-  }
-  .suspend-icons > .location-circle, .suspend-icons > .service-circle {
-  }
   .icons{
     display:block;
     position:absolute;
-  }
-
-  .reservation-circle > .icons, .location-circle > .icons, .service-circle > .icons  {
-    position:relative;
-    top: calc(55% - 10px);
-    left:calc(24%);
+    padding: calc(55% - 10px) calc(24%);
   }
 
   #whereGo {

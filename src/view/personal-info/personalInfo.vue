@@ -3,31 +3,13 @@
     <title-com :to-path-url="url" class="titleCom"></title-com>
     <div class="wrapper_back">
       <div class="infoWrapper">
-        <div class="rowDiv" @click="onClick">
+        <div class="rowDiv" @click="onClick" v-show="showCell">
           <p class="txt">头像</p>
           <svg-icon icon-class="icon_male"  class="user-image"></svg-icon>
           <svg-icon icon-class="right_arrow" class="right-arrow"></svg-icon>
             <!--<input type="file" @change="onfile"/>-->
             <!--<button @click="uploading">uploading</button>-->
         </div>
-        <popup :show.sync="show" class="vux-popup-picker" id="" @on-hide="onPopupHide"
-               @on-show="$emit('on-show')" >
-          <div class="vux-popup-picker-container">
-            <div class="vux-popup-picker-header">
-              <flexbox>
-                <flexbox-item style="text-align:left;padding-left:15px;line-height:44px;"
-                              @click="onHide(false)">取消
-                </flexbox-item>
-                <flexbox-item style="text-align:right;padding-left:15px;line-height:44px;"
-                              @click="onHide(true)">确定
-                </flexbox-item>
-              </flexbox>
-            </div>
-            <picker :data="data" :value.sync="tempValue" @on-change="onPickerChange"
-                    :columns="columns" :fixed-columns="fixedColumns">
-            </picker>
-          </div>
-        </popup>
         <div class="line"></div>
         <router-link :to="{path:'/changeName'}" class="rowDiv2">
           <p class="txt">昵称</p>
@@ -53,7 +35,6 @@
 </template>
 
 <script>
-import { Popup, Picker, Flexbox, FlexboxItem } from 'vux';
 import titleCom from '../login/components/titleCom';
 import store from '../../store';
 import { formatDate } from '../../filters/date';
@@ -79,11 +60,7 @@ export default {
     };
   },
   components: {
-    FlexboxItem,
     titleCom,
-    Popup,
-    Picker,
-    Flexbox,
   },
   props: {
     title: String,
@@ -254,24 +231,6 @@ export default {
     align-items: center;
     position: relative;
   }
-  .sexChange{
-    width: 80%;
-    height: 60px;
-    .weui-cells{
-      margin: 0px 0px;
-      padding: 0px 0px;
-      height: 60px;
-    }
-    .weui-cell_access,.weui-cell__ft{
-      padding: 0px 0px;
-    }
-    .weui-cell,.vux-tap-active,.weui-cell_access{
-      height: 60px;
-    }
-    .vux-cell-value{
-      margin-right: 11px;
-    }
-  }
   .user-image {
     width: 58px !important;
     height: 58px !important;
@@ -288,15 +247,5 @@ export default {
     color: #333333;
     font-weight:lighter;
     margin-left: 3px;
-  }
-  .vux-popup-picker {
-    border-top: 1px solid #04BE02;
-  }
-  .vux-popup-picker-header {
-    height: 44px;
-    color: #04BE02;
-  }
-  .vux-popup-picker-value {
-    display: inline-block;
   }
 </style>

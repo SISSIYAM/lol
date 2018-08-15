@@ -130,7 +130,7 @@ const user = {
           commit('SET_CREATETIME', data.createTime);
           commit('SET_AUTHCODE', true);
           // ShareBikeApi.saveUserInfo(data);
-          resolve();
+          resolve(response);
         }).catch((error) => {
           reject(error);
         });

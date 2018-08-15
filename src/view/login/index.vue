@@ -122,9 +122,12 @@ export default {
             userPhone,
             password,
           };
-          self.$store.dispatch('LoginByUserAccount', loginForm).then(() => {
-            console.log('test');
-            self.$router.push({ path: '/' });
+          self.$store.dispatch('LoginByUserAccount', loginForm).then((response) => {
+            const data = response.data;
+            if (data === 200) {
+              console.log('test');
+              self.$router.push({ path: '/' });
+            }
           }).catch(() => {});
         }
       } else if (self.loginType === 'verifyCode') {

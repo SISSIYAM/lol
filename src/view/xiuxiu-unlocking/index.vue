@@ -24,112 +24,112 @@
 				<p class="canclePicker">取消</p>
 				<p class="subTitleName">车辆类型</p>
 				<p class="openPicker">开锁</p>
-			</div>	
+			</div>
 			<picker></picker>
 		</div>
   </div>
 </template>
 
 <script>
-	
-	import Picker from './picker';
+
+import Picker from './picker';
 
 export default {
   components: {
-		Picker,
-	},
-  data() {
-		return {
-			titleName: "咻咻开锁",
-			msgList: [],
-			gridData: [{date: '共享车桩'}, {date: '私人车桩'}],
-			bikeDockListBox: true,
-			pickerVisiliable: false,
-			}
+    Picker,
   },
-	created() {
-		if (true) {
-			this.msgList = [
-				{
-					id: 10086,
-					title: "001车桩",
-					content: "111111",
-					type: 1,
-					status: 0,
-					createTime: "2018/04/06"
-				},
-				{id: 10086, title: "002车桩", content: "私人单车", type: 1, status: 1, createTime: "2018/04/06"},
-				{id: 10086, title: "003车桩", content: "空闲车桩", type: 1, status: 0, createTime: "2018/04/06"},
-				{id: 10086, title: "004车桩", content: "空闲车桩", type: 1, status: 0, createTime: "2018/04/06"},
-			];
-		 this.bleDeviceList = [{"name":"#12345"},
-														{"name":"#34467"},
-														{"name":"#34567"},
-														{"name":"#34667"},
-														{"name":"#35567"}
-			];
-		} else {
-			this.list();
-		}
-	},
-    methods: {
-			//打开picker
-			openPickerFunction() {
-				this.pickerVisiliable = !this.pickerVisiliable;
-			},
-      backPrePage: function () {
-				this.$router.go(-1);
-      },
-      toMsgPage: function (index) {
-
-//         //未读消息标记为已读
-//         if (this.msgList[index].status == 0) {
-//           var _this = this;
-//           this.$http.post('/notify/setNotifyRead',
-//             {
-//               notifyId: _this.msgList[index].id,
-//             }).then(function (response) {
-//             console.log(response.data);
-//             if (response.data.code != 200) {
-//               console.log("标记已读失败")
-//             } else {
-//               console.log("标记已读成功")
-//             }
-//           }).catch((err) => {
-//             console.log("标记已读失败:" + err);
-//           })
-// 
-//         }
-// 
-//         this.$router.push({
-//           path: '/msg_page',
-//           name: 'msg_page',
-//           params: {
-//             msgObj: this.msgList[index]
-//           }
-//         })
-
-      },
-      list: function () {
-//         var _this = this;
-//         this.$http.post('/notify/pullAllNotify', {
-// 
-//         }).then(function (response) {
-//           console.log(response.data);
-//           if (response.data.code != 200) {
-//             console.log("获取消息失败")
-//             _this.showTotal("提示信息", "获取消息失败", '');
-//           } else {
-//             _this.msgList = response.data.data;
-//             console.log("获取消息成功" + JSON.stringify(_this.msgList))
-//           }
-//         }).catch((err) => {
-//           console.log("获取消息失败:" + err);
-//         })
-//       }
+  data() {
+    return {
+      titleName: '咻咻开锁',
+      msgList: [],
+      gridData: [{ date: '共享车桩' }, { date: '私人车桩' }],
+      bikeDockListBox: true,
+      pickerVisiliable: false,
+    };
+  },
+  created() {
+    if (true) {
+      this.msgList = [
+        {
+          id: 10086,
+          title: '001车桩',
+          content: '111111',
+          type: 1,
+          status: 0,
+          createTime: '2018/04/06',
+        },
+        { id: 10086, title: '002车桩', content: '私人单车', type: 1, status: 1, createTime: '2018/04/06' },
+        { id: 10086, title: '003车桩', content: '空闲车桩', type: 1, status: 0, createTime: '2018/04/06' },
+        { id: 10086, title: '004车桩', content: '空闲车桩', type: 1, status: 0, createTime: '2018/04/06' },
+      ];
+		 this.bleDeviceList = [{ name: '#12345' },
+        { name: '#34467' },
+        { name: '#34567' },
+        { name: '#34667' },
+        { name: '#35567' },
+      ];
+    } else {
+      this.list();
+    }
+  },
+  methods: {
+    // 打开picker
+    openPickerFunction() {
+      this.pickerVisiliable = !this.pickerVisiliable;
     },
-  }
-}
+    backPrePage() {
+      this.$router.go(-1);
+    },
+    toMsgPage(index) {
+
+      //         //未读消息标记为已读
+      //         if (this.msgList[index].status == 0) {
+      //           var _this = this;
+      //           this.$http.post('/notify/setNotifyRead',
+      //             {
+      //               notifyId: _this.msgList[index].id,
+      //             }).then(function (response) {
+      //             console.log(response.data);
+      //             if (response.data.code != 200) {
+      //               console.log("标记已读失败")
+      //             } else {
+      //               console.log("标记已读成功")
+      //             }
+      //           }).catch((err) => {
+      //             console.log("标记已读失败:" + err);
+      //           })
+      //
+      //         }
+      //
+      //         this.$router.push({
+      //           path: '/msg_page',
+      //           name: 'msg_page',
+      //           params: {
+      //             msgObj: this.msgList[index]
+      //           }
+      //         })
+
+    },
+    list() {
+      //         var _this = this;
+      //         this.$http.post('/notify/pullAllNotify', {
+      //
+      //         }).then(function (response) {
+      //           console.log(response.data);
+      //           if (response.data.code != 200) {
+      //             console.log("获取消息失败")
+      //             _this.showTotal("提示信息", "获取消息失败", '');
+      //           } else {
+      //             _this.msgList = response.data.data;
+      //             console.log("获取消息成功" + JSON.stringify(_this.msgList))
+      //           }
+      //         }).catch((err) => {
+      //           console.log("获取消息失败:" + err);
+      //         })
+      //       }
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -286,7 +286,7 @@ export default {
 		font-size: 10px;
 		color: red;
 		vertical-align: middle;
-		font-family: PingFangBold; 
+		font-family: PingFangBold;
 	}
 	/*********picker *********/
 	.picker {
@@ -312,7 +312,7 @@ export default {
 		font-size: 12px;
 		color: black;
 		vertical-align: middle;
-		font-family: PingFangBold; 
+		font-family: PingFangBold;
 	}
 	.openPicker {
 		line-height: 64px;
@@ -324,7 +324,7 @@ export default {
 		font-size: 12px;
 		color: black;
 		vertical-align: middle;
-		font-family: PingFangBold; 
+		font-family: PingFangBold;
 	}
-	
+
 </style>

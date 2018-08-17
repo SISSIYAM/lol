@@ -3,14 +3,14 @@
     <popup
       v-model="showValue"
       class="vux-popup-picker"
-      :id="`vux-popup-picker-${uuid}`"
       @on-hide="onPopupHide"
       @on-show="onPopupShow"
       :popup-style="popupStyle">
       <div class="vux-popup-picker-container">
         <popup-header
-          :left-text="cancelText || $t('cancel_text')"
-          :right-text="confirmText || $t('confirm_text')"
+          class="vux-popup-picker-header"
+          left-text="取消"
+          right-text="确定"
           @on-click-left="onHide(false)"
           @on-click-right="onHide(true)"
           :title="popupTitle"></popup-header>
@@ -20,7 +20,6 @@
           @on-change="onPickerChange"
           :columns="columns"
           :fixed-columns="fixedColumns"
-          :container="'#vux-popup-picker-'+uuid"
           :column-width="columnWidth"></picker>
       </div>
     </popup>
@@ -28,17 +27,43 @@
 </template>
 
 <script>
-import { Popup, Picker } from 'vux';
+import { Popup, Picker, TransferDom, PopupHeader } from 'vux';
 
 export default {
   name: 'index',
+  directives: {
+    TransferDom,
+  },
   components: {
     Popup,
     Picker,
+    PopupHeader,
+    TransferDom,
+  },
+  props: {
+    fixedColumns: {
+      type: Number,
+      default: 0,
+    },
+    popupTitle: String,
+  },
+  data() {
+    return {
+      showValue: false,
+    };
+  },
+  methods: {
+
   },
 };
 </script>
 
 <style scoped>
-
+  .vux-popup-picker-header {
+    display: flex;
+    height: 44px;
+    line-height: 44px;
+    font-size: 16px;
+    background-color: #fbf9fe;
+  }
 </style>

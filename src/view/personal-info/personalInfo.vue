@@ -3,7 +3,7 @@
     <title-com :to-path-url="url" class="titleCom"></title-com>
     <div class="wrapper_back">
       <div class="infoWrapper">
-        <div class="rowDiv" @click="onClick" v-show="showCell">
+        <div class="rowDiv" v-on:click="onClick">
           <p class="txt">头像</p>
           <svg-icon icon-class="icon_male"  class="user-image"></svg-icon>
           <svg-icon icon-class="right_arrow" class="right-arrow"></svg-icon>
@@ -31,6 +31,7 @@
         </div>
       </div>
     </div>
+    <popup-picker v-on:showValue="showValue"></popup-picker>
   </div>
 </template>
 
@@ -39,6 +40,7 @@ import titleCom from '../login/components/titleCom';
 import store from '../../store';
 import { formatDate } from '../../filters/date';
 import { uploadingImg } from '../../api/userDetails';
+import popupPicker from '../../components/popupPicker';
 
 const getObject = function (obj) {
   return JSON.parse(JSON.stringify(obj));
@@ -61,6 +63,7 @@ export default {
   },
   components: {
     titleCom,
+    popupPicker,
   },
   props: {
     title: String,
@@ -104,8 +107,8 @@ export default {
     },
 
     onClick() {
-      console.log('test');
-      this.show = true;
+      console.log('选择上传头像方式');
+      this.$emit('showValue');
     },
 
     onHide(type) {

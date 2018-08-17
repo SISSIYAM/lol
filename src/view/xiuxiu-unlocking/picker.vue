@@ -1,31 +1,31 @@
 <template>
   <div>
     <picker :data='years' v-model='year1' @on-change='change'></picker>
-	</div>
+  </div>
 </template>
 
 <script>
-import { Picker } from 'vux'
+import { Picker } from 'vux';
 
-	let years = []
-  years.push({name:'共享单车',value: '1'})
-	years.push({name:'私人单车',value: '2'})
-	
+const years = [];
+years.push({ name: '共享单车', value: '1' });
+years.push({ name: '私人单车', value: '2' });
+
 export default {
-	name: 'mypicker',
+  name: 'mypicker',
   components: {
     Picker,
   },
-  data () {
+  data() {
     return {
       years: [years],
       year1: [''],
-		}
-	},
-	methods: {
-		change (value) {
-			console.log('new value',value)
-		}
-	}
-}
+    };
+  },
+  methods: {
+    change(value) {
+      console.log('new value', value);
+    },
+  },
+};
 </script>

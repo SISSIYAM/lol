@@ -6,9 +6,6 @@
           <span style="color: black;">密码</span>
         </div>
       </template>
-      <i slot="suffix" class="el-input__icon el-icon-circle-close-outline"
-         @click="clearPassword">
-      </i>
       <i slot="suffix" class="el-input__icon el-icon-view" @click="showPwd"></i>
     </el-input>
   </div>
@@ -31,9 +28,6 @@ export default {
       } else {
         this.TextType = 'password';
       }
-    },
-    clearPassword() {
-      this.value = '';
     },
 
   },

@@ -58,7 +58,6 @@ export default {
     width: auto;
     text-align: center;
     font-size: 13px;
-    margin-top:13px;
   }
 
   .title_text{

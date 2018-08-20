@@ -6,7 +6,6 @@
       <div class="head_right_sure" @click="sureClick">确定</div>
 
     </div>
-    <div class="line"></div>
     <div class="select">
       <picker class="picker" :data='timeArray' :columns=2 v-model='currentValue' @on-change='change'></picker>
     </div>
@@ -141,8 +140,10 @@ export default {
     background: white;
     .head {
       width: 100%;
-      height: 40px;
+      height: 52px;
       background: white;
+      border-bottom: 1px solid #E5E5E5;
+      box-sizing: border-box;
     }
     .head_left_delete {
       /*width: 20px;*/
@@ -152,12 +153,6 @@ export default {
     .head_center {
       width: 100px;
       text-align: center;
-    }
-    .line{
-      width: calc(100vw - 20px);
-      height: 1px;
-      background: #E2E2E2;
-      margin: 0 auto;
     }
     .picker .scroller-item{
       height: 50px;

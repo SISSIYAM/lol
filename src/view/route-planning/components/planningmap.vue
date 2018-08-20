@@ -18,6 +18,8 @@ export default {
       calIndex: 0,
       lineList: [],
       lineMarker: [],
+      rideAllTime: 0,
+      rideAllLength: 0,
     };
   },
   mounted() {
@@ -41,6 +43,8 @@ export default {
     beginDrawRoad(value) {
       this.allLength = 0;
       this.allTime = 0;
+      this.rideAllTime = 0;
+      this.rideAllLength = 0;
       this.lineList = [];
       value.forEach((data, index) => {
         console.log(index);
@@ -75,11 +79,13 @@ export default {
                 results,
                 index,
                 tripType,
+                'line': value[index],
               });
               this.judgeCalIsEnd(value);
             });
             break;
           case 1:
+
             MapMethod.beginDrawRideLine({
               map: this.map,
               city: '珠海',
@@ -96,11 +102,14 @@ export default {
             }, (results, index, tripType) => {
               this.calculatorLengthAndTime(results, 1);
               this.calIndex += 1;
-
+              const getArr = value[index].stationNames.split(',');
               this.lineList.push({
                 results,
                 index,
                 tripType,
+                'getStation': getArr[0],
+                'putStation': getArr[1],
+                'line': value[index],
               });
               this.judgeCalIsEnd(value);
             });
@@ -122,11 +131,11 @@ export default {
             }, data.index, (results, index, tripType) => {
               this.calculatorLengthAndTime(results, 2);
               this.calIndex += 1;
-
               this.lineList.push({
                 results,
                 index,
                 tripType,
+                'line': value[index],
               });
               this.judgeCalIsEnd(value);
             });
@@ -155,10 +164,16 @@ export default {
           break;
         case 1:
           // 骑行的
+          const ridelength = data.routes[0].distance;
+          const ridetime = data.routes[0].time;
+          this.rideAllLength += ridelength;
+          this.rideAllTime += ridetime;
+          this.allLength = this.allLength + ridelength;
+          this.allTime = this.allTime + ridetime;
           break;
         case 2:
-          const busLength = data.distance;
-          const busTime = data.time;
+          const busLength = data.plan.distance;
+          const busTime = data.plan.time;
           console.log('time: ' + busTime);
           this.allLength = this.allLength + busLength;
           this.allTime = this.allTime + busTime;
@@ -178,7 +193,7 @@ export default {
         console.log('获得的线路');
         console.log(this.lineList);
         console.log(this.lineList.length);
-        this.$emit('getAllDetail', this.allTime, this.allLength, 0, this.lineList);
+        this.$emit('getAllDetail', this.allTime, this.allLength, this.rideAllLength, this.lineList);
         // 将数据重置
         this.calIndex = 0;
       }
@@ -245,13 +260,16 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   #planning_map{
     width: 100%;
     height: 100%;
     #map_container{
       width: 100%;
       height: 100%;
+      .amap-logo{
+        display: none;
+      }
     }
   }
 </style>

@@ -140,7 +140,7 @@ export default {
      *
      * */
     setUserMapCenter() {
-      MapMethod.setMapCenter(ShareAPI.userLocation.lng, ShareAPI.userLocation.lat, 14);
+      MapMethod.setMapCenter(ShareAPI.userLocation.lng, ShareAPI.userLocation.lat, this.map, 14);
     },
     /**
      *
@@ -176,7 +176,7 @@ export default {
     },
     judgeLocationIsAvaliable() {
       if (SearchResults.searchLocation.lng !== 0 && SearchResults.searchLocation.lat.length !== 0) {
-        self.searchNearbyStations();
+        this.searchNearbyStations();
       }
     },
     /**
@@ -326,29 +326,28 @@ export default {
   }
   .search_btn {
     width: 100%;
-    height: 40px;
+    height: 44px;
     position: absolute;
-    top: 20px;
+    top: 10px;
     .search_back {
-      width: 90%;
       height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto;
-      border-radius: 20px;
-      -webkit-border-radius: 20px;
-      -moz-border-radius: 20px;
+      margin: 0 10px;
+      border-radius: 22px;
+      -webkit-border-radius: 22px;
+      -moz-border-radius: 22px;
       background: white;
-      box-shadow: 2px 2px 2px rgba(0,0,0, 0.1);
+      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
       .search_icon {
         width: 10px;
       }
       .search_value{
         /*width: 150px;*/
-        margin-left: 10px;
-        font-size: 10px;
-        color: lightgray;
+        margin-left: 11px;
+        font-size: 14px;
+        color: #999999;
         text-align: center;
       }
     }

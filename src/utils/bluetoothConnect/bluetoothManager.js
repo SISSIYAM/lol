@@ -1,5 +1,6 @@
 /* eslint-disable */
 import BleManager from './BleManager';
+import Vue from 'vue';
 
 class BluetoothManager {
   // 构造函数
@@ -94,7 +95,8 @@ class BluetoothManager {
      * 蓝牙链接成功回调
      *
      * */
-    BleManager.onHandleBluetoothConnect = this.handleBluetoothConnect.bind(this);
+    // BleManager.onHandleBluetoothConnect = this.handleBluetoothConnect.bind(this);
+    BleManager.onHandleNotificationStateChanged = this.handleBluetoothConnect.bind(this);
 
     /**
      *
@@ -119,6 +121,22 @@ class BluetoothManager {
     // 打开Blemanager，用来接收原生回调的信息，信息返回在blemanager中
     BleManager.open();
   }
+
+  // 对外函数
+  // 开始链接
+  // connectBluetoothWithMac(mac) {
+  //   // 判断蓝牙是否打开
+  //   this.enableBluetooth(() => {
+  //
+  //   }, () => {
+  //     Vue.$vux.alert.show({
+  //       title: '提示',
+  //       content: '请打开蓝牙',
+  //     });
+  //   });
+  // }
+
+
   // ---------------------------------------------------------------------------------
   // 判断蓝牙是否打开
   // ---------------------------------------------------------------------------------
@@ -152,6 +170,9 @@ class BluetoothManager {
       console.log(error);
     });
   }
+  stopScanBlue() {
+    BleManager.stopScan();
+  }
   // 蓝牙扫描关闭了
   handleStopScan() {
     this.onHandleStopScan();
@@ -182,6 +203,7 @@ class BluetoothManager {
     // console.log('蓝牙链接成功: ' + data);
   }
 
+
   // ---------------------------------------------------------------------------------
   // 断开蓝牙
   // ---------------------------------------------------------------------------------
@@ -207,11 +229,13 @@ class BluetoothManager {
   // ---------------------------------------------------------------------------------
   // 开锁
   openBlueLock(peripheral) {
+    console.log('开锁');
     const data = [0xa5, 0x5a, 0x00, 0x05, 0x03, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00];
     this.sendDataToBlue(data, peripheral);
   }
   // 关锁
   closeBlueLock(peripheral) {
+    console.log('关锁');
     const data = [0xa5, 0x5a, 0x00, 0x05, 0x03, 0x00, 0x00, 0x07, 0x01, 0x00, 0x00];
     this.sendDataToBlue(data, peripheral);
   }
@@ -254,6 +278,7 @@ class BluetoothManager {
    *
    * */
   sendOrderToGetBlueHasCar(peripheral) {
+    console.log('是否有车');
     const data = [0xa5, 0x5a, 0x00, 0x03, 0x02, 0x01, 0x00, 0x00, 0x00];
     this.sendDataToBlue(data, peripheral);
   }
@@ -307,6 +332,7 @@ class BluetoothManager {
     BleManager.sendData(data, peripheral).then(() => {
       console.log('发送成功');
     }).catch((err) => {
+      console.log(err);
       console.log('发送失败');
     });
   }

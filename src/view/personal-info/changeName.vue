@@ -44,61 +44,43 @@ export default {
     };
   },
   mounted() {
-    // if (this.$route.params.oldName) {
-    //   this.value = this.$route.params.oldName;
-    // }
+    if (this.$route.params.oldName) {
+      this.value = this.$route.params.oldName;
+    }
   },
   methods: {
     comfirmName() {
+      this.showComfir('提示信息', `确定将昵称改为${this.value}吗`);
+    },
+    showComfir(title) {
       const self = this;
-      const name = self.value;
-      const Name = {
-        name,
-      };
-      self.$store.dispatch('UpdateUserName', Name).then((response) => {
-        if (response.code === 200) {
-          self.$vux.toast.show({
-            text: '更改成功！',
-          });
-        } else {
-          self.$vux.toast.show({
-            text: '更改失败，请稍后再试！',
-          });
-        }
+      //  弹出框
+      this.$vux.confirm.show({
+        title,
+        content: self.value,
+        // 组件除show外的属性
+        onCancel() {
+          console.log('已经取消'); // 当前 vm
+        },
+        onConfirm() {
+          const Name = {
+            name: self.value,
+          };
+          self.$store.dispatch('UpdateUserName', Name).then((response) => {
+            if (response.code === 200) {
+              self.$vux.toast.show({
+                text: '更改成功！',
+              });
+            } else {
+              self.$vux.toast.show({
+                text: '更改失败，请稍后再试！',
+              });
+            }
+          }).catch();
+          self.$router.go(-1);
+        },
       });
     },
-    // comfirmName() {
-    //   this.showComfir('提示信息', `确定将昵称改为${this.value}吗`);
-    // },
-    // showComfir(title) {
-    //   const self = this;
-    //   //  弹出框
-    //   this.$vux.confirm.show({
-    //     title,
-    //     content: self.value,
-    //     // 组件除show外的属性
-    //     onCancel() {
-    //       console.log('已经取消'); // 当前 vm
-    //     },
-    //     onConfirm() {
-    //       const Name = {
-    //         name: self.value,
-    //       };
-    //       self.$store.dispatch('UpdateUserName', Name).then((response) => {
-    //         if (response.code === 200) {
-    //           self.$vux.toast.show({
-    //             text: '更改成功！',
-    //           });
-    //         } else {
-    //           self.$vux.toast.show({
-    //             text: '更改失败，请稍后再试！',
-    //           });
-    //         }
-    //       }).catch();
-    //       self.$router.go(-1);
-    //     },
-    //   });
-    // },
   },
 };
 </script>

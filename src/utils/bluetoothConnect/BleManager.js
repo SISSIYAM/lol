@@ -219,9 +219,9 @@ class BleManager {
     }
     else {
       if (peripheral.advertising.bytes != null) {
-        let checkResult = this.isUTDeviceType(peripheral.advertising.bytes)
+        let checkResult = this.isUTDeviceType(peripheral.advertising.bytes);
         if (checkResult.isUtDevice) {
-          peripheral.deviceType = checkResult.deviceType
+          peripheral.deviceType = checkResult.deviceType;
           this.onHandleDiscoverPeripheral(peripheral)
         }
       }
@@ -398,9 +398,11 @@ class BleManager {
       if (!peripheral) {
         reject('Peripheral is null')
       }
+      console.log('iiiiiiiddddd:' + peripheral.id);
       if (this.connectedPeripherals.has(peripheral.id)) {
         let p = this.connectedPeripherals.get(peripheral.id)
-        bleManager.writeWithoutResponse(peripheral.id, this.serviceUUID, this.writeCharacteristicUUID, data, 20, 30, (error) => {
+        bleManager.write(peripheral.id, this.serviceUUID, this.writeCharacteristicUUID, data, 20, (error) => {
+          console.log('返回数据错了');
           if (error) {
             reject(error)
           } else {
@@ -409,6 +411,7 @@ class BleManager {
         })
       }
       else {
+        console.log('就没进来');
         reject('Peripheral not connected')
       }
     })
@@ -454,7 +457,7 @@ class BleManager {
       queueSleepTime = 10
     }
     return new Promise((fulfill, reject) => {
-      bleManager.writeWithoutResponse(peripheralId, serviceUUID, characteristicUUID, data, maxByteSize, queueSleepTime, (error) => {
+      bleManager.write(peripheralId, serviceUUID, characteristicUUID, data, maxByteSize, (error) => {
         if (error) {
           reject(error)
         } else {

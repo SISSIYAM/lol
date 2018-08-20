@@ -1,21 +1,28 @@
+import ShareBikeApi from "../../utils/sharebikeCordovaApi";
+
 const app = {
   state: {
-    currentVersion: '',
-    emailAddress: '',
-    businessAddress: '',
-    officialWebsite: '',
-    businessCooperation: '',
+    showPicker: false,
+    pickerValue: '',
   },
   mutations: {
-    SET_CURRENTVERSION: (state, currentVersion) => {
-      state.currentVersion = currentVersion;
+    SET_SHOWPICKER: (state, showValue) => {
+      state.showPicker = showValue;
     },
-    SET_EMAILADDRESS: () => {},
-    SET_BUSNIESSADDRESS: () => {},
-    SET_OFFICIALWEBSITE: () => {},
-    SET_BUSNIESSCOOPERATION: () => {},
+    SET_PICKERVALUE: (state, pickerValue) => {
+      state.pickerValue = pickerValue;
+    },
   },
   actions: {
+    beginShowPicker({ commit }) {
+      commit('SET_SHOWPICKER', true);
+    },
+    hidePicker({ commit }) {
+      commit('SET_SHOWPICKER', false);
+    },
+    setPickerValue({ commit }, value) {
+      commit('SET_PICKERVALUE', value);
+    },
   },
 };
 

@@ -1,13 +1,13 @@
 <template>
-  <div id="stationBooking" @click="removeBooking">
-    <div class="stationInfo" v-show="isStationInfo">
-      <station-info v-on:clickOrder="clickOrder" v-bind:address="address" v-bind:address-detail="addressDetail" v-bind:free_num="free_num" v-bind:use_num="use_num"></station-info>
+  <div id="stationBooking" @click="removeBooking" :class="{'mask' : isSelectTime}">
+    <div class="stationInfo animated fadeInUp" v-show="isStationInfo && !isSelectTime">
+      <station-info v-on:clickOrder="clickOrder" v-on:beginNav='beginNav' v-bind:address="address" v-bind:address-detail="addressDetail" v-bind:free_num="free_num" v-bind:use_num="use_num"></station-info>
     </div>
-    <div class="selectTime" v-show="isSelectTime">
+    <div class="selectTime animated fadeInUp" v-show="isSelectTime">
       <booking-time ref="editTime" v-on:cancelClick="cancelClick" v-on:sureClick="sureClick"></booking-time>
     </div>
-    <div class="bookDetail" v-show="isBookingDetail">
-      <booking-detail v-on:cancelClick="cancelClick" v-on:bookingSureClick="bookingSureClick" :orderTime="orderTime" :address="headAddress" :orderNum="bookingNum" :orderType="bookingValue"></booking-detail>
+    <div class="bookDetail animated fadeInUp" v-show="isBookingDetail">
+      <booking-detail v-on:cancelClick="cancelClick" v-on:bookingSureClick="bookingSureClick" v-on:changeTime="changeTimeClick" :orderTime="orderTime" :address="headAddress" :orderNum="bookingNum" :orderType="bookingValue"></booking-detail>
     </div>
   </div>
 </template>
@@ -60,9 +60,25 @@ export default {
     setStationInfo(obj) {
       this.stationInfo = obj;
       this.headAddress = obj.description;
-      console.log(obj);
     },
-
+    /**
+     *
+     * 点击到这里进入导航
+     *
+     * */
+    beginNav() {
+      const lineObj = {
+        type: '0', // 数据类型：0：步行，1：骑行，2：公交
+        headTitle: '我的位置', // 标题，其中type为3或者4的时候，代表起点或终点的标题
+        middleTitle: '步行', // 中间的标题，type为0，1，2的时候才会存在，为0时，只有middletitle，没有其他title
+        bottomTitle: ' this.stationInfo.address', // 下面的标题，type为0，1，2的时候才会存在
+        beginLat: ShareApi.userLocation.lat, // 本段路线开始的纬度
+        beginLng: ShareApi.userLocation.lng, // 本段路线开始的经度
+        endLat: this.stationInfo.latitude, // 本段路线结束点的纬度
+        endLng: this.stationInfo.longitude, // 本段路线结束点的经度
+      };
+      ShareApi.orderLineNavigator([lineObj], [], 0);
+    },
     /**
     *
     * clickOrder：点击停车预约、取车预约按钮
@@ -83,7 +99,6 @@ export default {
       this.bookingNum = '3';
       this.$refs.editTime.setTimeArray();
     },
-
     /**
     *
     * removeBooking：移除当前界面，需要向主组件回调，通过父组件来隐藏该界面
@@ -112,7 +127,6 @@ export default {
       this.isBookingDetail = false;
       this.canHidden = true;
     //  下一步：取消所有绑定的预约内容
-
     },
     /*
     *
@@ -125,11 +139,21 @@ export default {
       this.isBookingDetail = true;
       this.isSelectTime = false;
       this.isStationInfo = false;
-      this.orderTime = String(value.getHours()) + ':' + String(value.getMinutes());
+      this.orderTime = `${String(value.getHours())}:${String(value.getMinutes())}`;
       this.timeStamp = value.getTime();
-      console.log('收到值:' + value);
+      console.log(`收到值:${value}`);
       console.log(this.free_num);
       console.log(this.stationInfo);
+    },
+    /**
+     *
+     * 更改时间
+     *
+     * */
+    changeTimeClick() {
+      this.isBookingDetail = false;
+      this.isSelectTime = true;
+      this.isStationInfo = false;
     },
     /**
      *
@@ -161,7 +185,23 @@ export default {
         console.log('预约成功');
         console.log(response);
         if (response.data.code === 200) {
+          this.$vux.alert.show({
+            title: '预约成功',
+            content: `您成功预约该站点${response.data.data.no}号车桩，请在预约列表中查看`,
+          });
           ShareApi.saveBookingStation(response.data.data);
+        }
+        if (response.data.code === 201) {
+          this.$vux.alert.show({
+            title: '预约成功',
+            content: `您已预约过该站点${response.data.msg}号车桩，请在预约列表中查看`,
+          });
+        }
+        if (response.data.code === 400) {
+          this.$vux.alert.show({
+            title: '预约失败',
+            content: '本站点已无可预约车位，请重新预约！',
+          });
         }
       }).catch((error) => {
 
@@ -195,29 +235,31 @@ export default {
 <style lang="scss" scoped>
   /*引入flex浏览器适配*/
   @import 'css/flex.css';
+  @import '../../styles/_animate.scss';
 #stationBooking{
   width: 100%;
   height: 100%;
   position: relative;
   .stationInfo {
     width: 100%;
-    height: 232px;
+    height: 271px;
     position: absolute;
     bottom: 20px;
   }
   .selectTime {
     width: 100%;
-    height: 278px;
+    height: 271px;
     position: absolute;
     bottom: 0;
   }
   .bookDetail {
     width: 100%;
-    height: 252px;
+    height: 277px;
     position: absolute;
     bottom: 20px;
   }
 }
-
-
+.mask {
+    background: rgba(0, 0, 0, 0.6);
+}
 </style>

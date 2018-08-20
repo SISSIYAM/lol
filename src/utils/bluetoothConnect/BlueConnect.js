@@ -1,7 +1,8 @@
 /* eslint-disable */
 import BluetoothManager from './bluetoothManager';
 import Vue from 'vue';
-import {lockStatusUpdate, lockStatusUpdateclose} from "../../api/shareStation";
+import {lockStatusUpdate, lockStatusUpdateclose, canOpen} from "../../api/shareStation";
+import ShareAPI from "../sharebikeCordovaApi";
 
 class BlueConnect {
   // 构造函数
@@ -23,7 +24,7 @@ class BlueConnect {
     this.openLockError = '';
     // 0:代表发送的是开锁，1：代表发送的是关锁
     this.sendValueToLock = 0;
-
+    this.hasEnoughMoney = true;
     //
     //
     BluetoothManager.onHandleStopScan = this.onHandleStopScan.bind(this);
@@ -36,23 +37,69 @@ class BlueConnect {
     BluetoothManager.onHandleFindBluetooth = this.onHandleFindBluetooth.bind(this);
   }
 
+  // 判断钱是否够，如果够了，则开始链接蓝牙
+  canOpenCarPile(mac,successCallback, errorCallback) {
+    Vue.$vux.loading.show({
+      text: '请等待...',
+    });
+    const self = this;
+    canOpen(mac).then((response) => {
+      console.log('是否有钱');
+      console.log(response);
+      Vue.$vux.loading.hide();
+      if (response.data.code === 200) {
+        if (String(response.data.data) === '-1') {
+          errorCallback();
+          // Vue.$vux.alert.show({
+          //   title: '提示',
+          //   content: '账户余额不足，请充值！',
+          // });
+          ShareAPI.showAlertView({
+            title: '提示',
+            content: '账户余额不足，请充值！',
+            rightTitle: '确定',
+            // leftTitle: '取消',
+          });
+        } else if (String(response.data.data) === '-2') {
+          errorCallback();
+          ShareAPI.showAlertView({
+            title: '提示',
+            content: '您有为支付订单，请先支付！',
+            rightTitle: '确定',
+            // leftTitle: '取消',
+          });
+        } else if (String(response.data.data) === '0') {
+          successCallback();
+        }
+      }
+    }).catch((error) => {
+      Vue.$vux.loading.hide();
+    });
+  }
+
+
   // ----------------------------------------------------------------------
   // 链接蓝牙
   // ----------------------------------------------------------------------
-  connectBluetoothWidhMac(mac, successCallBack, errorCallBack) {
+  connectBluetoothWithMac(mac, successCallBack, errorCallBack) {
+    if (this.currentBlueMac === mac) {
+      return;
+    }
     this.currentBlueMac = mac;
     // 1。开始搜索
     BluetoothManager.enableBluetooth(() => {
-      // Vue.$vux.loading.show({
-      //   text: '正在搜索蓝牙...',
-      // });
       BluetoothManager.beginSearchNearbyBlue();
       this.connectSuccessCallBack = successCallBack;
     }, () => {
       Vue.$vux.loading.hide();
-      Vue.$vux.alert.show({
+      // Vue.$vux.alert.show({
+      //   title: '提示',
+      //   content: '请打开蓝牙',
+      // });
+      ShareAPI.showAlertView({
         title: '提示',
-        content: '请打开蓝牙',
+        content: '请打开蓝牙！',
+        rightTitle: '确定',
       });
       errorCallBack();
     });
@@ -177,28 +224,27 @@ class BlueConnect {
   onHandleBluetoothDisConnect(data) {
     console.log('蓝牙断开了');
     // 如果调用了获得车桩中是否有车的方法，则上传车桩中是否有车
-    if (this.isSendCar === true) {
-      if (this.hasCar === '无车') {
-        lockStatusUpdate(this.currentBlueMac).then((response) => {
-          console.log('车位状态已经上传');
-
-        }).catch((error) => {
-
-        });
-      } else if (this.hasCar === '有车') {
-        lockStatusUpdateclose(this.currentBlueMac).then((response) => {
-          console.log('车位状态已经上传');
-        }).catch((error) => {
-
-        });
-      }
-    }
+    // if (this.isSendCar === true) {
+    //   if (this.hasCar === '无车') {
+    //     lockStatusUpdate(this.currentBlueMac).then((response) => {
+    //       console.log('车位状态已经上传');
+    //
+    //     }).catch((error) => {
+    //
+    //     });
+    //   } else if (this.hasCar === '有车') {
+    //     lockStatusUpdateclose(this.currentBlueMac).then((response) => {
+    //       console.log('车位状态已经上传');
+    //     }).catch((error) => {
+    //
+    //     });
+    //   }
+    // }
+    this.onBlueDisConnect(this.currentBlueMac);
     this.isSendCar = false;
     if (this.isHasCarTimer) {
       this.isHasCarTimer.clearInterval();
     }
-
-
     // 当前蓝牙地址
     this.currentBlueMac = '';
     // 正在链接的蓝牙
@@ -216,6 +262,12 @@ class BlueConnect {
     this.openLockError = '';
     // 0:代表发送的是开锁，1：代表发送的是关锁
     this.sendValueToLock = 0;
+
+
+  }
+
+  onBlueDisConnect(mac) {
+
   }
 
 }

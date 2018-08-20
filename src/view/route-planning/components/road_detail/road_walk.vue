@@ -16,22 +16,24 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   @import "../../../station-booking/css/flex.css";
   .walk_detail_mill{
+    width: 100%;
     height: 80px;
-    /*margin-left: 20px;*/
     color: #616161;
     font-size: 14px;
+    .ride_detail_left{
+      width: 16px;
+      height: 80px;
+    }
+    .planning_walk_left_icon{
+      width: 16px;
+      height: 80px;
+    }
+    .walk_detail_mill_length{
+      margin-left: 20px;
+    }
   }
-  .ride_detail_left{
-    height: 100%;
-  }
-  .planning_walk_left_icon{
-    width: 16px;
-    height: 100%;
-  }
-  .walk_detail_mill_length{
-    margin-left: 20px;
-  }
+
 </style>

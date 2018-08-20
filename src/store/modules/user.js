@@ -129,8 +129,8 @@ const user = {
           commit('SET_TELNO', data.telNo);
           commit('SET_CREATETIME', data.createTime);
           commit('SET_AUTHCODE', true);
-          // ShareBikeApi.saveUserInfo(data);
-          resolve(response);
+          ShareBikeApi.saveUserInfo(data);
+          resolve();
         }).catch((error) => {
           reject(error);
         });
@@ -207,7 +207,7 @@ const user = {
           commit('SET_HEADPIC', '');
           commit('SET_TELNO', '');
           commit('SET_CREATETIME', '');
-          // ShareBikeApi.deleteUser();
+          ShareBikeApi.deleteUser();
         }
       }).catch();
     },

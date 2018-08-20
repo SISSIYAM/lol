@@ -140,14 +140,19 @@ class Map {
           // outlineColor: 'red',
         });
         ride.search([obj.startpoi.lng, obj.startpoi.lat], [obj.endpoi.lng, obj.endpoi.lat], (status, results) => {
-          console.log('骑行');;
+          console.log('骑行');
           console.log(results);
+          let path = [];
+          // 计算步行路线
+          results.routes[0].rides.forEach((value, index) => {
+            path = path.concat(value.path);
+          });
           successCallback(results, obj.index, obj.tripType);
-          this.drawBikeLine(map, results);
+          mythis.drawBikeLine(obj.map, path);
         });
       });
     };
-    // 设置公交路线的绘制
+    // 绘制骑行路线
     this.drawBikeLine = (map, BusArr) => {
       const bikePolyline = new AMap.Polyline({
         map: map,
@@ -191,10 +196,15 @@ class Map {
           console.log(result);
           if (status === 'complete') {
             self.drawBusLine(obj.map, result.plans[lineIndex].path);
-            successCallback(result.plans[lineIndex], obj.index, obj.tripType);
+            const plan = result.plans[lineIndex];
+            const sObj = {
+              plan,
+              'destination': result.destination,
+              'origin': result.origin,
+            };
+            successCallback(sObj, obj.index, obj.tripType);
           }
         });
-
       });
     };
     // 设置公交路线的绘制
@@ -205,6 +215,7 @@ class Map {
         strokeColor: "#FDAEAB",//线颜色
         strokeOpacity: 0.8,//线透明度
         strokeWeight: 6,
+        lineJoin: 'round',
         // dirColor: 'pink',
         showDir: true,
       });
@@ -230,6 +241,7 @@ class Map {
         // line.clear();
         map.remove(line);
       });
+      this.lineArray = [];
     };
 
     /*
@@ -289,11 +301,32 @@ class Map {
       });
       return positionPicker;
     };
+    /**
+     *
+     * 绘制多边形
+     *
+     * */
+    this.drawPolygon = (pos, map) => {
+      console.log(pos);
+      const polygon = new AMap.Polygon({
+        path: pos,
+        fillColor: '#F5ADAD', // 多边形填充颜色
+        // borderWeight: 2, // 线条宽度，默认为 1
+        strokeColor: '#F5ADAD', // 线条颜色
+      });
+      polygon.setMap(map);
+    };
+
+
     this.positionStart = (positionPicker) => {
       positionPicker.start();
     };
     this.positionStop = (positionPicker) => {
       positionPicker.stop();
+    };
+    this.createPoint = (point) => {
+      const p = new AMap.LngLat(point.lng, point.lat);
+      return p;
     };
 
   }

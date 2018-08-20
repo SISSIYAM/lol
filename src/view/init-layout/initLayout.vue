@@ -117,7 +117,6 @@ export default {
   .txt {
     margin-left: 30px;
     color: #333333;
-    margin-top: -3px;
   }
   .small-icon {
     width: 22px;

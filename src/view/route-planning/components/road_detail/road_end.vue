@@ -19,6 +19,7 @@ export default {
   @import "../../../station-booking/css/flex.css";
   .walk_detail{
     height: 30px;
+    padding-bottom: 20px;
   }
   .begin_left_icon {
     width: 16px;

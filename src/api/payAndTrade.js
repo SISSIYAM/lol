@@ -37,6 +37,5 @@ export function getRechargeHistory(pageStart){
 	const data = {
 		pageStart
 	};
-	return request.post('/tradePartyDetail/list', data);
+	return request.post('/tradeDetail/search', data);
 }
-

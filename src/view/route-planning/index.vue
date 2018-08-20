@@ -3,8 +3,8 @@
     <div class="position_header flex-h flex-vc">
       <div class="position_header_left flex-v">
         <div class="begin_position flex-h flex-vc">
-          <div class="back_icon flex-h flex-hc" @click="goBack">
-            <svg-icon icon-class="icon_back"></svg-icon>
+          <div class="back_icon flex-h flex-hc flex-vc" @click="goBack">
+            <svg-icon icon-class="icon_back" class="icon_back"></svg-icon>
           </div>
           <div class="begin_position_point_green">
           </div>
@@ -15,7 +15,7 @@
         <div class="middle_line"></div>
         <div class="begin_position flex-h flex-vc">
           <div class="back_icon flex-h flex-hc">
-            <svg-icon icon-class="planning_add"></svg-icon>
+            <svg-icon icon-class="planning_add" class="icon_back"></svg-icon>
           </div>
           <div class="begin_position_point_red">
           </div>
@@ -102,6 +102,8 @@ export default {
         },
       },
       routeType: '0',// 0:骑行，1：公交
+      // 网络请求结束后
+      lineStations: [],
     };
   },
   mounted() {
@@ -115,6 +117,9 @@ export default {
      *
      * */
     setCurrentPlace() {
+      console.log('长度');
+      console.log(ShareAPI.userLocation.lat);
+      console.log(SearchResults.beginLocation.lat.length);
       if (SearchResults.beginLocation.lat.length <= 0) {
         SearchResults.beginLocation = {
           lat: ShareAPI.userLocation.lat,
@@ -205,6 +210,8 @@ export default {
       SearchResults.beginLocation = SearchResults.endLocation;
       SearchResults.endLocation = temp;
       // 绘制路线
+      console.log(SearchResults.beginLocation);
+      console.log(SearchResults.endLocation);
       this.getLocationValue();
     },
     /**
@@ -217,7 +224,10 @@ export default {
     getLocationValue() {
       this.beginPosition = SearchResults.beginLocation;
       this.endPosition = SearchResults.endLocation;
-      if (this.endPosition.lat.length > 0) {
+      console.log('获得定位点');
+      console.log(this.beginPosition);
+      console.log(this.endPosition);
+      if (this.endPosition.lat.length > 0 && this.beginPosition.lat.length > 0) {
         // 先清除原先的路线
         this.$refs.planningMap.clearLine();
         this.beginPlanningRoad();
@@ -229,17 +239,21 @@ export default {
      *
      * */
     beginPlanningRoad() {
+      this.isShowDetail = false;
       // 网络等待
       this.$vux.loading.show({
         text: '正在计算路线...',
       });
-
+      console.log('计算路线:' + this.routeType);
       tripPlan(this.beginPosition.lng, this.beginPosition.lat, this.endPosition.lng, this.endPosition.lat, this.routeType).then((response) => {
+        console.log('获得路线计算');
         console.log(response);
         if (response.data.code === 200) {
           // this.beginDrawRoad(response.data.data);
           // 开始路线绘制
           this.$refs.planningMap.beginDrawRoad(response.data.data);
+          // 获得所有的骑行站点
+          this.getAllStations(response.data.data);
         } else if (response.data.code === 201){
           this.$vux.loading.hide();
           this.$vux.alert.show({
@@ -257,14 +271,66 @@ export default {
 
       });
     },
+    /**
+     *
+     * 获得骑行中的所有站点
+     *
+     * */
+    getAllStations(lines) {
+      let stations = [];
+      lines.forEach((myLine) => {
+        if (myLine.tripType === 1) {
+          const s = myLine.stationIds.split(",");
+          stations = stations.concat(s);
+        }
+      });
+      this.lineStations = stations;
+    },
 
     // 开始出发
-    immediatelyGo() {
-      batchBookStation().then((response) => {
+    immediatelyGo(lineList) {
+      const ids = this.lineStations.join(',');
+      if (ids.length > 0) {
+        batchBookStation(ids).then((response) => {
+          console.log(response);
+          if (response.data.code === 200) {
+            this.reSortData(lineList, response.data.data);
+          }
+          console.log('我的line');
+          console.log(lineList);
+        }).catch((error) => {
 
-      }).catch((error) => {
-
+        });
+      } else {
+        this.reSortData(lineList, []);
+      }
+    },
+    // 重新组合数据，发送给原生
+    reSortData(lineList, orderList) {
+      // const
+      // 路线遍历
+      lineList.forEach((line, index) => {
+        line.serialNum = index;
+        // 如果路线是骑行的
+        if (line.type === '1') {
+          orderList.forEach((order) => {
+            console.log(order.stationId);
+            console.log(line.beginStation);
+            if (Number(order.stationId) === Number(line.beginStation)) {
+              line.beginDumpId = order.mac;
+              line.beginDumpNum = order.no;
+            } else if (Number(order.stationId) === Number(line.endStation)) {
+              line.endDumpId = order.mac;
+              line.endDumpNum = order.no;
+            }
+          });
+        }
       });
+      // lineList是最终的路线规划
+      // orderlist是最终的预约
+      console.log('最终的路线');
+      console.log(lineList);
+      ShareAPI.orderLineNavigator(lineList, orderList, '1');
     },
     //----------------------------------------------------------------------
     // 以下为回调内容planningmap
@@ -304,15 +370,19 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import "../station-booking/css/flex.css";
 #routplanning_wrap {
   width: 100vw;
   height: 100vh;
   position: relative;
   overflow: hidden;
+  .icon_back{
+    width: 25px;
+    height: 25px;
+  }
   .position_header {
-    padding-top: 20px;
+    /*padding-top: 20px;*/
     /*margin-left: 20px;*/
     .position_header_left{
       width: calc(100vw - 40px);
@@ -339,14 +409,17 @@ export default {
       /*margin-left: 10px;*/
     }
     .begin_position_edit_begin{
+      width: 70%;
       margin-left: 10px;
       color: #262626;
     }
     .begin_position_edit_end{
+      width: 70%;
       margin-left: 10px;
       color: #C2C2C2;
     }
     .begin_position_edit_end_hasValue{
+      width: 70%;
       margin-left: 10px;
       color: #262626;
     }
@@ -393,14 +466,17 @@ export default {
   }
   .planning_map{
     width: 100%;
-    height: calc(100vh - 145px);
+    height: calc(100vh - 125px);
+  }
+  .planning_map .amap-logo{
+    display: none;
   }
   .back_icon{
     width: 50px;
   }
   .planning_road_detail{
     width: 100%;
-    height: calc(100vh - 20px);
+    height: calc(100vh);
     position: absolute;
     top: calc(100vh - 147px);
     transition:top 0.5s;
@@ -409,7 +485,7 @@ export default {
     -o-transition:top 0.5s; /* Opera */
   }
   .moveTop {
-    top: calc(20px);
+    top: 0;
   }
   .moveBottom{
     top: calc(100vh - 147px);

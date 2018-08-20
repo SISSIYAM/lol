@@ -6,6 +6,8 @@ const getters = {
   userPhone: state => state.user.telNo,
   createTime: state => state.user.createTime,
   platformType: state => state.user.paltform,
+  pickerValue: state => state.app.pickerValue,
+  showPicker: state => state.app.showPicker,
 };
 
 export default getters;

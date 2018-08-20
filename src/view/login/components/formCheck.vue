@@ -20,7 +20,7 @@ export default {
   data() {
     return {
       checkNum: '',
-      statusCheck: '获取验证码',
+      statusCheck: '发送验证码',
       staus: true,
       Stuas: false,
     };
@@ -60,7 +60,7 @@ export default {
     display: inline-block;
     margin-bottom: 3%;
     width: 90%;
-    margin-left:16px;
+    margin-left:19px;
   .checkInput{
     font-weight: bold;
     color: black;

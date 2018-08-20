@@ -3,12 +3,16 @@
     <title-com :to-path-url="url" class="titleCom"></title-com>
     <div class="wrapper_back">
       <div class="infoWrapper">
-        <div class="rowDiv" v-on:click="onClick">
+        <div class="rowDiv" @click="onClick">
           <p class="txt">头像</p>
           <svg-icon icon-class="icon_male"  class="user-image"></svg-icon>
           <svg-icon icon-class="right_arrow" class="right-arrow"></svg-icon>
-            <!--<input type="file" @change="onfile"/>-->
+            <!--<input type="file" multiple name="file" @change="onfile"/>-->
             <!--<button @click="uploading">uploading</button>-->
+          <picker :show="this.$store.getters.showPicker"
+                  :list="values" v-on:sureClick="sureClick"
+                  v-on:cancelClick="cancelClick">
+          </picker>
         </div>
         <div class="line"></div>
         <router-link :to="{path:'/changeName'}" class="rowDiv2">
@@ -31,20 +35,15 @@
         </div>
       </div>
     </div>
-    <popup-picker v-on:showValue="showValue"></popup-picker>
   </div>
 </template>
 
 <script>
 import titleCom from '../login/components/titleCom';
+import picker from '../../components/popupPicker/picker';
 import store from '../../store';
 import { formatDate } from '../../filters/date';
-import { uploadingImg } from '../../api/userDetails';
-import popupPicker from '../../components/popupPicker';
 
-const getObject = function (obj) {
-  return JSON.parse(JSON.stringify(obj));
-};
 export default {
   name: 'personalInfo',
   data() {
@@ -54,47 +53,29 @@ export default {
         userPhone: store.getters.userPhone,
         createTime: '',
       },
-      tempValue: getObject(this.value),
       closeType: false,
-      currentData: JSON.stringify(this.data),
       selectedFileList: null,
       selectedFileName: null,
+      values: [],
     };
   },
   components: {
     titleCom,
-    popupPicker,
+    picker,
+  },
+  mounted() {
+    this.values = [[{
+      name: '请选择',
+      value: '0',
+    }, {
+      name: '本地相册',
+      value: '1',
+    }, {
+      name: '手机上传',
+      value: '2',
+    }]];
   },
   props: {
-    title: String,
-    data: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
-    placeholder: String,
-    columns: {
-      type: Number,
-      default: 0,
-    },
-    fixedColumns: {
-      type: Number,
-      default: 0,
-    },
-    value: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
-    showName: Boolean,
-    inlineDesc: String,
-    showCell: {
-      type: Boolean,
-      default: true,
-    },
-    show: Boolean,
   },
   created() {
     this.formatCreateTime();
@@ -107,69 +88,28 @@ export default {
     },
 
     onClick() {
-      console.log('选择上传头像方式');
-      this.$emit('showValue');
+      this.$store.dispatch('beginShowPicker');
+      console.log(this.values);
     },
 
-    onHide(type) {
-      this.show = false;
-      if (type) {
-        this.closeType = true;
-        this.value = getObject(this.tempValue);
-      }
-      if (!type) {
-        this.closeType = false;
-        if (this.value.length > 0) {
-          this.tempValue = getObject(this.value);
-        }
-      }
+    sureClick(value) {
+      console.log(value[0]);
+      this.$store.dispatch('setPickerValue', value[0]);
+      this.$store.dispatch('hidePicker');
     },
-
-    onPopupHide(val) {
-      if (this.value.length > 0) {
-        this.tempValue = getObject(this.value);
-      }
-      this.$emit('on-hide', this.closeType);
-    },
-
-    onPickerChange(val) {
-      if (JSON.stringify(this.value) !== JSON.stringify(val)) {
-        // if has value, replace it
-        if (this.value.length) {
-          const nowData = JSON.stringify(this.data);
-          if (nowData !== this.currentData && this.currentData !== '[]') {
-            this.value = getObject(val);
-          }
-          this.currentData = nowData;
-        } else { // if no value, stay quiet
-          // if set to auto update, do update the value
-        }
-      }
-      this.$emit('on-shadow-change', getObject(val));
-    },
-
-    onfile(event) {
-      this.selectedFile = event.target.files[0];
+    cancelClick() {
+      this.$store.dispatch('setPickerValue', '');
+      this.$store.dispatch('hidePicker');
     },
 
     uploading() {
-      const form = new FormData();
-      form.append('file', this.selectedFile);
-      uploadingImg(form).then((response) => {
+      const data = this.selectedFile;
+      uploadingImg(data).then((response) => {
         const code = response.code;
         if (code === 200) {
           console.log('图片上传成功');
         }
-      }).catch((e) => {
-        console.log(e);
-      });
-    },
-  },
-  watch: {
-    value(val) {
-      if (JSON.stringify(val) !== JSON.stringify(this.tempValue)) {
-        this.tempValue = getObject(val);
-      }
+      }).catch();
     },
   },
 };
@@ -234,6 +174,24 @@ export default {
     align-items: center;
     position: relative;
   }
+  .sexChange{
+    width: 80%;
+    height: 60px;
+    .weui-cells{
+      margin: 0px 0px;
+      padding: 0px 0px;
+      height: 60px;
+    }
+    .weui-cell_access,.weui-cell__ft{
+      padding: 0px 0px;
+    }
+    .weui-cell,.vux-tap-active,.weui-cell_access{
+      height: 60px;
+    }
+    .vux-cell-value{
+      margin-right: 11px;
+    }
+  }
   .user-image {
     width: 58px !important;
     height: 58px !important;
@@ -250,5 +208,15 @@ export default {
     color: #333333;
     font-weight:lighter;
     margin-left: 3px;
+  }
+  .vux-popup-picker {
+    border-top: 1px solid #04BE02;
+  }
+  .vux-popup-picker-header {
+    height: 44px;
+    color: #04BE02;
+  }
+  .vux-popup-picker-value {
+    display: inline-block;
   }
 </style>

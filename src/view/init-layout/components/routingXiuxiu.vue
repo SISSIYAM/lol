@@ -3,24 +3,24 @@
 
     <!--显示地图-->
     <bike-stations ref="bikeStation"></bike-stations>
-    <div class="reservation-circle">
+    <div class="reservation-circle" :class="{'circle_top_iPhonX': iPhoneX}">
       <router-link :to="({path:'/stationOrder'})">
         <svg-icon icon-class="noreservation" class="icons"></svg-icon>
       </router-link>
     </div>
-    <div class="red-envelope-circle">
+    <div class="red-envelope-circle" :class="{'circle_top_iPhonX': iPhoneX}">
       <a>
         <img v-bind:src="gifImg">
       </a>
     </div>
-    <div class="location-circle" @click="getUserLocation">
+    <div class="location-circle" :class="{'circle_bot_iPhonX': iPhoneX}" @click="getUserLocation">
       <svg-icon icon-class="location" class="icons"></svg-icon>
     </div>
-    <div class="service-circle" @click="callCustomer">
+    <div class="service-circle" :class="{'circle_bot_iPhonX': iPhoneX}" @click="callCustomer">
       <svg-icon icon-class="service" class="icons"></svg-icon>
     </div>
 
-    <div id="whereGo">
+    <div id="whereGo" class="whereGo" :class="{'whereGo_iPhoneX': iPhoneX}">
       <div class="whereGoitem">
         <router-link :to="{path:'/routePlanning'}">
           <div class="itemChild">
@@ -46,13 +46,21 @@ import searchBar from '../../../view/station-search/index';
 import BikeStations from '../../bike-stations/index';
 import ShareAPI from '../../../utils/sharebikeCordovaApi';
 
-
+let iPhoneX = false;
+const u = navigator.userAgent;
+const isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+if (isIOS) {        
+  if (screen.height == 812 && screen.width == 375){
+    iPhoneX = true;
+  }
+}
 export default {
   name: 'routingXiuxiu',
   data() {
     return {
       gifImg: 'http://utsmarthomeplatform.oss-cn-shenzhen.aliyuncs.com/commonFile_uploadFile/29f7a91a89544c05bbb3b50beba9b278.gif',
-    };
+      iPhoneX,
+    }
   },
   components: {
     BikeStations,
@@ -70,6 +78,7 @@ export default {
 </script>
 
 <style lang="less">
+
   .routing-xiuxiu-container{
    min-height: calc( 100vh - 44px );
     position: relative;
@@ -81,22 +90,22 @@ export default {
     z-index: 500;
   }
   .reservation-circle{
-    bottom: 140px;
+    bottom: 191px;
     left: 10px;
   }
   .red-envelope-circle{
-    bottom: 140px;
-    right: 3px;
+    bottom: 191px;
+    right: 0;
     img{
       width: 44px;
     }
   }
   .location-circle{
-    bottom: 89px;
+    bottom: 140px;
     left: 10px;
   }
   .service-circle{
-    bottom: 89px;
+    bottom: 140px;
     right: 10px;
   }
   .reservation-circle, .location-circle, .service-circle {
@@ -118,19 +127,18 @@ export default {
     display: flex;
     position: fixed;
     z-index: 500;
-    bottom: 10px;
-    left: 7px;
-    width: 96%;
+    left: 10px;
+    width: calc(100% - 20px);
     height:60px;
     background-color: #ffffff;
     border-radius: 3px;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
     .whereGoitem {
       display: block;
       -webkit-box-flex: 1;
       -ms-flex: 1;
       flex: 1;
-      padding: 5px 0 0;
+      line-height: 60px;
       font-size: 13px;
       color: #999999;
       text-align: center;
@@ -154,5 +162,24 @@ export default {
         }
       }
     }
+  }
+  
+  .whereGo{
+    bottom: 10px;
+  }
+
+  .whereGo_iPhoneX{
+    // 暂时不适配底部Home条
+    // bottom: 42px;
+  }
+  .circle_top_iPhonX{
+    // 暂时不适配底部Home条
+    // bottom: 172px;
+    bottom: 211px;
+  }
+  .circle_bot_iPhonX{
+    // 暂时不适配底部Home条
+    // bottom: 121px;
+    bottom: 160px;
   }
 </style>

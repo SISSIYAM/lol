@@ -104,6 +104,18 @@ export default {
         this.index = 2;
       }
     },
+    /**
+     * confirm组件
+     */
+    showTotal(_title, _content) {
+      this.$vux.confirm.show({
+        title: _title,
+        content: _content,
+        onConfirm() {
+          console.log(this);
+        },
+      });
+    },
 
     sendPost() {
       const self = this;
@@ -115,19 +127,16 @@ export default {
           self.showTotal('提示信息', '手机号不能为空', '');
         } else if (!regUser.test(userPhone)) {
           self.showTotal('提示信息', '请输入正确的手机号');
-        } else if (password == null || password === '') {
+        } else if (password === null || password === '') {
           self.showTotal('提示信息', '密码不能为空');
         } else {
           const loginForm = {
             userPhone,
             password,
           };
-          self.$store.dispatch('LoginByUserAccount', loginForm).then((response) => {
-            const data = response.data;
-            if (data === 200) {
-              console.log('test');
-              self.$router.push({ path: '/' });
-            }
+          self.$store.dispatch('LoginByUserAccount', loginForm).then(() => {
+            console.log('test');
+            self.$router.push({ path: '/' });
           }).catch(() => {});
         }
       } else if (self.loginType === 'verifyCode') {
@@ -225,15 +234,15 @@ export default {
 </script>
 
 <style lang="scss">
-  .wapper {
-    width: 100%;
-    height: 100%;
-    .titleCom .title_text {
-      height: auto;
-      font-weight: lighter;
-      margin-top: 11px;
-      font-size:0.9em;
-      margin-left:80%;
+.wapper {
+  width: 100%;
+  height: 100%;
+  .titleCom .title_text {
+    height: auto;
+    font-weight: lighter;
+    margin-top: 11px;
+    font-size: 0.9em;
+    margin-left: 80%;
   }
-  }
+}
 </style>

@@ -204,7 +204,7 @@ class BleManagerApi {
         callback(data);
       }, "BluetoothPlugins",
       "write",
-      [peripheralId, serviceUUID, characteristicUUID, data, maxByteSize, queueSleepTime]);
+      [peripheralId, serviceUUID, characteristicUUID, data, maxByteSize]);
   }
 
 

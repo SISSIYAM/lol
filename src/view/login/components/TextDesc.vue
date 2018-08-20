@@ -34,8 +34,9 @@ export default {
     width: 90%;
     .General{
       font-weight: bolder;
-      margin: 0.005em auto;
-      font-size: 1.3em;
+      margin: 15px auto;
+      font-size: 24px;
+      color: #333333;
       span{
         width: auto;
         float: left;
@@ -44,9 +45,9 @@ export default {
     .detali{
       display: block;
       span{
-        color: #888888;
+        color: #666666;
         width: auto;
-        font-size: 0.8em;
+        font-size: 12px;
         float: left;
         font-weight: lighter;
         margin: 0.01em auto;

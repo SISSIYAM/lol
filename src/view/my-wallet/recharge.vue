@@ -4,7 +4,7 @@
 			<img class="leftIcon" src="../../../static/images/icon_back.png" v-on:click="backPrePage"/>
       <p class="titleName">{{titleName}}</p>
     </div>
-    <div class='row'>
+    <div class='recharge_row'>
       <div class="number" @click.prevent="value = 100; type1 = 'primary';type2= 'normal' ;type3 = 'normal' ;type4 = 'normal' ;">
         <el-button v-bind:type="type1">100元</el-button>
       </div>
@@ -12,7 +12,7 @@
         <el-button v-bind:type="type2">50元</el-button>
       </div>
     </div>
-    <div class='row'>
+    <div class='recharge_row'>
       <div class="number" @click.prevent="value = 20; type1 = 'normal' ;type2 = 'normal' ;type3 = 'primary' ;type4 = 'normal'">
         <el-button v-bind:type="type3">20元</el-button>
       </div>
@@ -180,7 +180,7 @@ export default {
 		height: 44px;
 		line-height: 44px;
 		width: 100%;
-		background-color: #f1f1f161;
+		background-color: white;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -243,12 +243,13 @@ export default {
     }
   }
 
-  .row {
+  .recharge_row {
     display: flex;
+		background-color: white;
   }
 
   .line {
-    background-color: #dfdfdf;
+    background-color: white;
     height: 1px;
     width: 100%;
     opacity: 0.4;

@@ -76,10 +76,10 @@ export function insertSearchLog(address, value, longitude, latitude) {
 }
 
 // 获取最近站点的可用停车桩列表
-export function getUsableStation(lng, lat, type) {
+export function getUsableStation(longitude, latitude, type) {
   const data = {
-    lng,
-    lat,
+    longitude,
+    latitude,
     type,
   };
   return request.post('/station/getUsableStation', data);
@@ -115,4 +115,20 @@ export function lockStatusUpdateclose(mac) {
     mac
   };
   return request.post('/park/close', data);
+}
+export function getParkRegionByType(areaId, type) {
+  const data = {
+    areaId,
+    type,
+  };
+  return request.post('/park/getParkRegionByType', data);
+}
+export function canOpen(mac) {
+  const data = {
+    mac,
+  };
+  return request.post('/stationOrder/canOpen', data);
+}
+export function payOrder() {
+  return request.post('/park/payOrder');
 }

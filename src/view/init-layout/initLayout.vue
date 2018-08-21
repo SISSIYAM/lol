@@ -28,7 +28,7 @@
               <svg-icon icon-class="station_reservation"></svg-icon>
               <p class="txt">我的预约</p>
             </router-link>
-            <router-link :to="{path:''}" class="row-div">
+            <router-link :to="{path:'/violationReport'}" class="row-div">
               <svg-icon icon-class="report"></svg-icon>
               <p class="txt">违停举报</p>
             </router-link>

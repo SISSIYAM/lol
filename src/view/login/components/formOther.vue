@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="ButtomUse" @click.prevent="postFrom">
-      <el-button type="primary">{{ statusD.DeedText }}</el-button>
+       <x-button type="primary">{{ statusD.DeedText }}</x-button>
     </div>
     <div v-if="resultS === 'part1'" class="Clause">
       <span class="span3">{{ statusD.ClauseText }}</span>
@@ -89,33 +89,20 @@ export default {
 
 <style lang="scss" scoped>
   .ButtomUse{
-    width: 90%;
-    margin-top: 1.3ex;
-  button{
-    width: 100%;
-    height: 3.5em;
-    margin:19px;
-  }
+    margin: 30px 0 10px 0;
   }
 
   .Clause{
-    color: #888888;
+    color: #666666;
     font-weight: 400;
-    width: 90%;
-    display: inline-block;
-  .span1{
-    margin-top: 0.8em;
-    font-size: 12px;
-    margin-left:23px;
-  }
+    font-size: 14px;
+    padding: 0 10px;
+  // .span1{
+  // }
   .span2{
-    margin-top: 0.4em;
-    font-size: 12px;
     float: right;
   }
-  .span3{
-    font-size: 11px;
-    margin-left:18px;
-  }
+  // .span3{
+  // }
   }
 </style>

@@ -1,10 +1,7 @@
 <template>
   <div id="app">
     <router-view/>
-    <!--<picker :show="this.$store.getters.showPicker"-->
-            <!--:list="values" v-on:sureClick="sureClick"-->
-            <!--v-on:cancelClick="cancelClick">-->
-    <!--</picker>-->
+    <picker :show="this.$store.getters.showPicker" :list="values" v-on:sureClick="sureClick" v-on:cancelClick="cancelClick"></picker>
   </div>
 </template>
 
@@ -52,6 +49,9 @@ export default {
 
 <style lang="less">
   @import '~vux/src/styles/reset.less';
+  body{
+    background-color: #F9F9F9;
+  }
   .myPicker{
     position: absolute;
     z-index: 1000000;

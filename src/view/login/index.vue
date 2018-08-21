@@ -1,29 +1,27 @@
 <template>
   <div class="wapper">
     <div id="form-wapper">
-      <title-com v-bind:title-mes="content[index].title" class="titleCom"
-                 v-bind:loginType="loginType"
-                 v-on:switchLoginType="switchLoginType($event)">
+      <title-com v-bind:title-mes="content[index].title" class="titleCom" v-bind:loginType="loginType" v-on:switchLoginType="switchLoginType($event)">
       </title-com>
-      <text-desc :GenText="content[index].dataText" :dataText1="content[index].dataText1"
-                 :dataText2="content[index].dataText2">
+      <text-desc :GenText="content[index].dataText" :dataText1="content[index].dataText1" :dataText2="content[index].dataText2">
       </text-desc>
-      <div class="input-text" v-if="loginType === 'newPassword'">
-        <el-input :type="TextType" v-model="value" ref="userPwd" placeholder="请设置新的登录密码">
-          <template slot="prepend"><span style="color: black">新密码</span>&nbsp;</template>
-          <i slot="suffix" class="el-input__icon el-icon-view" @click="showPwd"></i>
-        </el-input>
+      <div class="from-wrapper">
+        <div class="input-text" v-if="loginType === 'newPassword'">
+          <el-input :type="TextType" v-model="value" ref="userPwd" placeholder="请设置新的登录密码">
+            <template slot="prepend">
+              <span style="color: black">新密码</span>&nbsp;</template>
+            <i slot="suffix" class="el-input__icon el-icon-view" @click="showPwd"></i>
+          </el-input>
+        </div>
+        <form-suite></form-suite>
+        <form-phone slot="formPhone" ref="userPhone"></form-phone>
+        <form-pwd v-if="loginType === 'password'" slot="formPwd" ref="userPwd"></form-pwd>
+        <form-check v-else-if="loginType === 'verifyCode'" slot="formCheck" ref="userCheck">
+        </form-check>
+        <form-check v-else-if="loginType === 'reset'" slot="formCheck" ref="userCheck">
+        </form-check>
+        <form-other slot="formOther" :statusD="content[index].statusDes" v-bind:loginType="loginType" v-on:switchLoginType="switchLoginType($event)"></form-other>
       </div>
-      <form-suite></form-suite>
-      <form-phone slot="formPhone" ref="userPhone"></form-phone>
-      <form-pwd v-if="loginType === 'password'" slot="formPwd" ref="userPwd"></form-pwd>
-      <form-check v-else-if="loginType === 'verifyCode'" slot="formCheck" ref="userCheck">
-      </form-check>
-      <form-check v-else-if="loginType === 'reset'" slot="formCheck" ref="userCheck">
-      </form-check>
-      <form-other slot="formOther" :statusD="content[index].statusDes"
-                  v-bind:loginType="loginType"
-                  v-on:switchLoginType="switchLoginType($event)"></form-other>
     </div>
   </div>
 </template>
@@ -122,12 +120,13 @@ export default {
       const userPhone = self.$refs.userPhone.value;
       const regUser = /^1[3|4|5|7|8][0-9]{9}$/;
       if (self.loginType === 'password') {
-        const password = self.encrypt(this.$refs.userPwd.value);
+        const pwd = this.$refs.userPwd.value;
+        const password = self.encrypt(pwd);
         if (userPhone == null || userPhone === '') {
           self.showTotal('提示信息', '手机号不能为空', '');
         } else if (!regUser.test(userPhone)) {
           self.showTotal('提示信息', '请输入正确的手机号');
-        } else if (password === null || password === '') {
+        } else if (pwd === null || pwd === '') {
           self.showTotal('提示信息', '密码不能为空');
         } else {
           const loginForm = {
@@ -152,10 +151,11 @@ export default {
         } else {
           self.$store.dispatch('LoginByMobileVerifCode', loginForm).then((response) => {
             const code = response.data.data;
+            const data = response.data.code;
             if (code === -2 || code === -1) {
               self.$router.replace({ path: '/registerPage' });
-            } else if (code === 200) {
-              self.$router.replace({ path: '/' });
+            } else if (data === 200) {
+              self.$router.push({ path: '/' });
             }
           }).catch(() => {});
         }
@@ -233,16 +233,24 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="less">
 .wapper {
-  width: 100%;
+  height:auto;
   height: 100%;
+  background-color: #fff;
   .titleCom .title_text {
     height: auto;
     font-weight: lighter;
     margin-top: 11px;
     font-size: 0.9em;
     margin-left: 80%;
+  }
+  .from-wrapper {
+    margin: 0 10px;
+    .login-input {
+      margin-bottom: 10px;
+      background-color: #dfdfdf;
+    }
   }
 }
 </style>

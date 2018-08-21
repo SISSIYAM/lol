@@ -1,13 +1,10 @@
 <template>
-  <div class="input_text">
-    <el-input v-model="value" :type="TextType" placeholder="请输入密码">
-      <template slot="prepend">
-        <div style="width: 35px;">
-          <span style="color: black;">密码</span>
-        </div>
-      </template>
-      <i slot="suffix" class="el-input__icon el-icon-view" @click="showPwd"></i>
-    </el-input>
+  <div>
+    <x-input title="密码" v-model="value" :type="TextType" placeholder="请输入密码" class="login-input">
+      <span slot="right" @click="showPwd" style="width:16px;height:16px;margin-left:10px;">
+        <svg-icon icon-class="icon_eye"></svg-icon>
+      </span>
+    </x-input>
   </div>
 </template>
 
@@ -34,12 +31,5 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-  .input_text{
-    width: 90%;
-    font-weight: bold;
-    color: black;
-    font-size: 1.1em;
-    margin: 0.57em auto;
-  }
+<style lang="less" scoped>
 </style>

@@ -24,81 +24,83 @@
 
 <script>
 import ShareBikeApi from '../../utils/sharebikeCordovaApi';
-import { getUsableStation, lockStatusUpdate } from '../../api/shareStation';
-import BluetoothManager from '../../utils/bluetoothConnect/bluetoothManager';
+import { getUsableStation ,lockStatusUpdate} from '../../api/shareStation'
+import BluetoothManager from '../../utils/bluetoothConnect/bluetoothManager'
 
 export default {
   components: {
-  },
+	},
   data() {
-    return {
-      subTitleShow: false,
-      titleName: '咻咻开锁',
-      bleDeviceList: [],
-      bikeDockListBox: true,
-      pickerVisiliable: false,
-      stationName: '',
-    };
+		return {
+			subTitleShow:false,
+			titleName: "咻咻开锁",
+			bleDeviceList: [],
+			bikeDockListBox: true,
+			pickerVisiliable: false,
+			stationName:'',
+		}
   },
 
-  mounted() {
+	mounted() {
   },
 
-  created() {
-    this.getStations();
-  },
+	created() {
+		this.getStations();
+	},
   methods: {
-    // 车桩类型style
-    stationTypeStyle(item) {
-      if (Number(item.type) == 0) {
-        return 'bluContentPrivate';
-      }
-      return 'bluContent';
-    },
-    // 车桩可用状态style
-    listIconStyle(item) {
-      if (Number(item.status) == 0) {
-        return 'listIconAble';
-      }
-      return 'listIconUnable';
-    },
-    //  获取附近停车桩
-    getStations() {
-      console.log('加载数据中');
-      const self = this;
-      getUsableStation(113.541555, 22.275072, -1).then((response) => {
-        console.log(response);
-        if (response.data.code !== 200) {
-          self.showPlugin('提示', '附近没有可用车桩');
-        }	else {
+		// 车桩类型style
+		stationTypeStyle(item){
+		if (Number(item.type) == 0) {
+				return 'bluContentPrivate'
+			} else {
+				return 'bluContent'
+			}
+		},
+		// 车桩可用状态style
+		listIconStyle(item) {
+			if (Number(item.status) == 0) {
+				return 'listIconAble'
+			} else {
+				return 'listIconUnable'
+				}
+		},
+		//  获取附近停车桩
+		getStations () {
+			console.log("加载数据中");
+			const self = this;
+			getUsableStation(113.541555,22.275072, -1).then((response) => {
+					console.log(response);
+					if(response.data.code !== 200){
+						self.showPlugin("提示","附近没有可用车桩");
+					}	else {
 					  console.log(response);
 					  if (response.data.data.length > 0) {
-            self.subTitleShow = true;
-            self.bleDeviceList = response.data.data;
-            self.stationName = self.bleDeviceList[0].stationName;
-            self.bleDeviceList.forEach((obj) => {
-              if (String(obj.type) === '0') {
-                obj.content = '共享单车';
-              }
-              if (String(obj.type === '1')) {
-                obj.content = '私人单车';
-              }
-              if (String(obj.status === '0')) {
-                obj.content = '空闲车位';
-              }
-            });
-          } else {
-            self.showPlugin('提示', '附近没有可用车桩');
-          }
-        }
-      }).catch((error) => {
-        console.log(error);
-      });
-    },
-    // 返回上一页
-    backPrePage() {
-      this.$router.go(-1);
-    },
+              self.subTitleShow = true;
+              self.bleDeviceList = response.data.data;
+              self.stationName = self.bleDeviceList[0].stationName;
+              self.bleDeviceList.forEach((obj) => {
+                if (String(obj.type) === '0') {
+                  obj.content = '共享单车';
+                }
+                if (String(obj.type === '1')){
+                  obj.content = '私人单车';
+                }
+                if (String(obj.status === '0')) {
+                  obj.content = '空闲车位';
+                }
+              });
+            } else {
+              self.showPlugin("提示","附近没有可用车桩");
+            }
+					}
+				}).catch(function (error) {
+					console.log(error);
+			});
+		},
+		// 返回上一页
+		backPrePage: function () {
+			this.$router.go(-1);
+		},
     openPickerFunction(item) {
 		  // 相当于取车
 		  if (String(item.status) === '0') {
@@ -107,35 +109,37 @@ export default {
         // 弹出选择框选择车辆类型
         // --------------------------?????????????????????????????????????---------------------------------
         this.$store.dispatch('beginShowPicker');
+
+
       }
     },
-    // 提示框
-    showPlugin(title, content) {
+		// 提示框
+		showPlugin ( title, content) {
       this.$vux.alert.show({
-        title,
-        content,
-        onShow() {
+        title: title,
+        content: content,
+        onShow () {
           console.log('显示的时候触发的事件');
         },
-        onHide() {
+        onHide () {
           console.log('点击确定按钮后触发');
-        },
+        }
       });
-    },
+		},
 
-    // 加载框
-    showLoading(text) {
-      // 显示loading界面
+		// 加载框
+		showLoading (text) {
+			// 显示loading界面
       this.$vux.loading.show({
-        text,
+        text: text,
       });
       // loading在2秒后消失（网络请求结束或者蓝牙链接成功的时候调用）
       setTimeout(() => {
-        this.$vux.loading.hide();
-      }, 2000);
-    },
-  },
-};
+        this.$vux.loading.hide()
+      }, 2000)
+		}
+  }
+}
 </script>
 
 <style scoped>

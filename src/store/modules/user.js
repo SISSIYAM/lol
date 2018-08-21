@@ -129,7 +129,7 @@ const user = {
           commit('SET_TELNO', data.telNo);
           commit('SET_CREATETIME', data.createTime);
           commit('SET_AUTHCODE', true);
-          ShareBikeApi.saveUserInfo(data);
+          // ShareBikeApi.saveUserInfo(data);
           resolve();
         }).catch((error) => {
           reject(error);
@@ -170,7 +170,7 @@ const user = {
         updateUserName(Name).then((response) => {
           const code = response.data.code;
           if (code === 200) {
-            commit('SET_USERNAME', Name);
+            commit('SET_NAME', Name);
           }
           resolve(response);
         }).catch();
@@ -185,10 +185,10 @@ const user = {
           const data = response.data;
           if (data.code === 200) {
             commit('SET_AUTHCODE', true);
-            commit('SET_USERNAME', data.name);
-            commit('SET_TOKEN', data.uuid);
-            commit('SET_TELNO', data.telNo);
-            commit('SET_CREATETIME', data.createTime);
+            commit('SET_NAME', data.data.name);
+            commit('SET_TOKEN', data.data.uuid);
+            commit('SET_TELNO', data.data.telNo);
+            commit('SET_CREATETIME', data.data.createTime);
           }
           resolve(response);
         }).catch(() => {});
@@ -199,7 +199,7 @@ const user = {
       logout().then((response) => {
         const data = response.data.code;
         if (data === 200) {
-          commit('SET_AUTHCODE', '');
+          commit('SET_AUTHCODE', false);
           commit('SET_TOKEN', '');
           commit('SET_ID', '');
           commit('SET_NAME', '');
@@ -207,7 +207,7 @@ const user = {
           commit('SET_HEADPIC', '');
           commit('SET_TELNO', '');
           commit('SET_CREATETIME', '');
-          ShareBikeApi.deleteUser();
+          // ShareBikeApi.deleteUser();
         }
       }).catch();
     },

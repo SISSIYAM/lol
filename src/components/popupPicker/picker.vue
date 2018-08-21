@@ -19,10 +19,12 @@ export default {
   ],
   data() {
     return {
+      selectValue: '',
     };
   },
   methods: {
     change(value) {
+      console.log('vvv:' + value);
       this.$emit('sureClick', value);
     },
     hideClick(type) {

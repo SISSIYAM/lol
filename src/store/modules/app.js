@@ -22,7 +22,7 @@ const app = {
     },
     setPickerValue({ commit }, value) {
       commit('SET_PICKERVALUE', value);
-    },
+    }
   },
 };
 

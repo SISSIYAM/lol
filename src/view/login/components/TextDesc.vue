@@ -30,8 +30,7 @@ export default {
     overflow: hidden!important;
   }
   .Text_Desc{
-    margin: 1.4ex auto;
-    width: 90%;
+    margin: 0 20px 20px;
     .General{
       font-weight: bolder;
       margin: 15px auto;

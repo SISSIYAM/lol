@@ -69,6 +69,7 @@ export default {
 .navbar-container {
   height: 44px;
   line-height: 44px;
+  background-color: #FFF;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
   .drawer-container {
     float:left;

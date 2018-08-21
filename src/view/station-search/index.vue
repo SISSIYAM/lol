@@ -1,32 +1,31 @@
 <template>
   <div id="wapper">
-  <div class="input_view animated fadeInDown">
-    <div class="input_view_left" v-on:click="goBack">
-      <svg-icon icon-class="icon_back" class="icon-back"></svg-icon>
-    </div>
-    <div id="inputRow">
-      <el-input class="myInput" placeholder="请输入内容" v-on:input="getAutoAdText" :clearable='true'
-      ref="input" v-focus></el-input>
-    </div>
-
-  </div>
-  <div v-show="searchResults.length <= 0" class="tips animated fadeInUp">这里可以增加文字提示，支持地点、公交行政区搜索</div>
-  <ul id="repeat-object" class="demo">
-
-    <li v-for="(value, index) in searchResults" v-on:click="selectPlace(value)" :key="index">
-      <div class="li_left_icon">
-        <svg-icon icon-class="search_black_location"></svg-icon>
+    <div class="input_view animated fadeInDown">
+      <div class="input_view_left" v-on:click="goBack">
+        <svg-icon icon-class="icon_back" class="icon-back"></svg-icon>
       </div>
-      <div class="li_content">
-        <div class="title">
-          {{ value.name }}
-        </div>
-        <div class="detail">
-          {{ value.district }}
-        </div>
+      <div id="inputRow">
+        <el-input class="myInput" placeholder="请输入内容" v-on:input="getAutoAdText" :clearable='true' ref="input" v-focus></el-input>
       </div>
-    </li>
-  </ul>
+
+    </div>
+    <div v-show="searchResults.length <= 0" class="tips animated fadeInUp">这里可以增加文字提示，支持地点、公交行政区搜索</div>
+    <ul id="repeat-object" class="demo">
+
+      <li v-for="(value, index) in searchResults" v-on:click="selectPlace(value)" :key="index">
+        <div class="li_left_icon">
+          <svg-icon icon-class="search_black_location"></svg-icon>
+        </div>
+        <div class="li_content">
+          <div class="title">
+            {{ value.name }}
+          </div>
+          <div class="detail">
+            {{ value.district }}
+          </div>
+        </div>
+      </li>
+    </ul>
     <!--<input id="file" type="file" name="" value="" @change="file">-->
     <!--<input type="button" value="上传" @click="uploadFiles"/>-->
   </div>
@@ -167,7 +166,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../styles/_animate.scss';
+@import "../../styles/_animate.scss";
 
 #wapper {
   width: 100%;
@@ -219,6 +218,11 @@ export default {
     font-size: 16px !important;
   }
   .tips {
+    display: table-cell;
+    padding: 20px;
+    height: 300px;
+    width: 100vw;
+    vertical-align: middle;
     text-align: center;
     color: #606266;
     font-size: 14px;

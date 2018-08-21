@@ -1,16 +1,39 @@
 import axios from 'axios';
 import qs from 'qs';
+import { AlertModule, Loading } from 'vux';
 import store from '../store';
 
 // 设置axios信息
-axios.defaults.baseURL = 'http://bike.zhunilink.com:8889/api';
+// axios.defaults.baseURL = 'http://bike.zhunilink.com:8889/api';
 axios.defaults.withCredentials = true;
 axios.interceptors.request.use(
+  // TODO: loading
   config => config,
   error => Promise.reject(error),
 );
 
-axios.interceptors.response.use(response => response, error => Promise.resolve(error.response));
+axios.interceptors.response.use((response) => {
+  if (response.data.code && response.data.code !== 200) {
+    console.log(response.data && response.data);
+    AlertModule.show({
+      title: `错误码：${response.data.code && response.data.code}`,
+      content: `错误信息：${response.data.msg && response.data.msg}`,
+    });
+    return Promise.reject(response);
+  }
+  return response;
+}, (error) => {
+  if (error.response) {
+    // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+    console.log(error.response.data);
+    console.log(`${error.response.status}`);
+    console.log(error.response.headers);
+  } else {
+    console.log('Error', error.message);
+  }
+  console.log(error.config);
+  return Promise.reject(error);
+});
 
 //  配置请求的方式
 export default {

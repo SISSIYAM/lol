@@ -152,6 +152,12 @@ export const constantRouterMap = [
     component: () => import('@/view/setting/payAgreement'),
     name: '',
   },
+  {
+    path: '/violationReport',
+    component: () => import('@/view/violation-report/violationReport'),
+    name: 'violationReport',
+    meta: { title: '违停举报', icon: '', auth: true },
+  },
 ];
 
 export default new Router({

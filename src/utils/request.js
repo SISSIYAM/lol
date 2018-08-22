@@ -4,7 +4,7 @@ import { AlertModule, Loading } from 'vux';
 import store from '../store';
 
 // 设置axios信息
-// axios.defaults.baseURL = 'http://bike.zhunilink.com:8889/api';
+axios.defaults.baseURL = 'http://bike.zhunilink.com:8889/api';
 axios.defaults.withCredentials = true;
 axios.interceptors.request.use(
   // TODO: loading

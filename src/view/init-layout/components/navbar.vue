@@ -10,15 +10,15 @@
         <!-- <tab-item>汽车</tab-item> -->
       </tab>
     </div>
-    <div class="little-utils-container">
+    <div class="little-utils-container" @click="scanOrder">
       <!-- <svg-icon icon-class="message" class="right-item"></svg-icon> -->
-      <svg-icon icon-class="scan" class="right-item" :onclick="scanOrder"></svg-icon>
+      <svg-icon icon-class="scan" class="right-item"></svg-icon>
     </div>
   </div>
 </template>
 <script>
 import { Tab, TabItem, Loading } from 'vux';
-import ShareBikeApi from '@/utils/sharebikeCordovaApi';
+import ShareBikeApi from '../../../utils/sharebikeCordovaApi';
 
 export default {
   name: 'navbar',
@@ -56,6 +56,7 @@ export default {
     },
 
     scanOrder() {
+      console.log('点击二维码');
       ShareBikeApi.startScan(() => {
       }, (data) => {});
     },

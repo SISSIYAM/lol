@@ -43,7 +43,7 @@ export default {
 		}
 	},
 	created() {
-    this.formatCreateTime();
+    // this.formatCreateTime();
   },
 
 
@@ -61,28 +61,6 @@ export default {
 	 */
 
 	mounted() {
-		if(false){
-			this.orderList=[
-				{
-					"status": '预约进行时',
-					"expireTime": '今天18:50',
-					"type":'停车预约',
-					"stationName":'珠海优特科技大厦 珠海市-香洲区-兴华路210号'
-				},
-				{
-					"status": '预约过期',
-					"expireTime": '今天13:50',
-					"type":'取车预约',
-					"stationName":'珠海优特科技大厦 珠海市-香洲区-兴华路210号'
-				},
-				{
-					"status": '履行预约',
-					"expireTime": '今天20:50',
-					"type":'停车预约',
-					"stationName":'珠海优特科技大厦 珠海市-香洲区-兴华路210号'
-				}
-			]
-		}
 		this.getOrder()
 	},
 
@@ -96,9 +74,9 @@ export default {
 			}
 		},
 		// 时间转换
-		formatCreateTime() {
-			this.expireTime = formatDate(time, 'yyyy-MM-dd');
-		},
+		// formatCreateTime() {
+		// 	this.expireTime = formatDate(time, 'yyyy-MM-dd');
+		// },
 		// 返回
 		backPrePage: function () {
 			this.$router.go(-1);
@@ -115,7 +93,7 @@ export default {
 
       getBookList().then((response) => {
         console.log(response);
-        if (response.data.code != 200) {
+        if (response.data.code !== 200) {
           _this.showPlugin("提示信息", "获取预约列表失败");
         } else {
           console.log('获取预约列表成功');

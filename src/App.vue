@@ -7,6 +7,7 @@
 
 <script>
 import Picker from './components/popupPicker/picker';
+import RouteNavigator from './utils/routeNavigator';
 
 export default {
   name: 'App',
@@ -35,9 +36,13 @@ export default {
   methods: {
     sureClick(value) {
       console.log(value[0]);
+      if (String(value[0]) === '0') {
+        return;
+      }
       this.$store.dispatch('setPickerValue', value[0]);
       // 显示界面
       this.$store.dispatch('hidePicker');
+      RouteNavigator.beginConnectBluetoothWithMac(false);
     },
     cancelClick(type) {
       this.$store.dispatch('setPickerValue', '');
@@ -57,5 +62,9 @@ export default {
     z-index: 1000000;
     bottom: 0;
     width: 100vw;
+  }
+  #app .vux-cell-box {
+    height: 0;
+    overflow: hidden;
   }
 </style>

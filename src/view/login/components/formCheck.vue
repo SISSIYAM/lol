@@ -1,7 +1,7 @@
 <template>
   <div class="getCode">
     <x-input title="验证码" class="login-input" v-model="checkNum" placeholder="6位短信验证码"></x-input>
-    <x-button type="primary" ref="sendButton" class="get" @click.native="doSendCheck" :disabled="Stuas">{{ statusCheck }}</x-button>
+    <x-button :type="timeLimit ? 'default' : 'primary'" ref="sendButton" class="get" @click.native="doSendCheck" :disabled="timeLimit">{{ statusCheck }}</x-button>
   </div>
 </template>
 
@@ -13,33 +13,35 @@ export default {
       checkNum: '',
       statusCheck: '发送验证码',
       staus: true,
-      Stuas: false,
+      timeLimit: false,
+      TIME_COUNT: 10,
+      count: null,
+      countDown: null,
     };
   },
   methods: {
     doSendCheck() {
-      console.log(this);
       if (this.$parent.sendCheck()) {
         const self = this;
-        let Maxtime = 60;
-        let time;
         if (this.staus) {
           this.staus = false;
-          self.Stuas = true;
+          self.timeLimit = true;
           console.log('发送验证码');
-          time = () => {
-            if (Maxtime === 0) {
-              self.staus = true;
-              self.Stuas = false;
-              self.statusCheck = '发送验证码';
-            } else {
-              Maxtime -= 1;
-              setTimeout(() => {
-                self.statusCheck = `${Maxtime}秒后重试`;
-                time();
-              }, 1000);
-            }
-          };
+          this.count = this.TIME_COUNT;
+          if (!this.countDown) {
+            this.countDown = setInterval(() => {
+              if (this.count > 0 && this.count <= this.TIME_COUNT) {
+                this.count -= 1;
+                this.statusCheck = `${this.count}秒后重试`;
+              } else {
+                self.staus = true;
+                this.timeLimit = false;
+                this.statusCheck = '发送验证码';
+                clearInterval(this.countDown);
+                this.countDown = null;
+              }
+            }, 1000);
+          }
         }
       }
     },

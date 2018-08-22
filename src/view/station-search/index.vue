@@ -1,6 +1,6 @@
 <template>
   <div id="wapper">
-    <div class="input_view animated fadeInDown">
+    <div class="input_view">
       <div class="input_view_left" v-on:click="goBack">
         <svg-icon icon-class="icon_back" class="icon-back"></svg-icon>
       </div>

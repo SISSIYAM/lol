@@ -29,8 +29,8 @@
       </div>
     </div>
     <div class="title_line"></div>
-    <div class="action flex-h flex-vc flex-hc">
-      <div class="action_stop" @click="cancleOrder(detailInfo.mac)">取消预约</div>
+    <div class="action flex-h flex-vc flex-hc"  v-show="isBottomShow">
+      <div class="action_stop" @click="cancleOrder(detailInfo.stationDetailId)">取消预约</div>
       <div class="action_line"></div>
       <div class="action_get" @click="openBlue">开锁</div>
     </div>
@@ -39,69 +39,65 @@
 
 <script>
 import {cancleBookStation} from '../../../api/shareOrder';
-import BluetoothManager from '../../../utils/bluetoothConnect/bluetoothManager';
-import {lockStatusUpdate, lockStatusUpdateclose} from "../../../api/shareStation";
-import BlueConnect from '../../../utils/bluetoothConnect/BlueConnect';
 import ShareApi from '../../../utils/sharebikeCordovaApi';
+import RouteNavigator from '../../../utils/routeNavigator';
 
 export default {
   name: 'orderinfo',
   data() {
     return {
-      detailInfo: '',
+      detailInfo: {},
       connectPeripheral: '',
       hasCarTimer: '',
       isHasCar: false,
+      isBottonShow: true,
     }
   },
   mounted() {
+    this.showBottom();
   },
   methods: {
+    showBottom() {
+      if (this.detailInfo.status === '预约过期' || this.detailInfo.status === '预约取消') {
+        this.isBottomShow = false;
+      }
+    },
     cancleOrder(value) {
+      const self = this;
       this.$vux.loading.show({
         text: '正在取消...',
       });
+      console.log(value);
       cancleBookStation(value).then((response) => {
         this.$vux.loading.hide();
         if (response.data.code === 200) {
-
+          self.$vux.alert.show({
+            title: '提示',
+            content: '取消预约成功!',
+            onHide() {
+              self.$emit('goBack');
+            },
+          });
         } else {
-          this.$vux.alert.show({
+          self.$vux.alert.show({
             title: '提示',
             content: '取消预约失败',
           });
         }
       }).catch((error) => {
-        this.$vux.loading.hide();
+        self.$vux.loading.hide();
       });
     },
     openBlue() {
-      BlueConnect.connectBluetoothWidhMac('50:8C:B1:8C:11:EB',() => {
-      //  链接成功
-        BlueConnect.open(() => {
-          // 开锁成功
-          BlueConnect.getHasCar();
-        }, () => {
-
-        });
-      }, () => {
-
-      });
+      RouteNavigator.orderInfo = this.detailInfo;
+      RouteNavigator.lines = '';
+      RouteNavigator.beginConnectBlue(false);
     },
-
     setValues(obj) {
       console.log('我的对象');
       console.log(obj);
       this.detailInfo = obj;
-      const expireTime = this.detailInfo.expireTime;
-      const date = new Date(1532685309);
-      const hour = data.getHours();
-      const minutes = date.getMinutes();
-      this.detailInfo.expireTime = hour + ':' + minutes;
-      this.detailInfo.type = obj.type === 1 ? '取车' : '还车';
-      console.log(date);
-      console.log(hour);
-      console.log(minutes);
+      // const expireTime = this.detailInfo.expireTime;
     },
     beginNav() {
       const lineObj = {

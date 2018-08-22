@@ -5,8 +5,14 @@
       <div class="infoWrapper">
         <div class="rowDiv" @click="onClick">
           <p class="txt">头像</p>
-          <svg-icon icon-class="icon_male"  class="user-image"></svg-icon>
-          <svg-icon icon-class="right_arrow" class="right-arrow"></svg-icon>
+          <span class="main">
+            <!--<input type="file" accept="image/jpeg,image/jpg,image/png" class="main-head">-->
+            <!--<div class="background" style="width: 198.72px; height: 198.72px;">-->
+              <!--<span style="background-position: 0px 0px; background-size: 198.72px;"></span>-->
+            <!--</div>-->
+            <img :src="userImg" class="user-image">
+            <svg-icon icon-class="right_arrow" class="right-arrow"></svg-icon>
+          </span>
             <!--<input type="file" multiple name="file" @change="onfile"/>-->
             <!--<button @click="uploading">uploading</button>-->
           <picker :show="this.$store.getters.showPicker"
@@ -43,6 +49,7 @@ import titleCom from '../login/components/titleCom';
 import picker from '../../components/popupPicker/picker';
 import store from '../../store';
 import { formatDate } from '../../filters/date';
+import ShareBikeApi from '../../utils/sharebikeCordovaApi';
 
 export default {
   name: 'personalInfo',
@@ -54,9 +61,10 @@ export default {
         createTime: '',
       },
       closeType: false,
-      selectedFileList: null,
+      uploadItem: null,
       selectedFileName: null,
       values: [],
+      userImg: 'http://utsmarthomeplatform.oss-cn-shenzhen.aliyuncs.com/commonFile_uploadFile/90bf43b3222e43d9aae4d4e26b3deb35.png',
     };
   },
   components: {
@@ -93,24 +101,49 @@ export default {
     },
 
     sureClick(value) {
-      console.log(value[0]);
-      this.$store.dispatch('setPickerValue', value[0]);
-      this.$store.dispatch('hidePicker');
+      console.log(value);
+      const self = this;
+      // this.$store.dispatch('setPickerValue', value[0]);
+      // this.$store.dispatch('hidePicker');
+      if (value[0] === '1') {
+        console.log('本地上传');
+        ShareBikeApi.pickPhotos((data) => {
+          self.upDateUserIcon(data);
+          self.userImg = data;
+        });
+      } else if (value[0] === '2') {
+        console.log('相机拍照');
+        ShareBikeApi.pickCamera((data) => {
+          self.upDateUserIcon(data);
+          self.userImg = data;
+        });
+      }
     },
     cancelClick() {
       this.$store.dispatch('setPickerValue', '');
       this.$store.dispatch('hidePicker');
     },
 
-    uploading() {
-      const data = this.selectedFile;
-      uploadingImg(data).then((response) => {
-        const code = response.code;
-        if (code === 200) {
-          console.log('图片上传成功');
-        }
-      }).catch();
+    upDateUserIcon(val) {
+      const data = val;
+      const self = this;
+      self.$store.dispatch('UpdateUserIcon', data).then();
     },
+    // onfile(event) {
+    //   this.uploadItem = event.target.files[0];
+    // },
+    // uploading() {
+    //   const form = new FormData();
+    //   form.append('file', this.uploadItem);
+    //   updateUserImg(form).then((response) => {
+    //     const code = response.code;
+    //     if (code === 200) {
+    //       console.log('图片上传成功');
+    //     }
+    //   }).catch((e) => {
+    //     console.log(e);
+    //   });
+    // },
   },
 };
 </script>
@@ -218,5 +251,26 @@ export default {
   }
   .vux-popup-picker-value {
     display: inline-block;
+  }
+  .main {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+  }
+  .main-head {
+    display: block;
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .background > span {
+    width: 100%;
+    height: 100%;
+    display:inline-block;
+    background:url("http://utsmarthomeplatform.oss-cn-shenzhen.aliyuncs.com/commonFile_uploadFile/90bf43b3222e43d9aae4d4e26b3deb35.png");
   }
 </style>

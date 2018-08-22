@@ -4,3 +4,9 @@ import request from '@/utils/request';
 export function getBookList() {
   return request.post('/station/getBookList');
 }
+export function cancleBookStation(stationDetailId) {
+  const data = {
+    stationDetailId,
+  };
+  return request.post('/station/cancleBookStation', data);
+}

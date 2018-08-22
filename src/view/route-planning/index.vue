@@ -239,6 +239,7 @@ export default {
      *
      * */
     beginPlanningRoad() {
+      const self = this;
       this.isShowDetail = false;
       // 网络等待
       this.$vux.loading.show({
@@ -251,24 +252,24 @@ export default {
         if (response.data.code === 200) {
           // this.beginDrawRoad(response.data.data);
           // 开始路线绘制
-          this.$refs.planningMap.beginDrawRoad(response.data.data);
+          self.$refs.planningMap.beginDrawRoad(response.data.data);
           // 获得所有的骑行站点
           this.getAllStations(response.data.data);
         } else if (response.data.code === 201){
-          this.$vux.loading.hide();
-          this.$vux.alert.show({
+          self.$vux.loading.hide();
+          self.$vux.alert.show({
             title: '路线规划失败',
             content: '该路线无可预约车桩，请重新选择目的地',
           });
         } else {
-          this.$vux.loading.hide();
-          this.$vux.alert.show({
+          self.$vux.loading.hide();
+          self.$vux.alert.show({
             title: '路线规划失败',
             content: '该路线无可预约车桩，请重新选择目的地',
           });
         }
       }).catch((error) => {
-
+        self.$vux.loading.hide();
       });
     },
     /**

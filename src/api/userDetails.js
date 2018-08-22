@@ -5,5 +5,5 @@ export function updateUserName(name) {
 }
 
 export function updateUserImg(data) {
-  return request.post('url', data);
+  return request.post('/userLogin/updateHeadPic', data);
 }

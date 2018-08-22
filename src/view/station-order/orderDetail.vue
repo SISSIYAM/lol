@@ -3,9 +3,9 @@
   <div class="back_icon flex-h flex-vc flex-hc" @click="goBack">
     <svg-icon icon-class="icon_back" class="icon_back"></svg-icon>
   </div>
-  <div id="map_container" style="width: 100%;height: 100%;"></div>
+  <div id="map_container" style="width: 100%;height: 100vh;"></div>
   <div class="orderinfo">
-    <order-info ref="orderInfo"></order-info>
+    <order-info ref="orderInfo" @goBack="goBack"></order-info>
   </div>
 </div>
 </template>
@@ -34,6 +34,7 @@ export default {
       MapMethod.loadMapUI(() => {
         // 创建地图，传入缩小级别
         this.map = MapMethod.createMap('map_container', 11);
+        MapMethod.setMapCenter(ShareAPI.userLocation.lng, ShareAPI.userLocation.lat, this.map, 14);
       });
     },
     initValues() {
@@ -64,10 +65,10 @@ export default {
     width: 20px;
     height: 40px;
   }
-  .map_container{
-    width: 100%;
-    height: 100%;
-  }
+  /*.map_container{*/
+    /*width: 200px;*/
+    /*height: 200px;*/
+  /*}*/
   .orderinfo{
     position: absolute;
     width: calc(100%);

@@ -82,27 +82,25 @@ class BlueConnect {
   // 链接蓝牙
   // ----------------------------------------------------------------------
   connectBluetoothWithMac(mac, successCallBack, errorCallBack) {
-    if (this.currentBlueMac === mac) {
-      return;
-    }
     this.currentBlueMac = mac;
-    // 1。开始搜索
-    BluetoothManager.enableBluetooth(() => {
-      BluetoothManager.beginSearchNearbyBlue();
-      this.connectSuccessCallBack = successCallBack;
-    }, () => {
-      Vue.$vux.loading.hide();
-      // Vue.$vux.alert.show({
-      //   title: '提示',
-      //   content: '请打开蓝牙',
-      // });
-      ShareAPI.showAlertView({
-        title: '提示',
-        content: '请打开蓝牙！',
-        rightTitle: '确定',
-      });
-      errorCallBack();
-    });
+    BluetoothManager.beginSearchNearbyBlue();
+    this.connectSuccessCallBack = successCallBack;
+    // // 1。开始搜索
+    // BluetoothManager.enableBluetooth(() => {
+    //
+    // }, () => {
+    //   Vue.$vux.loading.hide();
+    //   // Vue.$vux.alert.show({
+    //   //   title: '提示',
+    //   //   content: '请打开蓝牙',
+    //   // });
+    //   ShareAPI.showAlertView({
+    //     title: '提示',
+    //     content: '请打开蓝牙！',
+    //     rightTitle: '确定',
+    //   });
+    //   errorCallBack();
+    // });
   }
   // 1.蓝牙搜索关闭了
   onHandleStopScan() {

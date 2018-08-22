@@ -1,8 +1,9 @@
 // eslint-disable-next-line
-import Vue from 'vue';
+import Store from '../store';
 import BlueConnect from './bluetoothConnect/BlueConnect';
 import ShareAPI from './sharebikeCordovaApi';
 import {lockStatusUpdate, lockStatusUpdateclose, canOpen, payOrder} from "../api/shareStation";
+import BluetoothManager from './bluetoothConnect/bluetoothManager';
 
 class RouteNavigator {
   constructor() {
@@ -18,69 +19,75 @@ class RouteNavigator {
     this.orderInfo = {};
     this.hasEnoughMoney = true;
     this.connectingBlue = '';
-    this.beginConnectBlue = (state) => {
-      BlueConnect.onBlueDisConnect = this.onBlueDisConnect.bind(this);
-
-      const self = this;
-
-      // 判断现在是否有蓝牙已经在链接，如果没有，则开始进行蓝牙链接
-      if (this.connectingBlue === '') {
+    this.isConnecting = false;
+    // ---------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------
+    // 判断是取车还是还车
+    this.beginConnectBlue = (state, isOrderBlue) => {
+      // BluetoothManager.onHandleBluetoothDisConnect = this.onHandleBluetoothDisConnect.bind(this);
+      // 判断传输过来的是否是已经发送过的
+      console.log('conn === ' + this.connectingBlue);
+      console.log('conn111 === ' + this.orderInfo);
+      ShareAPI.noSendOrderNearby(this.orderInfo.mac);
+      if (this.connectingBlue.length <= 0) {
         this.connectingBlue = this.orderInfo.mac;
-        // 判断是否开锁
-        ShareAPI.showAlertView({
-          title: '提示',
-          content: '您已到达车桩附近，是否开锁',
-          rightTitle: '开锁',
-          leftTitle: '取消',
-        }, ()=> {
-          console.log('点击成功');
-          self.judgeHasMoney(state);
-        });
-      }
-    };
-
-    this.judgeHasMoney = (state) => {
-      // 判断是否是取车，如果是取车，则判断钱包中的钱是否够
-      const self = this;
-      if (String(this.orderInfo.type) === '1') {
-        // 判断钱包中的钱是否足够，如果不够，则不进行蓝牙链接
-        if (this.hasEnoughMoney === false) {
-          return;
-        }
-        // 判断是否有钱
-        BlueConnect.canOpenCarPile(this.orderInfo.mac, () => {
-          console.log('有钱');
-          // 如果钱够，则开始进行蓝牙链接
-          self.isConnectingBlue = true;
-          // 进行蓝牙链接
-          self.beginConnectBluetoothWithMac(state);
-
-
-
+        // // 判断蓝牙是否开启
+        BluetoothManager.enableBluetooth(() => {
+          // 是否开锁弹出框
+          ShareAPI.showAlertView({
+            title: '提示',
+            content: '您已到达车桩附近，是否开锁！',
+            rightTitle: '确定',
+            leftTitle: '取消',
+          },() => {
+            if (this.orderInfo.type === '1') {
+              // 取车
+              this.getCar(state);
+            } else if (this.orderInfo.type === '0') {
+              // 还车
+              this.stopCar(state);
+            }
+          });
         }, () => {
-          // 如果没钱，则不再进入
-          self.isConnectingBlue = false;
+          console.log('蓝牙没有打开');
+          this.connectingBlue = '';
+          // Vue.$vux.alert.show({
+          //   title: '提示',
+          //   content: '请开启蓝牙！',
+          // });
+          ShareAPI.showAlertView({
+            title: '提示',
+            content: '请打开蓝牙!',
+            rightTitle: '确定',
+          });
         });
-      } else if (String(this.orderInfo.type === '0')) {
-        // 如果是存车，则提示选择车辆类型
-
       }
+      // this.stopCar(state);
     };
 
-    // 对外接口：链接蓝牙
+
+    this.onHandleBluetoothDisConnect = () => {
+      this.connectingBlue = '';
+      self.isConnecting = false;
+    };
+
+
+    // // 对外接口：链接蓝牙
     this.beginConnectBluetoothWithMac = (state) => {
-      Vue.$vux.loading.show({
-        text: '正在链接蓝牙...',
-      });
+      console.log('走到开始蓝牙');
       const self = this;
+      if (this.isConnecting) {
+        return;
+      }
       BlueConnect.connectBluetoothWithMac(this.orderInfo.mac, () => {
+        self.isConnecting = true;
         Vue.$vux.loading.show({
           text: '正在开锁...',
         });
         // 链接成功，发送开锁请求
         BlueConnect.open(() => {
           // 开锁成功
-          Vue.$vux.loadind.hide();
+          Vue.$vux.loading.hide();
           Vue.$vux.toast.show({
             text: '开锁成功',
           });
@@ -88,29 +95,40 @@ class RouteNavigator {
           if (self.orderInfo.type === '1') {
             self.payOrderMoney();
           }
-
-          // BlueConnect.getHasCar();
           // 进行下一次导航
           self.getLineAndOrderValue(state);
-
-          // 上传车位状态
-
-
         }, () => {
-          Vue.$vux.loadind.hide();
+          Vue.$vux.loading.hide();
           Vue.$vux.toast.show({
             text: '开锁失败',
           });
           // 上传开锁失败
-
         });
-      }, () => {
-        Vue.$vux.loading.hide();
-        // 如果没开蓝牙，则10秒以后将当前链接蓝牙设置为空，方便下次链接
-        setTimeout(() => {
-          self.connectingBlue = '';
-        }, 10000);
       });
+    };
+
+
+
+    // -----------------------------------------------------------------
+    // 取车
+    // -----------------------------------------------------------------
+    this.getCar = (state) => {
+      const self = this;
+      // 判断是否有钱
+      BlueConnect.canOpenCarPile(this.orderInfo.mac, () => {
+        console.log('有钱');
+        console.log(self);
+        // 进行蓝牙链接
+        self.beginConnectBluetoothWithMac(state);
+      }, () => {
+        ShareAPI.showAlertView({
+          title: '提示',
+          content: '账户余额不足，请充值！',
+          rightTitle: '确定',
+          leftTitle: '取消',
+        });
+      });
+
     };
     this.payOrderMoney = () => {
       // 付款
@@ -124,18 +142,21 @@ class RouteNavigator {
 
       });
     };
-
-    // 上传车位状态
-    this.uploadCarPileState = () => {
-      if (this.orderInfo.type === 1) {
+    // -----------------------------------------------------------------
+    // 停车
+    // -----------------------------------------------------------------
+    this.stopCar = (state) => {
+      console.log('进入停车了');
+      console.log('Vue' + Store.getters.authCode);
+      if (Store.getters.authCode) {
+        console.log('急急急');
+        Store.dispatch('beginShowPicker', state);
 
       }
     };
 
 
-    this.onBlueDisConnect = () => {
-      this.connectingBlue = '';
-    };
+
     // 执行下一段导航
     this.getLineAndOrderValue = (state) => {
       console.log('开始下一段');
@@ -180,7 +201,6 @@ class RouteNavigator {
           title: '开锁成功',
           content: '是否进行下一段导航！',
           onCancel () {
-
           },
           onConfirm () {
             console.log('点击确定');

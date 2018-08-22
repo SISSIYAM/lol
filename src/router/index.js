@@ -99,6 +99,11 @@ export const constantRouterMap = [
     meta: { title: '车位订单', icon: '', auth: true },
   },
   {
+    path: '/orderDetail',
+    component: () => import('@/view/station-order/orderDetail'),
+    name: 'orderDetail',
+  },
+  {
     path: '/stationBooking',
     component: () => import('@/view/station-booking/index'),
     name: 'stationBooking',

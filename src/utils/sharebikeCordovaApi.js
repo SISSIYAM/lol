@@ -271,6 +271,18 @@ class ShareBikeCordovaApi {
       "nextLineNavigator",
       [obj]);
   }
+
+  /**
+   * 通知原生端，如果接近某个车桩时，不需要执行HandleFindOrderNoNav js交互，避免连续警告弹框
+   * @param obj 车桩mac地址
+   */
+  noSendOrderNearby(obj){
+    Cordova.exec(() => {
+      }, (data) => {
+      }, "ShareBikePlugins",
+      "noSendOrderNearby",
+      [obj]);
+  }
   /**
    *
    * 存储预约车桩信息
@@ -289,6 +301,7 @@ class ShareBikeCordovaApi {
    *
    * */
   startScan(successCallback, failCallback) {
+
     Cordova.exec(() => {
         successCallback();
       }, (data) => {
@@ -427,10 +440,14 @@ class ShareBikeCordovaApi {
   // 二维码扫描回调函数
   onHandleBleCode(data) {
     // 开始链接蓝牙
-    if (data.code === 200) {
-      console.log('获得二维码');
-      console.log(data);
-    }
+    // if (data.code === 200) {
+    console.log('获得二维码');
+    console.log(data);
+      // 开始链接
+    RouteNavigator.orderInfo = data;
+    RouteNavigator.lines = '';
+    RouteNavigator.beginConnectBlue(false, false);
+    // }
   }
   // 获得路线信息
   onHandleGetLineAndOrder(data) {
@@ -438,14 +455,14 @@ class ShareBikeCordovaApi {
     console.log(data);
     RouteNavigator.orderInfo = data.order;
     RouteNavigator.lines = data.line;
-    RouteNavigator.beginConnectBlue(true);
+    RouteNavigator.beginConnectBlue(true, true);
   }
   // 通过定位用户位置找到的附近车桩
   onHandleFindOrderNoNav(data) {
     // console.log('')
     RouteNavigator.orderInfo = data.order;
     RouteNavigator.lines = data.line;
-    RouteNavigator.beginConnectBlue(false);
+    RouteNavigator.beginConnectBlue(false, true);
   }
 
   //

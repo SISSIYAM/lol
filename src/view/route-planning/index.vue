@@ -245,6 +245,9 @@ export default {
       this.$vux.loading.show({
         text: '正在计算路线...',
       });
+      setTimeout(() => {
+        self.$vux.loading.hide();
+      }, 5000);
       console.log('计算路线:' + this.routeType);
       tripPlan(this.beginPosition.lng, this.beginPosition.lat, this.endPosition.lng, this.endPosition.lat, this.routeType).then((response) => {
         console.log('获得路线计算');
@@ -467,7 +470,7 @@ export default {
   }
   .planning_map{
     width: 100%;
-    height: calc(100vh - 125px);
+    height: calc(100vh - 145px);
   }
   .planning_map .amap-logo{
     display: none;

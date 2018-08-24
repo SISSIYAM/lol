@@ -1,5 +1,5 @@
 <template>
-  <div ref="title" id="title">
+  <!-- <div ref="title" id="title">
     <div ref="titleImg" class="title_img" @click="goBack">
       <svg-icon icon-class="icon_back"></svg-icon>
     </div>
@@ -8,6 +8,15 @@
     </div>
     <div ref="titleText" class="title_text" v-on:click="turnTo">
       {{ titleMes }}
+    </div>
+  </div> -->
+  <div ref="title" class="header-wrapper">
+    <div class="header header-fixed ">
+      <div ref="titleImg" class="header-left" @click="goBack">
+        <svg-icon icon-class="icon_back" class="arrow"></svg-icon>
+      </div>
+      <div ref="titleTextMid" class="title">{{ titleMid }}</div>
+      <div ref="titleText" class="more" @click="turnTo">{{ titleMes }}</div>
     </div>
   </div>
 </template>
@@ -20,6 +29,7 @@ export default {
   },
   methods: {
     goBack() {
+      // TODO: 跳转问题
       if (this.$props.toPathUrl === '' || this.$props.toPathUrl == null) {
         this.$router.go(-1);
       } else {
@@ -38,32 +48,6 @@ export default {
 };
 </script>
 
-<style scoped>
-  #title{
-    width: 100%;
-    background-color: #ffffff;
-    display: inline-block;
-    overflow: hidden;
-    font-weight: bold;
-    height:44px;
-  }
-
-  .title_img{
-    float: left;
-    margin-left: 3%;
-    margin-top:11px;
-  }
-
-  .title_mid{
-    width: auto;
-    text-align: center;
-    font-size: 13px;
-  }
-
-  .title_text{
-    height: auto;
-    font-weight: bold;
-    margin-top: 11px;
-    font-size:0.9em;
-  }
+<style lang="less" scoped>
+@import "../../../styles/header.less";
 </style>

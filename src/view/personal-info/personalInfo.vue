@@ -6,15 +6,9 @@
         <div class="rowDiv" @click="onClick">
           <p class="txt">头像</p>
           <span class="main">
-            <!--<input type="file" accept="image/jpeg,image/jpg,image/png" class="main-head">-->
-            <!--<div class="background" style="width: 198.72px; height: 198.72px;">-->
-              <!--<span style="background-position: 0px 0px; background-size: 198.72px;"></span>-->
-            <!--</div>-->
             <img :src="userImg" class="user-image">
             <svg-icon icon-class="right_arrow" class="right-arrow"></svg-icon>
           </span>
-            <!--<input type="file" multiple name="file" @change="onfile"/>-->
-            <!--<button @click="uploading">uploading</button>-->
           <picker :show="this.$store.getters.showPicker"
                   :list="values" v-on:sureClick="sureClick"
                   v-on:cancelClick="cancelClick">
@@ -64,7 +58,7 @@ export default {
       uploadItem: null,
       selectedFileName: null,
       values: [],
-      userImg: 'http://utsmarthomeplatform.oss-cn-shenzhen.aliyuncs.com/commonFile_uploadFile/90bf43b3222e43d9aae4d4e26b3deb35.png',
+      userImg: '',
     };
   },
   components: {
@@ -87,6 +81,7 @@ export default {
   },
   created() {
     this.formatCreateTime();
+    this.getUserHeadPic();
   },
   methods: {
     formatCreateTime() {
@@ -95,6 +90,15 @@ export default {
       this.user.createTime = formatDate(time, 'yyyy-MM-dd');
     },
 
+    getUserHeadPic() {
+      const self = this;
+      const url = 'http://utsmarthomeplatform.oss-cn-shenzhen.aliyuncs.com/commonFile_uploadFile/90bf43b3222e43d9aae4d4e26b3deb35.png'
+      if (store.getters.userHeadPic) {
+        self.userImg = self.$store.getters.userHeadPic;
+      } else {
+        self.userImg = url;
+      }
+    },
     onClick() {
       this.$store.dispatch('beginShowPicker');
       console.log(this.values);
@@ -103,21 +107,28 @@ export default {
     sureClick(value) {
       console.log(value);
       const self = this;
-      // this.$store.dispatch('setPickerValue', value[0]);
-      // this.$store.dispatch('hidePicker');
       if (value[0] === '1') {
-        console.log('本地上传');
-        ShareBikeApi.pickPhotos((data) => {
-          self.upDateUserIcon(data);
-          self.userImg = data;
-        });
+        console.log('本地');
+        ShareBikeApi.pickPhotos(1,(data) => {
+          const num = data.num;
+          if (num > 0) {
+            const url = data.urls[0];
+            self.upDateUserIcon(url);
+            self.userImg = url;
+          }
+        }, () => {});
       } else if (value[0] === '2') {
-        console.log('相机拍照');
+        console.log('相机');
         ShareBikeApi.pickCamera((data) => {
-          self.upDateUserIcon(data);
-          self.userImg = data;
-        });
+          const num = data.num;
+          if (num > 0) {
+            const url = data.urls[0];
+            self.upDateUserIcon(url);
+            self.userImg = url;
+          }
+        }, () => {});
       }
+      this.$store.dispatch('hidePicker');
     },
     cancelClick() {
       this.$store.dispatch('setPickerValue', '');
@@ -125,25 +136,24 @@ export default {
     },
 
     upDateUserIcon(val) {
-      const data = val;
+      const headPic = val;
+      const headPic1 = {
+        headPic,
+      }
       const self = this;
-      self.$store.dispatch('UpdateUserIcon', data).then();
+      self.$store.dispatch('UpdateUserIcon', headPic1).then((response) => {
+
+        if (response.data.code === 200) {
+          self.$vux.toast.show({
+            text: '更改成功！',
+          });
+        } else {
+          self.$vux.toast.show({
+            text: '更改失败，请稍后再试！',
+          });
+        }
+      });
     },
-    // onfile(event) {
-    //   this.uploadItem = event.target.files[0];
-    // },
-    // uploading() {
-    //   const form = new FormData();
-    //   form.append('file', this.uploadItem);
-    //   updateUserImg(form).then((response) => {
-    //     const code = response.code;
-    //     if (code === 200) {
-    //       console.log('图片上传成功');
-    //     }
-    //   }).catch((e) => {
-    //     console.log(e);
-    //   });
-    // },
   },
 };
 </script>
@@ -153,9 +163,6 @@ export default {
     width: 100%;
     height: 100%;
     font-weight: 600;
-  }
-  .titleCom{
-    height: 8%;
   }
   .wrapper_back{
     background-color: #f9f9f9;

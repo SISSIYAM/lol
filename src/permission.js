@@ -10,8 +10,8 @@ import store from './store';
 const whiteList = ['/', '/bikeStations', '/carStations', '/stationSearch', '/registerPage', '/stationAgreement'];
 
 router.beforeEach((to, from, next) => {
-  console.log('mytoken:' + store.getters.userToken);
-  if (store.getters.userToken) {
+  console.log('mytoken:' + store.getters.userToken + store.getters.authCode);
+  if (store.getters.userToken && !store.getters.authCode) {
     /**
      *  是注册用户
      */
@@ -27,14 +27,18 @@ router.beforeEach((to, from, next) => {
           /**
            * 如果用户登录身份失效
            */
+          console.log('zouyanheng')
           next({ path: '/login'});
         }
       }).catch((err) => {
         Message.error(err || '请重新登录');
+        console.log('cuwu')
         next({ path: '/login' });
       });
 
-  } else {
+  } else if (store.getters.userToken && store.getters.authCode){
+    next();
+  } else{
     /**
      * 非注册用户
      */
@@ -52,4 +56,3 @@ router.beforeEach((to, from, next) => {
     }
   }
 });
-

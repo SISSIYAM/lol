@@ -1,0 +1,37 @@
+.profile_list {
+  list-style: none;
+  background: #fff;
+  border-bottom: solid 1px #dfdfdf;
+  .item {
+    margin-left: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    line-height: 1;
+    box-sizing: border-box;
+    &:not(:last-child) {
+      border-bottom: solid 1px #dfdfdf;
+    }
+    aside {
+      margin-right: 10px;
+      .icon {
+        width: 22px;
+        height: 22px;
+      }
+    }
+    .info {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      font-size: 14px;
+    }
+    .right {
+      margin-right: 20px;
+      .icon_mini {
+        width: 8px;
+        height: 8px;
+      }
+    }
+  }
+}

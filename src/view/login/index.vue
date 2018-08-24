@@ -1,27 +1,25 @@
 <template>
   <div class="wapper">
-    <div id="form-wapper">
-      <title-com v-bind:title-mes="content[index].title" class="titleCom" v-bind:loginType="loginType" v-on:switchLoginType="switchLoginType($event)">
-      </title-com>
+    <title-com :title-mes="content[index].title" class="titleCom" :loginType="loginType" @switchLoginType="switchLoginType($event)">
+    </title-com>
+    <div id="form-wapper" class="form-wapper">
       <text-desc :GenText="content[index].dataText" :dataText1="content[index].dataText1" :dataText2="content[index].dataText2">
       </text-desc>
-      <div class="from-wrapper">
-        <div class="input-text" v-if="loginType === 'newPassword'">
-          <el-input :type="TextType" v-model="value" ref="userPwd" placeholder="请设置新的登录密码">
-            <template slot="prepend">
-              <span style="color: black">新密码</span>&nbsp;</template>
-            <i slot="suffix" class="el-input__icon el-icon-view" @click="showPwd"></i>
-          </el-input>
-        </div>
-        <form-suite></form-suite>
-        <form-phone slot="formPhone" ref="userPhone"></form-phone>
-        <form-pwd v-if="loginType === 'password'" slot="formPwd" ref="userPwd"></form-pwd>
-        <form-check v-else-if="loginType === 'verifyCode'" slot="formCheck" ref="userCheck">
-        </form-check>
-        <form-check v-else-if="loginType === 'reset'" slot="formCheck" ref="userCheck">
-        </form-check>
-        <form-other slot="formOther" :statusD="content[index].statusDes" v-bind:loginType="loginType" v-on:switchLoginType="switchLoginType($event)"></form-other>
+      <div class="input-text" v-if="loginType === 'newPassword'">
+        <el-input :type="TextType" v-model="value" ref="userPwd" placeholder="请设置新的登录密码">
+          <template slot="prepend">
+            <span style="color: black">新密码</span>&nbsp;</template>
+          <i slot="suffix" class="el-input__icon el-icon-view" @click="showPwd"></i>
+        </el-input>
       </div>
+      <form-suite></form-suite>
+      <form-phone slot="formPhone" ref="userPhone"></form-phone>
+      <form-pwd v-if="loginType === 'password'" slot="formPwd" ref="userPwd"></form-pwd>
+      <form-check v-else-if="loginType === 'verifyCode'" slot="formCheck" ref="userCheck">
+      </form-check>
+      <form-check v-else-if="loginType === 'reset'" slot="formCheck" ref="userCheck">
+      </form-check>
+      <form-other slot="formOther" :statusD="content[index].statusDes" v-bind:loginType="loginType" v-on:switchLoginType="switchLoginType($event)"></form-other>
     </div>
   </div>
 </template>
@@ -48,7 +46,7 @@ export default {
           title: '密码登录',
           dataText: '手机验证',
           dataText1: '请输入您的手机号',
-          dataText2: '登录或注册您的YouTe停车桩账号',
+          dataText2: '登录或注册您的“优停车”账号',
           statusDes: {
             status: 'part2',
             DeedText: '登录',
@@ -59,7 +57,7 @@ export default {
           title: '短信登录',
           dataText: '密码登录',
           dataText1: '请输入手机和密码',
-          dataText2: '登录您的“优车位”账号',
+          dataText2: '登录您的“优停车”账号',
           statusDes: {
             status: 'part1',
             DeedText: '登录',
@@ -235,18 +233,13 @@ export default {
 
 <style lang="less">
 .wapper {
-  height:auto;
+  width: 100%;
   height: 100%;
-  background-color: #fff;
-  .titleCom .title_text {
-    height: auto;
-    font-weight: lighter;
-    margin-top: 11px;
-    font-size: 0.9em;
-    margin-left: 80%;
-  }
-  .from-wrapper {
-    margin: 0 10px;
+  overflow: hidden;
+  .form-wapper {
+    height: calc(100vh - 44px);
+    background: #FFF;
+    padding: 0 10px;
     .login-input {
       margin-bottom: 10px;
       background-color: #dfdfdf;

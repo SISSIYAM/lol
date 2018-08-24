@@ -1,5 +1,9 @@
 @namespace: vux;
 
+// By Vicen Law
+@primay: #5BC8FF;
+@warn: #FF3B30;
+
 // @theme-color: #04BE02;
 @theme-color: #5BC8FF;
 @opacity-disabled: 0.5;
@@ -87,11 +91,11 @@
 * Cell
 */
 @cell-label-color: #333;
-@cell-font-size: 17px;
+@cell-font-size: 14px;
 @cell-tips-font-size: 14px;
 @cell-default-arrow-color: #C8C8CD;
 @cell-disabled-arrow-color: #e2e2e2;
-@cell-default-arrow-border-width: 2px;
+@cell-default-arrow-border-width: 1px;
 @cell-default-arrow-width: 6px;
 @cell-value-color: #999;
 @cell-placeholder-color: #CCCCCC;
@@ -171,7 +175,7 @@
 * en: font size
 * zh-CN: 字体大小
 */
-@button-global-font-size: 18px;
+@button-global-font-size: 14px;
 
 /**
 * en: the font size of the mini type
@@ -188,17 +192,17 @@
 * en: the background color of the warn type
 * zh-CN: warn类型的背景颜色
 */
-@button-warn-bg-color: #E64340;
+@button-warn-bg-color: @warn;
 /**
 * en: the background color of the warn type in active
 * zh-CN: active状态下，warn类型的背景颜色
 */
-@button-warn-active-color: #CE3C39;
+@button-warn-active-color: darken(@warn, 10%);
 /**
 * en: the background color of the warn type in disabled
 * zh-CN: disabled状态下，warn类型的背景颜色
 */
-@button-warn-disabled-bg-color: #EC8B89;
+@button-warn-disabled-bg-color: lighten(@warn, 20%);
 
 /**
 * en: the background color of the default type

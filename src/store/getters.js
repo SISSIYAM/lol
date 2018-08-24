@@ -8,6 +8,7 @@ const getters = {
   platformType: state => state.user.paltform,
   pickerValue: state => state.app.pickerValue,
   showPicker: state => state.app.showPicker,
+  userHeadPic: state => state.user.headPic,
 };
 
 export default getters;

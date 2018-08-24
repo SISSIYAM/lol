@@ -1,25 +1,36 @@
 <template>
   <div id="wapper">
-		<div class="title">
-			<img class="leftIcon" src="../../../static/images/icon_back.png" v-on:click="backPrePage"/>
-			<p class="titleName">{{titleName}}</p>
-		</div>
-		<div class="wapper_item">
-      <div class="item_cell" v-for=" order in orderList ">
-        <div class="item_cell_text" @click="itemClick(order)">
-					<img class="textleftIcon" src="../../../static/images/orderStationIcon.png"/>
-					<div class="textLeft">
-						<div class="textLeft_div">
-							<p class="textLeft_data">{{order.isday}}</p>
-							<p class="textLeft_payDetail">{{order.expireTime}}</p>
-							<p class="textLeft_Type">{{order.type}}</p>
-						</div>
-						<p class="textLeft_location">{{order.stationName}}</p>
-					</div>
-          <div :class="textRightStyle(order)">{{order.status}}</div>
-					<img class="textRightIcon" src="../../../static/images/orderStationRight.png"/>
+    <div class="header-wrapper">
+      <div class="header header-fixed ">
+        <div class="header-left" v-on:click="backPrePage">
+          <svg-icon icon-class="icon_back" class="arrow"></svg-icon>
         </div>
+        <div class="title">{{titleName}}</div>
       </div>
+    </div>
+    <div class="wapper_item">
+      <ul class="orderList" v-if="orderList.length">
+        <li class="item" v-for="(order, index) in orderList" :key="index" @click="itemClick(order)">
+          <div class="left">
+            <div style="margin:20px 10px 0 0">
+              <svg-icon icon-class="icon_location" class="icon"></svg-icon>
+            </div>
+          </div>
+          <div class="main">
+            <div class="info">
+              <span>{{order.isday}}</span>
+              <span>{{order.expireTime}}</span>
+              <span>{{order.type}}</span>
+              <div class="address">{{order.stationName}}</div>
+            </div>
+            <div class="right" :class="{default: order.status === '预约进行时'}">
+              {{order.status}}
+              <svg-icon icon-class="icon_right" class="icon"></svg-icon>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <nodata-tips v-if="!orderList.length" :title="'暂无预约记录'" :desc="'快来一场说走就走的旅程吧！'"></nodata-tips>
     </div>
   </div>
 </template>
@@ -29,25 +40,26 @@
 import { getBookList } from '../../api/shareOrder';
 import OrderDetail from './orderDetail';
 import { formatDate } from '../../filters/date';
+import NodataTips from '../../components/NodataTips/NodataTips';
 
 export default {
 
-	name: 'stationOrder',
+  name: 'stationOrder',
 
-	data() {
-		return{
-			titleName:'我的预约',
-			orderList:[],
-			status:'预约状态未知',
-			expireTime: ''
-		}
-	},
-	created() {
+  data() {
+    return {
+      titleName: '我的预约',
+      orderList: [],
+      status: '预约状态未知',
+      expireTime: '',
+    };
+  },
+  created() {
     // this.formatCreateTime();
   },
 
 
-	/**
+  /**
 	 * stationId：站点id;
 	 * stationName: 站点名称;
 	 * no: 车桩编号;
@@ -60,219 +72,174 @@ export default {
 	 * status：预约状态0预约进行时1履行预约2 预约过期3 预约被取消
 	 */
 
-	mounted() {
-		this.getOrder()
-	},
+  mounted() {
+    this.getOrder();
+  },
 
-	methods: {
-		// 更改预约状态样式
-		textRightStyle (order) {
-			if (String(order.status) === '预约进行时') {
-				return 'textRightBlue';
-			} else {
-				return 'textRight';
-			}
-		},
-		// 时间转换
-		// formatCreateTime() {
-		// 	this.expireTime = formatDate(time, 'yyyy-MM-dd');
-		// },
-		// 返回
-		backPrePage: function () {
-			this.$router.go(-1);
-		},
+  methods: {
+    // 更改预约状态样式
+    textRightStyle(order) {
+      if (String(order.status) === '预约进行时') {
+        return 'textRightBlue';
+      }
+      return 'textRight';
+    },
+    // 时间转换
+    // formatCreateTime() {
+    // 	this.expireTime = formatDate(time, 'yyyy-MM-dd');
+    // },
+    // 返回
+    backPrePage() {
+      this.$router.go(-1);
+    },
 
-		// 获取预约列表
+    // 获取预约列表
     getOrder() {
       const _this = this;
 
-			const currentDate = new Date();
-			const currentStamp = currentDate.getTime();
-			const current = formatDate(currentStamp, 'yyyy年MM月dd日');
+      const currentDate = new Date();
+      const currentStamp = currentDate.getTime();
+      const current = formatDate(currentStamp, 'yyyy年MM月dd日');
 
 
       getBookList().then((response) => {
         console.log(response);
         if (response.data.code !== 200) {
-          _this.showPlugin("提示信息", "获取预约列表失败");
+          _this.showPlugin('提示信息', '获取预约列表失败');
         } else {
           console.log('获取预约列表成功');
-					response.data.data.forEach((obj) => {
-						const nowDate = formatDate(obj.expireTime, 'yyyy年MM月dd日');
-						if (nowDate === current) {
-							obj.isday = '今天';
-						} else {
-							obj.isday = nowDate;
-						}
-						obj.expireTime = formatDate(obj.expireTime, 'hh:mm');
-						if (String(obj.type) === '1') {
-							obj.type = '取车';
-						} else {
-							obj.type = '还车';
-						}
-						if (String(obj.status) === '0'){
-							obj.status = '预约进行时'
-						} else if (String(obj.status) === '1') {
-							obj.status = '履行预约'
-						}	else if (String(obj.status) === '2') {
-							obj.status = '预约过期'
-						} else {
-							obj.status = '预约取消'
-						}
-					});
-					_this.orderList = response.data.data;
+          response.data.data.forEach((obj) => {
+            const nowDate = formatDate(obj.expireTime, 'yyyy年MM月dd日');
+            if (nowDate === current) {
+              obj.isday = '今天';
+            } else {
+              obj.isday = nowDate;
+            }
+            obj.expireTime = formatDate(obj.expireTime, 'hh:mm');
+            if (String(obj.type) === '1') {
+              obj.type = '取车';
+            } else {
+              obj.type = '还车';
+            }
+            if (String(obj.status) === '0') {
+              obj.status = '预约进行时';
+            } else if (String(obj.status) === '1') {
+              obj.status = '履行预约';
+            }	else if (String(obj.status) === '2') {
+              obj.status = '预约过期';
+            } else {
+              obj.status = '预约取消';
+            }
+          });
+          _this.orderList = response.data.data;
         }
       }).catch((error) => {
         console.log(error);
       });
-		},
-		// 提示框
-		showPlugin (title , content) {
-			this.$vux.alert.show({
-				title: title,
-				content: content,
-				onShow () {
-					console.log('显示的时候触发的事件');
-				},
-				onHide () {
-					console.log('点击确定按钮后触发');
-				}
-			});
-		},
+    },
+    // 提示框
+    showPlugin(title, content) {
+      this.$vux.alert.show({
+        title,
+        content,
+        onShow() {
+          console.log('显示的时候触发的事件');
+        },
+        onHide() {
+          console.log('点击确定按钮后触发');
+        },
+      });
+    },
     itemClick(order) {
 		  this.$router.push({
-        name:'orderDetail',
-        params:{
-          'orderObj': order,
+        name: 'orderDetail',
+        params: {
+          orderObj: order,
         },
-      })
+      });
     },
-	}
-}
+  },
+  components: {
+    NodataTips,
+  },
+};
 </script>
 
-<style scoped lang="scss">
-
-	/*********标题栏  *********/
-	.title {
-		padding-top: 20px;
-		height: 44px;
-		line-height: 44px;
-		width: 100%;
-		background-color: #FFFFFF;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		position: relative;
-	}
-
-	.titleName {
-		line-height: 64px;
-		position: absolute;
-		text-align: center;
-		left: 0;
-		right: 0;
-		margin: 0px;
-		font-size: 18px;
-		color: black;
-		vertical-align: middle;
-		font-family: PingFangBold;
-	}
-
-	.leftIcon {
-		line-height: 44px;
-		position: absolute;
-		left: 20px;
-		width: 24px;
-		height: 24px;
-		z-index: 9;
-		}
-	.detail {
-		line-height: 64px;
-		position: absolute;
-		text-align: right;
-		left: 0;
-		right: 0;
-		margin: 0px;
-		font-size: 14px;
-		color: black;
-		vertical-align: middle;
-		font-family: PingFangBold;
-	}
-	/*********标题栏 the end *********/
-  #wapper{
+<style scoped lang="less">
+/*********标题栏  *********/
+@import "../../styles/header.less";
+#wapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  .wapper_item {
+    height: calc(100vh - 44px);
     width: 100%;
-    height: 100%;
-    .titleCom{
-      height: 8%;
-    }
-    .wapper_item{
-      width: 92%;
+    overflow: hidden;
+    .orderList {
       height: 100%;
-      font-family: "Ping SC Regular";
-      font-weight: bold;
-    }
-    .item_cell{
-      width: 100%;
-      display: inline-flex;
-      padding-top: 10px;
-      padding-bottom: 10px;
-      align-items: center;
-      img{
-        width: 19px;
-        height: 19px;
-      }
-      .item_cell_text{
-        border-bottom: solid 1px #dfdfdf;
-        height:80%;
-        padding-bottom: 15px;
-        display: inline-flex;
+      background: #fff;
+      list-style: none;
+      overflow-y: auto;
+      .item {
+        display: flex;
+        justify-content: space-between;
+        height: 84px;
         width: 100%;
-				.textleftIcon{
-					margin-left: 10px;
-				}
-				.textRightIcon{
-					margin: 2px 2px;
-				}
-        .textLeft{
-          margin: 0 15px;
-          color: #999999;
-          font-size: 14px;
+        overflow: hidden;
+        &:active {
+          background: #ddd;
         }
-        .textRight{
-					width: 50px;
-          margin: 0 0;
-          color: #333333;
-          font-size: 12px;
-					margin-left: auto;
-					}
-				.textRightBlue{
-					width: 50px;
-					margin: 0 0;
-					color: #409EFF;
-					font-size: 12px;
-					margin-left: auto;
-					}
-				.textLeft_div{
-					display: inline-flex;
-				}
-				.textLeft_payDetail{
-					color: #333333;
-					font-size: 14px;
-				}
-				.textLeft_data{
-					color: #333333;
-					font-size: 14px;
-				}
-				.textLeft_type{
-					color: #333333;
-					font-size: 14px;
-					margin-left: 5px;
-				}
-				.textLeft_location{
-					font-size: 8px;
-				}
+        .left {
+          margin-left: 20px;
+          height: 84px;
+          .icon {
+            width: 16px;
+            height: 16px;
+          }
+        }
+        .main {
+          height: 84px;
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+          box-sizing: border-box;
+          border-bottom: solid 1px #dfdfdf;
+          font-size: 14px;
+          .info {
+            font-weight: bold;
+            margin-top: 20px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            .address {
+              font-size: 12px;
+              font-weight: normal;
+              margin-top: 10px;
+              color: #666;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            }
+          }
+          .right {
+            min-width: 63px;
+            font-size: 12px;
+            margin-top: 20px;
+            margin-right: 20px;
+            color: #999;
+
+            .icon {
+              width: 8px;
+              height: 8px;
+            }
+          }
+          .default {
+            color: #2cb8ff;
+          }
+        }
       }
     }
   }
+}
 </style>

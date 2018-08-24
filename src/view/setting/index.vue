@@ -1,7 +1,7 @@
 <template>
   <div class="setting-container">
+    <title-com :title-mid="title"></title-com>
     <div class="setting-header">
-      <title-com :title-mes="title" class="titleCom"></title-com>
       <div>
         <p class="title cell-label">重置密码</p>
         <svg-icon icon-class="right-arrow" class="right-arrow"></svg-icon>
@@ -11,17 +11,18 @@
     <div class="setting-main">
       <group>
         <!--<cell title="检测新版本" class="cell-label">{{}}</cell>-->
-        <cell title="意见反馈" is-link class="cell-label" @click.native="goToReport"></cell>
-        <cell title="关于我们" is-link class="cell-label" @click.native="goToAboutUS"></cell>
+        <cell title="意见反馈" is-link @click.native="goToReport"></cell>
+        <cell title="关于我们" is-link @click.native="goToAboutUS"></cell>
       </group>
 
       <group>
-        <cell title="用户协议" is-link class="cell-label"></cell>
-        <cell title="充值协议" is-link class="cell-label"></cell>
+        <cell title="用户协议" is-link></cell>
+        <cell title="充值协议" is-link></cell>
       </group>
 
       <div class="setting-button">
-        <button class="logout" @click="logout">退出登录</button>
+        <!-- <button class="logout" @click="logout"></button> -->
+        <x-button type="warn" @click.native="logout">退出登录</x-button>
       </div>
     </div>
   </div>
@@ -68,17 +69,10 @@ export default {
 </script>
 
 <style scoped>
-.titleCom {
- font-size: 13px;
-  text-align: center !important;
-  float: initial !important;
-}
-.cell-label {
-  font-size: 13px;
-}
 .title {
   margin-left: 15px;
   margin-top: 14px;
+  font-size: 14px;
 }
 .right-arrow {
   width: 20px;
@@ -87,16 +81,6 @@ export default {
   right: 20px;
 }
 .setting-button {
-  margin-top: 25px;
-  margin-left: 10px;
+  margin: 25px 10px 0;
 }
-.logout {
-  width:98%;
-  height:38px;
-  border-radius: 3px;
-  background-color: #ff3b30;
-  color: #fff;
-  line-height: 1;
-  border: 1px solid #ff3b30;
-  }
 </style>

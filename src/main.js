@@ -6,7 +6,8 @@ import Vuex from 'vuex';
 import Element from 'element-ui';
 import DrawerLayout from 'vue-drawer-layout';
 import 'element-ui/lib/theme-chalk/index.css';
-import { AlertPlugin, ConfirmPlugin, LoadingPlugin, ToastPlugin, XInput, XHeader, XButton, Icon } from 'vux';
+import { AlertPlugin, ConfirmPlugin, LoadingPlugin, ToastPlugin,
+  XInput, XHeader, XButton, Icon, Checker, CheckerItem, Checklist } from 'vux';
 
 import App from './App';
 import router from './router';
@@ -26,6 +27,9 @@ Vue.component('x-input', XInput);
 Vue.component('x-header', XHeader);
 Vue.component('x-button', XButton);
 Vue.component('icon', Icon);
+Vue.component('checker', Checker);
+Vue.component('checker-item', CheckerItem);
+Vue.component('checklist', Checklist);
 
 Vue.use(Element, {
   size: 'small',

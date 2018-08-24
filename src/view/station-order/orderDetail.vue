@@ -1,13 +1,15 @@
 <template>
-<div id="orderdetail">
-  <div class="back_icon flex-h flex-vc flex-hc" @click="goBack">
-    <svg-icon icon-class="icon_back" class="icon_back"></svg-icon>
+  <div id="orderdetail">
+    <div class="back_icon flex-h flex-vc flex-hc" @click="goBack">
+      <div class="btn">
+        <svg-icon icon-class="icon_back" class="icon_back"></svg-icon>
+      </div>
+    </div>
+    <div id="map_container" style="width: 100%;height: 100vh;"></div>
+    <div class="orderinfo">
+      <order-info ref="orderInfo" @goBack="goBack"></order-info>
+    </div>
   </div>
-  <div id="map_container" style="width: 100%;height: 100vh;"></div>
-  <div class="orderinfo">
-    <order-info ref="orderInfo" @goBack="goBack"></order-info>
-  </div>
-</div>
 </template>
 
 <script>
@@ -16,14 +18,14 @@ import MapMethod from '../../utils/map';
 import ShareAPI from '../../utils/sharebikeCordovaApi';
 
 export default {
-  name: "orderDetail",
+  name: 'orderDetail',
   components: {
     OrderInfo,
   },
   data() {
     return {
       map: '',
-    }
+    };
   },
   mounted() {
     this.initMap();
@@ -44,32 +46,41 @@ export default {
       this.$router.go(-1);
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
 @import "../station-booking/css/flex.css";
-#orderdetail{
+#orderdetail {
   width: 100%;
   height: 100%;
   position: relative;
-  .back_icon{
+  .back_icon {
     position: absolute;
     width: 50px;
     height: 50px;
     top: 0;
     /*left: 20px;*/
     z-index: 9999;
+    .btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
+    }
   }
-  .icon_back{
-    width: 20px;
-    height: 40px;
+  .icon_back {
+    margin-left: 10px;
+    margin-top: 7px;
+    width: 22px;
+    height: 22px;
   }
   /*.map_container{*/
-    /*width: 200px;*/
-    /*height: 200px;*/
+  /*width: 200px;*/
+  /*height: 200px;*/
   /*}*/
-  .orderinfo{
+  .orderinfo {
     position: absolute;
     width: calc(100%);
     /*height: calc(100vh - 34px);*/

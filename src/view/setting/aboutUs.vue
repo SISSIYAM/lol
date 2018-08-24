@@ -1,17 +1,19 @@
 <template>
   <div class="aboutUs-container">
-    <title-com :title-mes="title" class="titleCom"></title-com>
+    <title-com :title-mid="title"></title-com>
     <div class="aboutUs-header">
-      <svg-icon icon-class="Youte" class="aboutUs"></svg-icon>
-      <p> v{{currentVersion}}</p>
+      <div class="icon">
+        <svg-icon icon-class="Youte" class="youte"></svg-icon>
+        <p>v{{currentVersion}}</p>
+      </div>
     </div>
     <div class="aboutUs-main">
       <group>
-        <cell title="联系电话" class="cell-label"></cell>
-        <cell title="电子邮箱" class="cell-label"></cell>
-        <cell title="政府及公共事务" class="cell-label"></cell>
-        <cell title="官方网站" class="cell-label"></cell>
-        <cell title="广告合作"  class="cell-label"></cell>
+        <cell title="联系电话"></cell>
+        <cell title="电子邮箱"></cell>
+        <cell title="政府及公共事务"></cell>
+        <cell title="官方网站"></cell>
+        <cell title="广告合作"></cell>
       </group>
     </div>
     <div class="aboutUs-bottom">
@@ -40,34 +42,44 @@ export default {
 };
 </script>
 
-<style scoped>
-  .aboutUs {
-    width:50px !important;
-    height:50px !important;
-    display:block;
-    margin: auto;
+<style lang="less" scoped>
+.aboutUs {
+  width: 50px !important;
+  height: 50px !important;
+  display: block;
+  margin: auto;
+}
+
+.aboutUs-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 170px;
+  background: #fff;
+  font-size: 14px;
+  color: #666;
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 1px solid #dfdfdf;
+  .icon {
+    .youte {
+      width: 80px;
+      height: 80px;
+    }
+    p {
+      line-height: 2;
+    }
   }
-  .titleCom{
-    margin-top: 0px;
-    font-weight: 500;
-    margin-right: 20px;
-  }
-  .cell-label {
-    font-size: 13px;
-  }
-  .aboutUs-header p {
-    font-size: 12px;
-    color:#ccc;
-    font-weight:bold;
-    text-align: center;
-  }
-  .aboutUs-bottom {
-  }
-  .aboutUs-bottom p {
-    font-size: 12px;
-    color: #cccccc;
-    font-weight:bold;
-    text-align: center;
-    margin-top: 60%;
-  }
+}
+.aboutUs-bottom {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  color: #cccccc;
+  font-weight: bold;
+}
 </style>

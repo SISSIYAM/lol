@@ -1,14 +1,12 @@
 <template>
   <div class="report-container">
-    <div class="report-header">
-      <title-com :title-mes="title" class="titleCom"></title-com>
-    </div>
+    <title-com :title-mid="title"></title-com>
     <div class="report-main">
       <textarea class="report-textarea" :placeholder="content"> </textarea>
     </div>
 
     <div class="report-button">
-      <button class="submit">提交</button>
+      <x-button type="primary">提交</x-button>
     </div>
   </div>
 </template>
@@ -31,35 +29,22 @@ export default {
 </script>
 
 <style scoped>
-.submit {
-  width: 98%;
-  height: 38px;
-  color: #fff;
-  background-color: #409EFF;
-  border: 1px solid #409EFF;
-  border-radius: 3px;
+.report-button {
+  margin: 20px 10px 0;
 }
 .report-textarea {
+  box-sizing:border-box;
+  padding:10px;
   display: block;
-  width:93%;
-  height:200px;
+  width: 100%;
+  height: 200px;
   background-color: #dfdfdf;
-  border:0;
-  resize:none;
-  line-height: 3;
+  border: 0;
+  resize: none;
+  line-height: 1.6;
 }
 
 .report-main {
-  margin-top:10px;
-  margin-left: 15px;
-}
-.report-button {
-  margin-top: 25px;
-  margin-left: 6px;
-}
-.titleCom {
-  font-size:14px;
-  text-align: center;
-  font-weight:bold;
+  margin: 10px;
 }
 </style>

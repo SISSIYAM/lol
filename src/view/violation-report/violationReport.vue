@@ -1,8 +1,13 @@
 <template>
-  <div>
-    <x-header :left-options="{backText: ''}">
-      违停举报
-    </x-header>
+  <div class="wrapper">
+    <div class="header-wrapper">
+      <div class="header header-fixed ">
+        <div class="header-left" v-on:click="backPrePage">
+          <svg-icon icon-class="icon_back" class="arrow"></svg-icon>
+        </div>
+        <div class="title">{{titleName}}</div>
+      </div>
+    </div>
     <div class="upload-wrapper">
       <div class="header">
         <span class="icon">
@@ -38,7 +43,7 @@
       </x-input>
     </div>
     <div class="handle">
-      <x-button :type="canSubmit" :disabled="disabled">上传</x-button>
+      <x-button type="primary" :disabled="disabled">上传</x-button>
     </div>
   </div>
 </template>
@@ -47,16 +52,20 @@
 export default {
   data() {
     return {
+      titleName: '违停举报',
       type: 0,
       longitude: '',
       latitude: '',
       description: '默认还没地址',
       imgList: [],
-      canSubmit: 'defalut',
       disabled: true,
     };
   },
   methods: {
+    // 返回按钮
+    backPrePage() {
+      this.$router.go(-1);
+    },
     uploadImg(e) {
       const MAX = 4;
       const now = this.imgList.length;
@@ -89,10 +98,8 @@ export default {
   watch: {
     imgList() {
       if (this.imgList.length > 0) {
-        this.canSubmit = 'primary';
         this.disabled = false;
       } else {
-        this.canSubmit = 'defalut';
         this.disabled = true;
       }
     },
@@ -101,6 +108,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "../../styles/header.less";
+
 .upload-wrapper {
   padding: 20px;
   background-color: #fff;

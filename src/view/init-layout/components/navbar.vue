@@ -46,8 +46,7 @@ export default {
       }, 1000);
     },
     showPoper() {
-      const needAuth = this.$store.getters.authCode;
-      if (needAuth) {
+      if (this.$store.getters.authCode) {
         this.$emit('showPageTotal');
       } else {
         this.$router.push('/login');
@@ -57,8 +56,12 @@ export default {
 
     scanOrder() {
       console.log('点击二维码');
-      ShareBikeApi.startScan(() => {
-      }, (data) => {});
+      if (this.$store.getters.authCode) {
+        ShareBikeApi.startScan(() => {
+        }, (data) => {});
+      } else {
+        self.$router.push({ path: '/login' });
+      }
     },
   },
 };

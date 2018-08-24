@@ -1,202 +1,176 @@
 <template>
   <div id="wapper">
-		<div class="title">
-			<img class="leftIcon" src="../../../static/images/icon_back.png" v-on:click="backPrePage"/>
-			<p class="titleName">{{titleName}}</p>
-		</div>
-		<div class="wapper_item">
-      <div class="item_cell" v-for=" recharge in rechargeList ">
-        <div class="item_cell_text">
-					<div class="textLeft">
-						<p class="textLeft_payDetail">{{recharge.tradeType}}</p>
-						<p class="textLeft_time">{{recharge.tradeTime}}</p>
-					</div>
-          <div :class="textRightStyle(recharge)">{{recharge.tradeAmount}}</div>
+    <div class="header-wrapper">
+      <div class="header header-fixed ">
+        <div class="header-left" v-on:click="backPrePage">
+          <svg-icon icon-class="icon_back" class="arrow"></svg-icon>
         </div>
+        <div class="title">{{titleName}}</div>
       </div>
+    </div>
+    <div class="wapper_item">
+      <ul>
+        <li class="item_cell" v-for=" (recharge, index) in rechargeList " :key="index">
+          <div class="textLeft">
+            <p class="textLeft_payDetail">{{recharge.tradeType}}</p>
+            <p class="textLeft_time">{{recharge.tradeTime}}</p>
+          </div>
+          <div class="money" :class="textRightStyle(recharge)">
+            <span v-if="recharge.tradeAmount > 0">+</span> {{recharge.tradeAmount}} 元</div>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
-	
 
-import { getRechargeHistory } from '../../api/payAndTrade'
+
+import { getRechargeHistory } from '../../api/payAndTrade';
 
 
 export default {
-	
-		
-	data() {
-		return{
-			titleName:'明细',
-			rechargeList:[],
-		}
-	},
-		
-	mounted() {
-		if(false){
-			this.rechargeList=[
-				{
-					"tradeAmount": 24,
-					"tradeType": '停车费用',
-					"tradeTime":'2018.07.15-16:32:12'
-				},
-				{
-					"tradeAmount": -24,
-					"tradeType": '充值',
-					"tradeTime":'2018.07.15-16:32:12'              
-				},
-				{
-					"tradeAmount": 24,
-					"tradeType": '停车费用',
-					"tradeTime":'2018.07.15-16:32:12'              
-					}
-			]
-		}
-		this.getRechargeList();	
-	},
-		
-	methods: {
-		
-		// 返回
-		backPrePage: function () {
-			this.$router.go(-1);
-		},
-	
-		// 获取充值记录
-		getRechargeList () {
-			var _this =this;
-			getRechargeHistory(1).then((response) => {
-				console.log(response);
-				if (response.status != 200) {
-					_this.showPlugin("提示信息","获取充值记录失败");
-				} else {
-					console.log("获取充值记录成功")
-					_this.rechargeList=response.data;			
-				}
-			})
-			.catch(function (error) {
-				console.log(error);
-			});
-		},
-		
-		// 更改金额样式
-		textRightStyle(item) {
-			if (Number(item.tradeAmount) >= 0) {
-				return 'textRight_gray';
-			} else {
-				return 'textRight';
-			}
-		},
-		
-		// 提示框
-	  showPlugin (title , content) {
-			this.$vux.alert.show({
-        title: title,
-        content: content,
-        onShow () {
+
+
+  data() {
+    return {
+      titleName: '明细',
+      rechargeList: [],
+    };
+  },
+
+  mounted() {
+    if (false) {
+      this.rechargeList = [
+        {
+          tradeAmount: 24,
+          tradeType: '停车费用',
+          tradeTime: '2018.07.15-16:32:12',
+        },
+        {
+          tradeAmount: -24,
+          tradeType: '充值',
+          tradeTime: '2018.07.15-16:32:12',
+        },
+        {
+          tradeAmount: 24,
+          tradeType: '停车费用',
+          tradeTime: '2018.07.15-16:32:12',
+        },
+      ];
+    }
+    this.getRechargeList();
+  },
+
+  methods: {
+
+    // 返回
+    backPrePage() {
+      this.$router.go(-1);
+    },
+
+    // 获取充值记录
+    getRechargeList() {
+      const _this = this;
+      getRechargeHistory(1).then((response) => {
+        console.log(response);
+        if (response.status !== 200) {
+          _this.showPlugin('提示信息', '获取充值记录失败');
+        } else {
+          console.log('获取充值记录成功');
+          _this.rechargeList = response.data;
+        }
+      })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    // 更改金额样式
+    textRightStyle(item) {
+      if (Number(item.tradeAmount) >= 0) {
+        return 'textRight_gray';
+      }
+      return 'textRight';
+    },
+
+    // 提示框
+    showPlugin(title, content) {
+      this.$vux.alert.show({
+        title,
+        content,
+        onShow() {
           console.log('显示的时候触发的事件');
         },
-        onHide () {
+        onHide() {
           console.log('点击确定按钮后触发');
-        }
+        },
       });
-	 },
-	 
-	}
-}
+    },
+  },
+};
 </script>
 
-<style scoped lang="scss">
-	
-	/*********标题栏  *********/
-	.title {
-		padding-top: 5px;
-		height: 44px;
-		line-height: 44px;
-		width: 100%;
-		background-color: white;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		position: relative;
-	}
+<style scoped lang="less">
+@import "../../styles/header.less";
 
-	.titleName {
-		line-height: 64px;
-		position: absolute;
-		text-align: center;
-		left: 0;
-		right: 0;
-		margin: 0px;
-		font-size: 18px;
-		color: black;
-		vertical-align: middle;
-	}
-
-	.leftIcon {
-		line-height: 44px;
-		position: absolute;
-		left: 20px;
-		width: 24px;
-		height: 24px;
-		z-index: 9;
-	}
-	/*********标题栏 the end *********/
-	
-  #wapper{
+#wapper {
+  width: 100%;
+  height: 100%;
+  .wapper_item {
     width: 100%;
-    height: 100%;
-		background-color: whitesmoke;
-    .wapper_item{
-      width: 100%;
+    height: calc(100vh - 44px);
+    overflow: hidden;
+    background-color: white;
+    ul {
       height: 100%;
-      font-weight: bold;
-			background-color: white;
-    }
-    .item_cell{
-      width: 100%;
-      display: inline-flex;
-      padding-top: 10px;
-      align-items: center;
-      img{
-        width: 19px;
-        height: 19px;
-      }
-      .item_cell_text{
-        border-bottom: solid 1px #dfdfdf;
-        height:80%;
-        padding-bottom: 15px;
-        display: inline-flex;
+      overflow-y: scroll;
+      margin-left: 20px;
+      list-style: none;
+      .item_cell {
+        display: flex;
+        justify-content: space-between;
+        height: 60px;
         width: 100%;
-        .textLeft{
-          margin: 0 15px;
+        box-sizing: border-box;
+        border-bottom: solid 1px #dfdfdf;
+        overflow: hidden;
+        font-weight: bold;
+        img {
+          width: 19px;
+          height: 19px;
+        }
+        .textLeft {
+          margin-top: 14px;
           color: #999999;
           font-size: 14px;
         }
-        .textRight{
-          margin: 0 10px;
-          color: red;
+        .money {
+          margin-right: 20px;
+        }
+        .textRight {
+          height: 60px;
+          line-height: 60px;
+          color: #ff3b30;
+          font-size: 17px;
+        }
+        .textRight_gray {
+          height: 60px;
+          line-height: 60px;
+          color: #333;
+          font-size: 17px;
+        }
+        .textLeft_payDetail {
+          color: #333333;
           font-size: 14px;
-					margin-left: auto;
-					align-items: center;
-					}
-					.textRight_gray{
-						margin: 0 10px;
-						color: black;
-						font-size: 14px;
-						margin-left: auto;
-						align-items: center;
-						}
-				.textLeft_payDetail{
-					color: #333333;
-					font-size: 14px;
-				}
-				.textLeft_time{
-					font-size: 8px;
-				}
+        }
+        .textLeft_time {
+          color: #999;
+          font-size: 10px;
+          font-weight: 500;
+        }
       }
     }
   }
+}
 </style>

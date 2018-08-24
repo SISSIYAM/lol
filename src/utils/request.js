@@ -50,6 +50,7 @@ export default {
     }
     console.log('去到post for normal===');
     return this.postForNormal(url, data);
+    //return this.postForiOS(url, data);
   },
 
   // get总入口

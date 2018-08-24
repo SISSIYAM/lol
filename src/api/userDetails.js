@@ -4,6 +4,6 @@ export function updateUserName(name) {
   return request.post('/userLogin/updateName', name);
 }
 
-export function updateUserImg(data) {
-  return request.post('/userLogin/updateHeadPic', data);
+export function updateUserImg(headPic) {
+  return request.post('/userLogin/updateHeadPic', headPic);
 }

@@ -4,7 +4,7 @@ import { loginByUserAccount,
   getMobileVerifCode,
   afterUserSignupfillInfo,
   logout } from '../../api/login';
-import { updateUserName } from '../../api/userDetails';
+import { updateUserName, updateUserImg } from '../../api/userDetails';
 import ShareBikeApi from '../../utils/sharebikeCordovaApi';
 
 const user = {
@@ -24,7 +24,7 @@ const user = {
     group: '',
     token: '',
     code: '',
-    authCode: '',
+    authCode: false,
     platform: '',
   },
 
@@ -85,8 +85,7 @@ const user = {
      * */
     checkPlatform({ commit }) {
       ShareBikeApi.checkPlatform((data) => {
-        const platformType = data.type;
-        commit('SET_PLATFORM', platformType);
+        commit('SET_PLATFORM', data.type);
       });
     },
     /**
@@ -95,8 +94,13 @@ const user = {
      */
     hasUsersToken({ commit }) {
       ShareBikeApi.getUserInfo((data) => {
-        const token = data.uuid;
-        commit('SET_TOKEN', token);
+        commit('SET_TOKEN', data.uuid);
+        commit('SET_NAME', data.name);
+        commit('SET_ACCOUNT', data.account);
+        commit('SET_HEADPIC', data.headPic);
+        commit('SET_TELNO', data.telNo);
+        commit('SET_CREATETIME', data.createTime);
+        commit('SET_AUTHCODE', true);
       });
     },
     /**
@@ -107,7 +111,12 @@ const user = {
         console.log(`authUser:${token}`);
         hasAuth(token).then((response) => {
           const data = response.data;
-          commit('SET_AUTHCODE', data.code);
+          if (data.code === 200) {
+            commit('SET_AUTHCODE', true);
+          } else {
+            commit('SET_TOKEN', '');
+            commit('SET_AUTHCODE', false);
+          }
           resolve(response);
         }).catch((error) => {
           reject(error);
@@ -145,6 +154,15 @@ const user = {
         loginByMobileVerifCode(userPhone, userCheck).then((response) => {
           const data = response.data;
           if (data.code === 200) {
+            commit('SET_TOKEN', data.data.uuid);
+            commit('SET_ID', data.data.id);
+            commit('SET_NAME', data.data.name);
+            commit('SET_ACCOUNT', data.data.account);
+            commit('SET_HEADPIC', data.data.headPic);
+            commit('SET_TELNO', data.data.telNo);
+            commit('SET_CREATETIME', data.data.createTime);
+            commit('SET_AUTHCODE', true);
+          } else if (data.code === -2 || data.code === -1) {
             commit('SET_TOKEN', data.msg);
           }
           resolve(response);
@@ -165,18 +183,6 @@ const user = {
       });
     },
 
-    UpdateUserName({ commit }, Name) {
-      return new Promise((resolve) => {
-        updateUserName(Name).then((response) => {
-          const code = response.data.code;
-          if (code === 200) {
-            commit('SET_USERNAME', Name);
-          }
-          resolve(response);
-        }).catch();
-      });
-    },
-
     AfterUserSignupfillInfo({ commit }, registerForm) {
       const name = registerForm.userName.trim();
       const password = registerForm.userPwd.trim();
@@ -185,13 +191,37 @@ const user = {
           const data = response.data;
           if (data.code === 200) {
             commit('SET_AUTHCODE', true);
-            commit('SET_USERNAME', data.name);
-            commit('SET_TOKEN', data.uuid);
-            commit('SET_TELNO', data.telNo);
-            commit('SET_CREATETIME', data.createTime);
+            commit('SET_NAME', data.data.name);
+            commit('SET_TOKEN', data.data.uuid);
+            commit('SET_TELNO', data.data.telNo);
+            commit('SET_CREATETIME', data.data.createTime);
           }
           resolve(response);
         }).catch(() => {});
+      });
+    },
+
+    UpdateUserName({ commit }, Name) {
+      return new Promise((resolve) => {
+        updateUserName(Name).then((response) => {
+          const code = response.data.code;
+          if (code === 200) {
+            commit('SET_NAME', Name);
+          }
+          resolve(response);
+        }).catch();
+      });
+    },
+
+    UpdateUserIcon({ commit }, data) {
+      return new Promise((resolve) => {
+        updateUserImg(data).then((response) => {
+          const code = response.data.code;
+          if (code === 200) {
+            commit('SET_HEADPIC', data);
+          }
+          resolve(response);
+        }).catch();
       });
     },
 
@@ -199,7 +229,7 @@ const user = {
       logout().then((response) => {
         const data = response.data.code;
         if (data === 200) {
-          commit('SET_AUTHCODE', '');
+          commit('SET_AUTHCODE', false);
           commit('SET_TOKEN', '');
           commit('SET_ID', '');
           commit('SET_NAME', '');

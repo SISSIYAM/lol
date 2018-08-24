@@ -9,7 +9,7 @@
         <div class="left-drawer-div">
           <div class="user-bg-div">
             <router-link :to="{path:'/personalInfo'}" class="user-bg-bottom" >
-              <svg-icon icon-class="icon_male" class="user-icon"></svg-icon>
+              <img :src="userImg" class="user-icon">
               <div class="userInfo">
                 <p class="userName">{{userName}}</p>
               </div>
@@ -20,7 +20,7 @@
               <svg-icon icon-class="my_wallet" class="small-icon"></svg-icon>
               <p class="txt">我的钱包</p>
             </router-link>
-            <router-link :to="{path:''}" class="row-div">
+            <router-link :to="{path:'/myOrder'}" class="row-div">
               <svg-icon icon-class="station_order"></svg-icon>
               <p class="txt">我的订单</p>
             </router-link>
@@ -32,10 +32,10 @@
               <svg-icon icon-class="report"></svg-icon>
               <p class="txt">违停举报</p>
             </router-link>
-            <router-link :to="{path:'/customerService'}" class="row-div">
+            <div class="row-div" @click="callCustomer">
               <svg-icon icon-class="customer_service"></svg-icon>
               <p class="txt">客服中心</p>
-            </router-link>
+            </div>
             <router-link :to="{path:'/setting'}" class="row-div">
               <svg-icon icon-class="setting"></svg-icon>
               <p class="txt">系统设置</p>
@@ -46,7 +46,7 @@
       <div slot="content">
         <div class="main-drawer-div">
           <navbar @showPageTotal="showPageTotal"></navbar>
-          <routing-xiuxiu></routing-xiuxiu>
+          <routing-xiuxiu ref="transferEvent"></routing-xiuxiu>
         </div>
       </div>
     </vue-drawer-layout>
@@ -61,13 +61,17 @@ export default {
   data() {
     return {
       userName: store.getters.userName,
+      userImg: 'http://utsmarthomeplatform.oss-cn-shenzhen.aliyuncs.com/commonFile_uploadFile/90bf43b3222e43d9aae4d4e26b3deb35.png',
     };
   },
   components: {
     navbar,
     routingXiuxiu,
   },
-  computed: {
+  created() {
+    if (store.getters.userHeadPic) {
+      this.userImg = store.getters.userHeadPic;
+    }
   },
   methods: {
     showPageTotal() {
@@ -75,6 +79,9 @@ export default {
     },
     handleMaskClick() {
       this.$refs.drawer.toggle(false);
+    },
+    callCustomer() {
+      this.$refs.transferEvent.callCustomer();
     },
   },
 };

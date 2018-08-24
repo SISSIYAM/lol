@@ -1,7 +1,8 @@
 <template>
   <div class="getCode">
     <x-input title="验证码" class="login-input" v-model="checkNum" placeholder="6位短信验证码"></x-input>
-    <x-button :type="timeLimit ? 'default' : 'primary'" ref="sendButton" class="get" @click.native="doSendCheck" :disabled="timeLimit">{{ statusCheck }}</x-button>
+    <x-button :type="timeLimit ? 'default' : 'primary'" ref="sendButton" class="get"
+    @click.native="doSendCheck" :disabled="timeLimit">{{ statusCheck }}</x-button>
   </div>
 </template>
 
@@ -14,7 +15,7 @@ export default {
       statusCheck: '发送验证码',
       staus: true,
       timeLimit: false,
-      TIME_COUNT: 10,
+      TIME_COUNT: 60,
       count: null,
       countDown: null,
     };

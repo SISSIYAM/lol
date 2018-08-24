@@ -49,8 +49,8 @@ import ShareAPI from '../../../utils/sharebikeCordovaApi';
 let iPhoneX = false;
 const u = navigator.userAgent;
 const isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-if (isIOS) {        
-  if (screen.height == 812 && screen.width == 375){
+if (isIOS) {
+  if (screen.height == 812 && screen.width == 375) {
     iPhoneX = true;
   }
 }
@@ -60,7 +60,7 @@ export default {
     return {
       gifImg: 'http://utsmarthomeplatform.oss-cn-shenzhen.aliyuncs.com/commonFile_uploadFile/29f7a91a89544c05bbb3b50beba9b278.gif',
       iPhoneX,
-    }
+    };
   },
   components: {
     BikeStations,
@@ -163,7 +163,7 @@ export default {
       }
     }
   }
-  
+
   .whereGo{
     bottom: 10px;
   }

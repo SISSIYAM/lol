@@ -163,6 +163,12 @@ export const constantRouterMap = [
     name: 'violationReport',
     meta: { title: '违停举报', icon: '', auth: true },
   },
+  {
+    path: '/myOrder',
+    component: () => import('@/view/my-order/myOrder'),
+    name: 'myOrder',
+    meta: { title: '我的订单', icon: '', auth: true },
+  },
 ];
 
 export default new Router({

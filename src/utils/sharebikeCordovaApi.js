@@ -376,7 +376,7 @@ class ShareBikeCordovaApi {
       }, () => {
         failorCallback();
       }, 'ShareBikePlugins',
-      'pickPhoto',
+      'pickPhotos',
       [num]);
   }
 
